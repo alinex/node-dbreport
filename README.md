@@ -1,17 +1,62 @@
 Package: alinex-dbreport
 =================================================
 
-[![Build Status](https://travis-ci.org/alinex/node-dbreport.svg?branch=master)](https://travis-ci.org/alinex/node-dbreport) 
+[![Build Status](https://travis-ci.org/alinex/node-dbreport.svg?branch=master)](https://travis-ci.org/alinex/node-dbreport)
 [![Coverage Status](https://coveralls.io/repos/alinex/node-dbreport/badge.png?branch=master)](https://coveralls.io/r/alinex/node-dbreport?branch=master)
 [![Dependency Status](https://gemnasium.com/alinex/node-dbreport.png)](https://gemnasium.com/alinex/node-dbreport)
 
-Description comes here...
+Run some database queries and send their results using email. The main features are
+- work on any database
+- fully configurable
+- send results as csv or xlsx
+- cli interface
 
 
 Install
 -------------------------------------------------
 
 [![NPM](https://nodei.co/npm/alinex-dbreport.png?downloads=true&stars=true)](https://nodei.co/npm/alinex-dbreport/)
+
+
+Usage
+-------------------------------------------------
+
+    Usage: dbreport <job> [<options>]...
+
+    -C, --nocolors  turn of color output
+    -v, --verbose   run in verbose mode
+    -h, --help      Show help
+
+    -m, --mail      give a specific mail address
+
+
+Configuration
+-------------------------------------------------
+
+``` yaml
+dbreport:
+  <job>:
+    database:
+    query:
+      <name>:    
+    combine: <func>
+    email:
+      base:
+      transport:
+      to:
+      from:
+      subject:
+      body:
+database:
+  <name>:
+email:
+  <name>:
+```
+
+
+Special Combine
+-------------------------------------------------
+For special reports a special combine method may be coded to use.
 
 
 License

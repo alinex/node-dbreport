@@ -1,10 +1,15 @@
 {
   "name": "alinex-dbreport",
   "version": "0.0.0",
-  "description": "",
+  "description": "Run database queries and send their results using email.",
   "copyright": "Alexander Schilling 2016",
   "private": false,
-  "keywords": [],
+  "keywords": [
+    "database",
+    "query",
+    "report",
+    "table"
+  ],
   "homepage": "http://alinex.github.io/node-dbreport/",
   "repository": {
     "type": "git",
@@ -19,11 +24,19 @@
   "contributors": [],
   "license": "Apache-2.0",
   "main": "./lib/index.js",
+  "bin": {
+    "monitor": "./bin/dbreport"
+  },
+  "man": "./man/dbreport.1",
   "scripts": {
     "prepublish": "node_modules/.bin/builder -c compile --uglify",
-    "test": "node_modules/.bin/builder -c test"
+    "test": "node_modules/.bin/builder -c test",
+    "start": "bin/dbreport"
   },
+  "preferGlobal": true,
   "directories": {
+    "bin": "./bin",
+    "man": "./man",
     "lib": "./lib"
   },
   "dependencies": {},
