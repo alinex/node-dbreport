@@ -1,0 +1,13 @@
+# Email Template
+# =================================================
+
+default:
+  from: dbreport
+  subject: >
+    Database Report {{name}}
+  body: |+
+    {{name}}
+    ==========================================================================
+    {{description}}
+
+    See the attached file!
