@@ -1,0 +1,25 @@
+# Test Job
+# =================================================
+
+# Job Meta
+# -------------------------------------------------
+title: Vorhandene Tabellen
+description: |+
+  Dieser Bericht zeigt alle Tabellen die zum Zeitpunkt der Ausführung in der manage
+  life Datenbank existieren. Die genaue Liste liegt als tables.csv dieser Email bei.
+
+# Queries to Run
+# -------------------------------------------------
+query:
+  tables:
+    database: dvb_manage_live
+    command: >
+      SELECT    table_schema, table_name
+      FROM      information_schema.tables
+      ORDER BY  table_schema, table_name
+
+# Where to Send them to
+# -------------------------------------------------
+email:
+  base: default
+  to: betriebsteam@divibib.com

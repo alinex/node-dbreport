@@ -150,8 +150,7 @@ email = (name, data, cb) ->
         debug chalk.red err.message
       debug chalk.grey "send through " + util.inspect setup.transport
     if info
-      debug "message send to"
-      debug chalk.grey util.inspect(info).replace /\s+/, ''
+      debug "message send: " + chalk.grey util.inspect(info).replace /\s+/, ''
       return cb new Error "Some messages were rejected: #{info.response}" if info.rejected?.length
     cb err?.errors?[0] ? err ? null
 

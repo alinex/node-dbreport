@@ -1,0 +1,39 @@
+# Email Templates
+# =================================================
+
+
+# Default Template
+# -------------------------------------------------
+This will extend/overwrite the allready existing setup within the code.
+default:
+  # specify how to connect to the server
+  transport: smtp://alexander.schilling%40divibib.com:<<<env://PW_ALEX_DIVIBIB_COM>>>@mail.divibib.com
+  # sender address
+  from: alexander.schilling@divibib.com
+
+  # content
+  subject: >
+    {{conf.title}}
+  body: |+
+    {{conf.title}}
+    ==========================================================================
+
+    {{conf.description}}
+
+    Ausgeführt am {{date}}
+
+    ::: info
+    Die Ergebnisse liegen der Email als Anhang bei!
+    :::
+
+    Ausgeführte SQL Befehle
+    --------------------------------------------------------------------------
+
+    {{#each conf.query}}
+    ### Abfrage '{{@key}}' auf {{database}}
+
+    ``` sql
+    {{command}}
+    ```
+
+    {{/each}}
