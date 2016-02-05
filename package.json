@@ -39,7 +39,13 @@
     "man": "./man",
     "lib": "./lib"
   },
-  "dependencies": {},
+  "dependencies": {
+    "alinex-database": "^0.1.4",
+    "alinex-report": "^1.1.4",
+    "json2csv": "^3.1.0",
+    "nodemailer": "^2.1.0",
+    "nodemailer-plugin-inline-base64": "^1.0.1"
+  },
   "devDependencies": {
     "alinex-builder": "1.x",
     "chai": "2.x"

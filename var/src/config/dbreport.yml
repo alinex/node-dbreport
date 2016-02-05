@@ -1,0 +1,17 @@
+# Email Template
+# =================================================
+
+email:
+  default:
+    from: dbreport
+    subject: >
+      Database Report: {{name}}
+    body: |+
+      {{conf.title}}
+      ==========================================================================
+
+      {{conf.description}}
+
+      > Started at {{date}}
+
+      See the attached files!

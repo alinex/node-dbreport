@@ -35,22 +35,21 @@ Configuration
 
 ``` yaml
 dbreport:
-  <job>:
-    database:
-    query:
-      <name>:    
-    combine: <func>
-    email:
-      base:
-      transport:
-      to:
-      from:
-      subject:
-      body:
+  email:  # templates
+    <name>: wie monitor
+  job:
+    <job>: # job entry
+      database: reference
+      query:
+        <name>: select count(*)
+#      combine: <func>
+      email:
+        base: default
+        to: xxx@divibib.com
+        subject: Report {{name}}
+        body: See the result attached!
 database:
-  <name>:
-email:
-  <name>:
+  <name>: wie database komponente
 ```
 
 

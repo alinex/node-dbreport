@@ -5,12 +5,20 @@
 # -------------------------------------------------
 
 # include base modules
+debug = require('debug')('dbreport')
 yargs = require 'yargs'
 chalk = require 'chalk'
 fspath = require 'path'
+util = require 'util'
+nodemailer = require 'nodemailer'
+inlineBase64 = require 'nodemailer-plugin-inline-base64'
+json2csv = require 'json2csv'
 # include alinex modules
 config = require 'alinex-config'
 database = require 'alinex-database'
+async = require 'alinex-async'
+{object} = require 'alinex-util'
+Report = require 'alinex-report'
 # include classes and helpers
 logo = require('./logo') 'Database Reports'
 schema = require './configSchema'
@@ -76,15 +84,95 @@ process.on 'exit', ->
   console.log "Goodbye\n"
   database.close()
 
+
+# Run a job
+# -------------------------------------------------
+run = (name, cb) ->
+  conf = config.get "/dbreport/job/#{name}"
+  return cb new Error "Job #{name} is not configured" unless conf
+  # run the queries
+  debug "start #{name} job"
+  async.mapOf conf.query, (query, n, cb) ->
+    debug "run query #{n}: #{chalk.grey query.command.replace /\s+/g, ' '}"
+    database.list query.database, query.command, (err, data) ->
+      return cb err if err
+      json2csv
+        data: data
+        del: ';'
+      , cb
+  , (err, results) ->
+    return cb err if err
+    email name, results, cb
+
+
+# Send email
+# -------------------------------------------------
+email = (name, data, cb) ->
+  conf = config.get "/dbreport/job/#{name}/email"
+  # configure email
+  setup = object.clone conf
+  # use base settings
+  while setup.base
+    base = config.get "/dbreport/email/#{setup.base}"
+    delete setup.base
+    setup = object.extend {}, base, setup
+  # support handlebars
+  context =
+    name: name
+    conf: config.get "/dbreport/job/#{name}"
+    date: new Date()
+  setup.subject = setup.subject context if typeof setup.subject is 'function'
+  if setup.body
+    report = new Report
+      source: setup.body context
+    setup.text = report.toText()
+    setup.html = report.toHtml()
+    delete setup.body
+  # add attachements
+  setup.attachments = []
+  for name, csv of data
+    setup.attachments.push
+      filename: "#{name}.csv"
+      content: csv
+  # send email
+  mails = setup.to?.map (e) -> e.replace /".*?" <(.*?)>/g, '$1'
+  debug "sending email to #{mails?.join ', '}..."
+  # setup transporter
+  transporter = nodemailer.createTransport setup.transport ? 'direct:?name=hostname'
+  transporter.use 'compile', inlineBase64
+  debug chalk.grey "using #{transporter.transporter.name}"
+  # try to send email
+  transporter.sendMail setup, (err, info) ->
+    if err
+      if err.errors
+        debug chalk.red e.message for e in err.errors
+      else
+        debug chalk.red err.message
+      debug chalk.grey "send through " + util.inspect setup.transport
+    if info
+      debug "message send to"
+      debug chalk.grey util.inspect(info).replace /\s+/, ''
+      return cb new Error "Some messages were rejected: #{info.response}" if info.rejected?.length
+    cb err?.errors?[0] ? err ? null
+
+
 # Main routine
 # -------------------------------------------------
 console.log logo
 console.log "Initializing..."
 # init
 # add schema for module's configuration
-config.setSchema '/dbreport', schema.dbreport
-config.setSchema '/email', schema.email
+config.setSchema '/dbreport', schema
 # set module search path
 config.register 'dbreport', fspath.dirname __dirname
-config.init (err) ->
+# initialize config
+database.setup (err) ->
   exit 1, err if err
+  config.init (err) ->
+    exit 1, err if err
+    # start job
+    exit 1, new Error "No job given to process" unless argv._.length
+    console.log "Run the jobs..."
+    async.each argv._, run, (err) ->
+      exit 1, err if err
+      exit()

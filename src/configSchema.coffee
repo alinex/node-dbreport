@@ -4,8 +4,7 @@
 
 # Email Action
 # -------------------------------------------------
-
-exports.email = email =
+email =
   title: "Email Action"
   description: "the setup for an individual email action"
   type: 'object'
@@ -29,19 +28,27 @@ exports.email = email =
       title: "From"
       description: "the address emails are send from"
       type: 'string'
-      default: 'monitor'
     to:
       title: "To"
       description: "the address emails are send to"
-      type: 'string'
+      type: 'array'
+      toArray: true
+      entries:
+        type: 'string'
     cc:
       title: "Cc"
       description: "the carbon copy addresses"
-      type: 'string'
+      type: 'array'
+      toArray: true
+      entries:
+        type: 'string'
     bcc:
       title: "Bcc"
       description: "the blind carbon copy addresses"
-      type: 'string'
+      type: 'array'
+      toArray: true
+      entries:
+        type: 'string'
     subject:
       title: "Subject"
       description: "the subject line of the generated email"
@@ -58,14 +65,15 @@ job =
   description: "the definition of a single report job"
   type: 'object'
   allowedKeys: true
-  mandatoryKeys: ['database']
   keys:
-    database:
-      title: "Database"
-      description: "the alias name of the database to store to"
+    title:
+      title: "Title"
+      description: "the short title of the job to be used in display"
       type: 'string'
-      list: '<<<context:///database>>>'
-      optional: true
+    description:
+      title: "Description"
+      description: "a short abstract of what this job will check"
+      type: 'string'
     query:
       title: "Query List"
       description: "the queries to run to retrieve the measurement result"
@@ -73,7 +81,21 @@ job =
       entries: [
         title: "Query"
         description: "the query to run to retrieve the measurement result"
-        type: 'string'
+        type: 'object'
+        mandatoryKeys: true
+        keys:
+          database:
+            title: "Database"
+            description: "the alias name of the database to store to"
+            type: 'string'
+            list: '<<<context:///database>>>'
+            optional: true
+          command:
+            title: "Command"
+            description: "the concrete sql to run to retrieve the measurement result"
+            type: 'string'
+            trim: true
+            replace: [/\s+/, ' ']
       ]
 #    combine: <func>
     email: email
@@ -82,9 +104,20 @@ job =
 # Complete Schema Definition
 # -------------------------------------------------
 
-exports.dbreport =
+module.exports =
   title: "Report Setup"
   description: "the configuration for the database report system"
   type: 'object'
   allowedKeys: true
-  entries: [job]
+  keys:
+    job:
+      title: "Report Setup"
+      description: "the configuration for the database report system"
+      type: 'object'
+      allowedKeys: true
+      entries: [job]
+    email:
+      title: "Email Templates"
+      description: "the possible templates used for sending emails"
+      type: 'object'
+      entries: [email]
