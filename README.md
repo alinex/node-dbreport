@@ -108,6 +108,7 @@ default:
   from: alexander.schilling@divibib.com
 
   # content
+  locale: en
   subject: >
     Database Report: {{name}}
   body: |+

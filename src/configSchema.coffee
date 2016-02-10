@@ -54,9 +54,9 @@ email =
       description: "the locale setting for subject and body dates"
       type: 'string'
       minLength: 2
-      maxLength: 2
+      maxLength: 5
       lowerCase: true
-      match: /^[a-z]{2}$/
+      match: /^[a-z]{2}(-[a-z]{2})?$/
     subject:
       title: "Subject"
       description: "the subject line of the generated email"
