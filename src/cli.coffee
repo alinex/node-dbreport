@@ -60,8 +60,6 @@ argv = yargs
     """
   process.exit 1
 .argv
-# parse data
-argv.json = JSON.parse argv.json if argv.json
 # implement some global switches
 chalk.enabled = false if argv.nocolors
 
@@ -140,6 +138,11 @@ email = (name, data, cb) ->
     setup.attachments.push
       filename: "#{name}.csv"
       content: csv
+  # test mode
+  if argv.mail
+    setup.to = argv.mail
+    delete setup.cc
+    delete setup.bcc
   # send email
   mails = setup.to?.map (e) -> e.replace /".*?" <(.*?)>/g, '$1'
   debug "sending email to #{mails?.join ', '}..."
