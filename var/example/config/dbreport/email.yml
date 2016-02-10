@@ -12,6 +12,7 @@ default:
   from: alexander.schilling@divibib.com
 
   # content
+  locale: de
   subject: >
     {{conf.title}}
   body: |+
@@ -20,7 +21,7 @@ default:
 
     {{conf.description}}
 
-    Ausgeführt am {{date}}
+    Ausgeführt am {{dateFormat date "LLLL"}}
 
     ::: info
     Die Ergebnisse liegen der Email als Anhang bei!

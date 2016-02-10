@@ -13,6 +13,7 @@ util = require 'util'
 nodemailer = require 'nodemailer'
 inlineBase64 = require 'nodemailer-plugin-inline-base64'
 json2csv = require 'json2csv'
+moment = require 'moment'
 # include alinex modules
 config = require 'alinex-config'
 database = require 'alinex-database'
@@ -117,6 +118,9 @@ email = (name, data, cb) ->
     delete setup.base
     setup = object.extend {}, base, setup
   # support handlebars
+  if setup.locale # change locale
+    oldLocale = moment.locale()
+    moment.locale setup.locale
   context =
     name: name
     conf: config.get "/dbreport/job/#{name}"
@@ -128,6 +132,8 @@ email = (name, data, cb) ->
     setup.text = report.toText()
     setup.html = report.toHtml()
     delete setup.body
+  if setup.locale # change locale back
+    moment.locale oldLocale
   # add attachements
   setup.attachments = []
   for name, csv of data

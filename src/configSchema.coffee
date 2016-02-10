@@ -49,6 +49,14 @@ email =
       toArray: true
       entries:
         type: 'string'
+    locale:
+      title: "Locale Setting"
+      description: "the locale setting for subject and body dates"
+      type: 'string'
+      minLength: 2
+      maxLength: 2
+      lowerCase: true
+      match: /^[a-z]{2}$/
     subject:
       title: "Subject"
       description: "the subject line of the generated email"
