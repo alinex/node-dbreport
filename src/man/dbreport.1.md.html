@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>dbreport.1.md</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <link rel="stylesheet" media="all" href="../../doc-style.css" />
+  <script src="../../doc-filelist.js"></script>
+  <script>
+    var relativeDir = "../../", thisFile = "home/alex/github/node-dbreport/src/man/dbreport1.md", defaultSidebar = true;
+  </script>
+  <script src="../../doc-script.js"></script>
+</head>
+<body>
+  <nav>
+<div class="logo"><a href="http://alinex.github.io" onmouseover="lllogo.src='https://alinex.github.io/images/Alinex-200.png'" onmouseout="lllogo.src='https://alinex.github.io/images/Alinex-black-200.png'">
+  <img name="lllogo" src="https://alinex.github.io/images/Alinex-black-200.png" width="150" title="Alinex Universe Homepage" />
+  </a>
+  <img src="http://alinex.github.io/images/Alinex-200.png" style="display:none" alt="preloading" />
+</div>
+<div class="links">
+  <a href="http://alinex.github.io/blog" class="btn btn-primary"><span class="glyphicon-cog"></span> Blog</a>
+  <a href="http://alinex.github.io/code.html" class="btn btn-warning"><span class="glyphicon-pencil"></span> Code</a>
+</div>
+</nav><div id="sidebar_wrapper">
+    <div id="sidebar_switch">
+      <span class="tree">Files</span>
+      <span class="headings">Headings</span>
+    </div>
+    <div id="tree"></div>
+    <div id="headings">
+      <div class="heading h1">
+        <a href="#dbreport">dbreport</a>
+      </div>
+      <div class="heading h2">
+        <a href="#usage">Usage</a>
+      </div>
+      <div class="heading h2">
+        <a href="#read%20more">Read more</a>
+      </div>
+      <div class="heading h2">
+        <a href="#license">License</a>
+      </div>
+    </div>
+  </div>
+  <div id="sidebar-toggle"></div>
+  <div id="container" tabindex="0"><a id="fork" href="https://github.com/alinex/node-dbreport" title="Fork me on GitHub"></a><div class="docs markdown">
+<div class="pilwrap" id="dbreport">
+  <h1>
+    <a href="#dbreport" name="dbreport" class="pilcrow">&#182;</a>
+    dbreport
+  </h1>
+</div>
+
+
+<p>Run some database queries and send their results using email. The main features are:</p>
+
+<ul>
+<li>work on any database</li>
+<li>fully configurable</li>
+<li>send results as csv or xlsx</li>
+<li>cli interface</li>
+</ul>
+
+<p>It can be started from command line or triggered using cron.</p>
+
+
+<div class="pilwrap" id="usage">
+  <h2>
+    <a href="#usage" name="usage" class="pilcrow">&#182;</a>
+    Usage
+  </h2>
+</div>
+
+
+<p>You can simple call the <code>dbreport</code> command with at least one of the configured
+reports:</p>
+
+
+<div class="highlight"><pre><code><span class="o">&gt;</span> <span class="nx">dbreport</span> <span class="o">&lt;</span><span class="nx">job</span><span class="o">&gt;</span><span class="p">...</span> <span class="p">[</span><span class="o">&lt;</span><span class="nx">options</span><span class="o">&gt;</span><span class="p">]...</span>
+
+<span class="nx">Initializing</span><span class="p">...</span>
+<span class="nx">Run</span> <span class="nx">the</span> <span class="nx">jobs</span><span class="p">...</span>
+<span class="nx">Goodbye</span>
+</code></pre></div>
+
+
+
+<p>To get some more information call it with debugging:</p>
+
+<pre><code>&gt; DEBUG=dbreport dbreport &lt;job&gt;... [&lt;options&gt;]...
+
+Initializing...
+Run the jobs...
+  dbreport start tables job +0ms
+  dbreport run query tables: SELECT table_schema, table_name FROM information_schema.tables ORDER BY table_schema, table_name +1ms
+  dbreport sending email to <a href='mailto:betriebsteam@divibib.com'>betriebsteam@divibib.com</a>... +547ms
+  dbreport using SMTP +3ms
+  dbreport message send {accepted: [ '<a href='mailto:betriebsteam@divibib.com'>betriebsteam@divibib.com</a>' ],
+  rejected: [],
+  response: '250 2.0.0 from MTA(smtp:[172.16.51.30]:10025): 250 2.0.0 Ok: queued as 7C61520AB5',
+  envelope:
+   { from: '<a href='mailto:alexander.schilling@divibib.com'>alexander.schilling@divibib.com</a>',
+     to: [ '<a href='mailto:betriebsteam@divibib.com'>betriebsteam@divibib.com</a>' ] },
+  messageId: '<a href='mailto:1454671119582-6f16f637-c8a84be8-46bf2d0c@divibib.com'>1454671119582-6f16f637-c8a84be8-46bf2d0c@divibib.com</a>' } +2ms
+Goodbye
+</code></pre>
+
+<p>Global options:</p>
+
+
+<div class="highlight"><pre><code><span class="o">-</span><span class="nx">C</span><span class="p">,</span> <span class="o">--</span><span class="nx">nocolors</span>  <span class="nx">turn</span> <span class="nx">of</span> <span class="nx">color</span> <span class="nx">output</span>
+<span class="o">-</span><span class="nx">v</span><span class="p">,</span> <span class="o">--</span><span class="nx">verbose</span>   <span class="nx">run</span> <span class="k">in</span> <span class="nx">verbose</span> <span class="nx">mode</span>
+<span class="o">-</span><span class="nx">h</span><span class="p">,</span> <span class="o">--</span><span class="nx">help</span>      <span class="nx">Show</span> <span class="nx">help</span>
+</code></pre></div>
+
+
+
+<p>Use other email address for test:</p>
+
+
+<div class="highlight"><pre><code><span class="o">-</span><span class="nx">m</span><span class="p">,</span> <span class="o">--</span><span class="nx">mail</span>      <span class="nx">give</span> <span class="nx">a</span> <span class="nx">specific</span> <span class="nx">mail</span> <span class="nx">address</span>
+</code></pre></div>
+
+
+
+
+<div class="pilwrap" id="read%20more">
+  <h2>
+    <a href="#read%20more" name="read%20more" class="pilcrow">&#182;</a>
+    Read more
+  </h2>
+</div>
+
+
+<p>To get the full documentation including configuration description look into
+<a href="http://alinex.github.io/node-dbreport">DbReport</a>.</p>
+
+
+<div class="pilwrap" id="license">
+  <h2>
+    <a href="#license" name="license" class="pilcrow">&#182;</a>
+    License
+  </h2>
+</div>
+
+
+<p>Copyright 2016 Alexander Schilling</p>
+
+<p>Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at</p>
+
+<blockquote>
+  <p><a href="http://www.apache.org/licenses/LICENSE-2.0">http://www.apache.org/licenses/LICENSE-2.0</a></p>
+</blockquote>
+
+<p>Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.</p></div>
+  </div>
+</body>
+</html>
