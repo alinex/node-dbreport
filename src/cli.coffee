@@ -103,6 +103,18 @@ run = (name, cb) ->
     return cb err if err
     email name, results, cb
 
+addBody= (setup, context, cb) ->
+  return cb() unless setup.body
+  report = new Report
+    source: setup.body context
+  report.toHtml
+    inlineCss: true
+    locale: setup.locale
+  , (err, html) ->
+    setup.text = report.toText()
+    setup.html = html
+    delete setup.body
+    cb err
 
 # Send email
 # -------------------------------------------------
@@ -124,44 +136,39 @@ email = (name, data, cb) ->
     conf: config.get "/dbreport/job/#{name}"
     date: new Date()
   setup.subject = setup.subject context if typeof setup.subject is 'function'
-  if setup.body
-    report = new Report
-      source: setup.body context
-    setup.text = report.toText()
-    setup.html = report.toHtml()
-    delete setup.body
-  if setup.locale # change locale back
-    moment.locale oldLocale
-  # add attachements
-  setup.attachments = []
-  for name, csv of data
-    setup.attachments.push
-      filename: "#{name}.csv"
-      content: csv
-  # test mode
-  if argv.mail
-    setup.to = argv.mail
-    delete setup.cc
-    delete setup.bcc
-  # send email
-  mails = setup.to?.map (e) -> e.replace /".*?" <(.*?)>/g, '$1'
-  debug "sending email to #{mails?.join ', '}..."
-  # setup transporter
-  transporter = nodemailer.createTransport setup.transport ? 'direct:?name=hostname'
-  transporter.use 'compile', inlineBase64
-  debug chalk.grey "using #{transporter.transporter.name}"
-  # try to send email
-  transporter.sendMail setup, (err, info) ->
-    if err
-      if err.errors
-        debug chalk.red e.message for e in err.errors
-      else
-        debug chalk.red err.message
-      debug chalk.grey "send through " + util.inspect setup.transport
-    if info
-      debug "message send: " + chalk.grey util.inspect(info).replace /\s+/, ''
-      return cb new Error "Some messages were rejected: #{info.response}" if info.rejected?.length
-    cb err?.errors?[0] ? err ? null
+  addBody setup, context, ->
+    if setup.locale # change locale back
+      moment.locale oldLocale
+    # add attachements
+    setup.attachments = []
+    for name, csv of data
+      setup.attachments.push
+        filename: "#{name}.csv"
+        content: csv
+    # test mode
+    if argv.mail
+      setup.to = argv.mail
+      delete setup.cc
+      delete setup.bcc
+    # send email
+    mails = setup.to?.map (e) -> e.replace /".*?" <(.*?)>/g, '$1'
+    debug "sending email to #{mails?.join ', '}..."
+    # setup transporter
+    transporter = nodemailer.createTransport setup.transport ? 'direct:?name=hostname'
+    transporter.use 'compile', inlineBase64
+    debug chalk.grey "using #{transporter.transporter.name}"
+    # try to send email
+    transporter.sendMail setup, (err, info) ->
+      if err
+        if err.errors
+          debug chalk.red e.message for e in err.errors
+        else
+          debug chalk.red err.message
+        debug chalk.grey "send through " + util.inspect setup.transport
+      if info
+        debug "message send: " + chalk.grey util.inspect(info).replace /\s+/, ''
+        return cb new Error "Some messages were rejected: #{info.response}" if info.rejected?.length
+      cb err?.errors?[0] ? err ? null
 
 
 # Main routine

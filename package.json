@@ -25,7 +25,7 @@
   "license": "Apache-2.0",
   "main": "./lib/index.js",
   "bin": {
-    "monitor": "./bin/dbreport"
+    "dbreport": "./bin/dbreport"
   },
   "man": "./man/dbreport.1",
   "scripts": {
