@@ -51,7 +51,8 @@ argv = yargs
 .alias('h', 'help')
 .epilogue("For more information, look into the man page.")
 .showHelpOnFail(false, "Specify --help for available options")
-.strict()
+.demand(1)
+#.strict()
 .fail (err) ->
   console.error """
     #{logo}
@@ -90,6 +91,7 @@ run = (name, cb) ->
   conf = config.get "/dbreport/job/#{name}"
   return cb new Error "Job #{name} is not configured" unless conf
   # run the queries
+  console.log "-> #{name}"
   debug "start #{name} job"
   async.mapOf conf.query, (query, n, cb) ->
     debug "run query #{n}: #{chalk.grey query.command.replace /\s+/g, ' '}"
