@@ -107,8 +107,6 @@ run = (name, cb) ->
       , cb
   , (err, results) ->
     return cb err if err
-    console.log results
-    exit 1
     email name, results, cb
 
 addBody= (setup, context, cb) ->
