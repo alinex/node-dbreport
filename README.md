@@ -9,7 +9,7 @@ Run some database queries and send their results using email. The main features 
 
 - work on any database
 - fully configurable
-- send results as csv or xlsx
+- send results as csv
 - cli interface
 
 It can be started from command line or triggered using cron.
