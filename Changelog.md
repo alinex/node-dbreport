@@ -4,6 +4,10 @@ Version changes
 The following list gives a short overview about what is changed between
 individual versions:
 
+Version 0.1.0 (2016-02-16)
+-------------------------------------------------
+- Removed test output.
+
 Version 0.0.3 (2016-02-16)
 -------------------------------------------------
 - Support dates.
