@@ -8,7 +8,7 @@
 /lib/
 /log/
 /node_modules/
-/var/lib/
-/var/local/
+/var/lib
+/var/local
 npm-debug.log
 /man/

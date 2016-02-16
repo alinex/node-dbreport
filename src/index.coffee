@@ -58,6 +58,23 @@ exports.run = (name, cb) ->
     return cb err if err
     email name, results, cb
 
+
+# List possible jobs
+# -------------------------------------------------
+exports.list = ->
+  Object.keys config.get "/dbreport/job"
+
+
+# Get the job configuration
+# -------------------------------------------------
+exports.get = (name) ->
+  config.get "/dbreport/job/#{name}"
+
+
+# Helper
+# -------------------------------------------------
+
+# ### Add body to mail setup from report
 addBody= (setup, context, cb) ->
   return cb() unless setup.body
   report = new Report
@@ -71,8 +88,7 @@ addBody= (setup, context, cb) ->
     delete setup.body
     cb err
 
-# Send email
-# -------------------------------------------------
+# ### Send email
 email = (name, data, cb) ->
   conf = config.get "/dbreport/job/#{name}/email"
   # configure email

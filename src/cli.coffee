@@ -5,7 +5,6 @@
 # -------------------------------------------------
 
 # include base modules
-debug = require('debug')('cli')
 yargs = require 'yargs'
 chalk = require 'chalk'
 fspath = require 'path'
@@ -13,6 +12,7 @@ fspath = require 'path'
 config = require 'alinex-config'
 database = require 'alinex-database'
 async = require 'alinex-async'
+Report = require 'alinex-report'
 # include classes and helpers
 dbreport = require './index'
 logo = require('./logo') 'Database Reports'
@@ -34,6 +34,10 @@ argv = yargs
 .alias 'C', 'nocolors'
 .describe 'C', 'turn of color output'
 .boolean 'C'
+# list jobs
+.alias 'l', 'list'
+.boolean 'l'
+.describe 'l', 'only list the possible jobs'
 # change mail address
 .alias 'm', 'mail'
 .describe 'm', 'alternative email address to send to'
@@ -46,7 +50,6 @@ argv = yargs
 .alias 'h', 'help'
 .epilogue "For more information, look into the man page."
 .showHelpOnFail false, "Specify --help for available options"
-.demand 1
 #.strict()
 .fail (err) ->
   console.error """
@@ -96,6 +99,23 @@ database.setup (err) ->
   exit 1, err if err
   config.init (err) ->
     exit 1, err if err
+    # show List
+    if argv.list
+      data = []
+      for job in dbreport.list()
+        conf = dbreport.get job
+        data.push
+          job: job
+          title: conf.title
+          to: conf.email.to
+      report = new Report()
+      report.h1 "List of possible jobs:"
+      report.table data, ['JOB', 'TITLE', 'TO']
+      report.p 'Run them using their job name.'
+      console.log()
+      console.log report.toConsole()
+      console.log()
+      exit()
     # start job
     exit 1, new Error "No job given to process" unless argv._.length
     console.log "Run the jobs..."
