@@ -228,9 +228,7 @@
 <span class="p">.</span><span class="nx">alias</span><span class="p">(</span><span class="s">&#39;h&#39;</span><span class="p">,</span> <span class="s">&#39;help&#39;</span><span class="p">)</span>
 <span class="p">.</span><span class="nx">epilogue</span><span class="p">(</span><span class="s">&quot;For more information, look into the man page.&quot;</span><span class="p">)</span>
 <span class="p">.</span><span class="nx">showHelpOnFail</span><span class="p">(</span><span class="kc">false</span><span class="p">,</span> <span class="s">&quot;Specify --help for available options&quot;</span><span class="p">)</span>
-<span class="p">.</span><span class="nx">strict</span><span class="p">()</span>
-<span class="p">.</span><span class="nx">fail</span> <span class="nf">(err) -&gt;</span>
-  <span class="nx">console</span><span class="p">.</span><span class="nx">error</span> <span class="s">&quot;&quot;&quot;</span>
+<span class="p">.</span><span class="nx">demand</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 
 </pre></div>
         </td>
@@ -240,14 +238,11 @@
 <div class="pilwrap">
   <a class="pilcrow" href="#section-12" id="section-12">&#182;</a>
 </div>
-<p>{logo}
-{chalk.red.bold 'CLI Parameter Failure:'} #{chalk.red err}</p>
+<p>.strict()</p>
         </td>
         <td class="code highlight"><div class="highlight"><pre>
-
-<span class="s">    &quot;&quot;&quot;</span>
-  <span class="nx">process</span><span class="p">.</span><span class="nx">exit</span> <span class="mi">1</span>
-<span class="p">.</span><span class="nx">argv</span>
+<span class="p">.</span><span class="nx">fail</span> <span class="nf">(err) -&gt;</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">error</span> <span class="s">&quot;&quot;&quot;</span>
 
 </pre></div>
         </td>
@@ -257,10 +252,14 @@
 <div class="pilwrap">
   <a class="pilcrow" href="#section-13" id="section-13">&#182;</a>
 </div>
-<p>parse data</p>
+<p>{logo}
+{chalk.red.bold 'CLI Parameter Failure:'} #{chalk.red err}</p>
         </td>
         <td class="code highlight"><div class="highlight"><pre>
-<span class="nv">argv.json = </span><span class="nx">JSON</span><span class="p">.</span><span class="nx">parse</span> <span class="nx">argv</span><span class="p">.</span><span class="nx">json</span> <span class="k">if</span> <span class="nx">argv</span><span class="p">.</span><span class="nx">json</span>
+
+<span class="s">    &quot;&quot;&quot;</span>
+  <span class="nx">process</span><span class="p">.</span><span class="nx">exit</span> <span class="mi">1</span>
+<span class="p">.</span><span class="nx">argv</span>
 
 </pre></div>
         </td>
@@ -361,6 +360,7 @@
 <p>run the queries</p>
         </td>
         <td class="code highlight"><div class="highlight"><pre>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="s">&quot;-&gt; </span><span class="si">#{</span><span class="nx">name</span><span class="si">}</span><span class="s">&quot;</span>
   <span class="nx">debug</span> <span class="s">&quot;start </span><span class="si">#{</span><span class="nx">name</span><span class="si">}</span><span class="s"> job&quot;</span>
   <span class="nx">async</span><span class="p">.</span><span class="nx">mapOf</span> <span class="nx">conf</span><span class="p">.</span><span class="nx">query</span><span class="p">,</span> <span class="nf">(query, n, cb) -&gt;</span>
     <span class="nx">debug</span> <span class="s">&quot;run query </span><span class="si">#{</span><span class="nx">n</span><span class="si">}</span><span class="s">: </span><span class="si">#{</span><span class="nx">chalk</span><span class="p">.</span><span class="nx">grey</span> <span class="nx">query</span><span class="p">.</span><span class="nx">command</span><span class="p">.</span><span class="nx">replace</span> <span class="sr">/\s+/g</span><span class="p">,</span> <span class="s">&#39; &#39;</span><span class="si">}</span><span class="s">&quot;</span>
@@ -374,6 +374,18 @@
     <span class="k">return</span> <span class="nx">cb</span> <span class="nx">err</span> <span class="k">if</span> <span class="nx">err</span>
     <span class="nx">email</span> <span class="nx">name</span><span class="p">,</span> <span class="nx">results</span><span class="p">,</span> <span class="nx">cb</span>
 
+<span class="nv">addBody= </span><span class="nf">(setup, context, cb) -&gt;</span>
+  <span class="k">return</span> <span class="nx">cb</span><span class="p">()</span> <span class="k">unless</span> <span class="nx">setup</span><span class="p">.</span><span class="nx">body</span>
+  <span class="nv">report = </span><span class="k">new</span> <span class="nx">Report</span>
+    <span class="nv">source: </span><span class="nx">setup</span><span class="p">.</span><span class="nx">body</span> <span class="nx">context</span>
+  <span class="nx">report</span><span class="p">.</span><span class="nx">toHtml</span>
+    <span class="nv">inlineCss: </span><span class="kc">true</span>
+    <span class="nv">locale: </span><span class="nx">setup</span><span class="p">.</span><span class="nx">locale</span>
+  <span class="p">,</span> <span class="nf">(err, html) -&gt;</span>
+    <span class="nv">setup.text = </span><span class="nx">report</span><span class="p">.</span><span class="nx">toText</span><span class="p">()</span>
+    <span class="nv">setup.html = </span><span class="nx">html</span>
+    <span class="k">delete</span> <span class="nx">setup</span><span class="p">.</span><span class="nx">body</span>
+    <span class="nx">cb</span> <span class="nx">err</span>
 
 
 </pre></div>
@@ -441,14 +453,9 @@
     <span class="nv">conf: </span><span class="nx">config</span><span class="p">.</span><span class="nx">get</span> <span class="s">&quot;/dbreport/job/</span><span class="si">#{</span><span class="nx">name</span><span class="si">}</span><span class="s">&quot;</span>
     <span class="nv">date: </span><span class="k">new</span> <span class="nb">Date</span><span class="p">()</span>
   <span class="nv">setup.subject = </span><span class="nx">setup</span><span class="p">.</span><span class="nx">subject</span> <span class="nx">context</span> <span class="k">if</span> <span class="k">typeof</span> <span class="nx">setup</span><span class="p">.</span><span class="nx">subject</span> <span class="o">is</span> <span class="s">&#39;function&#39;</span>
-  <span class="k">if</span> <span class="nx">setup</span><span class="p">.</span><span class="nx">body</span>
-    <span class="nv">report = </span><span class="k">new</span> <span class="nx">Report</span>
-      <span class="nv">source: </span><span class="nx">setup</span><span class="p">.</span><span class="nx">body</span> <span class="nx">context</span>
-    <span class="nv">setup.text = </span><span class="nx">report</span><span class="p">.</span><span class="nx">toText</span><span class="p">()</span>
-    <span class="nv">setup.html = </span><span class="nx">report</span><span class="p">.</span><span class="nx">toHtml</span><span class="p">()</span>
-    <span class="k">delete</span> <span class="nx">setup</span><span class="p">.</span><span class="nx">body</span>
-  <span class="k">if</span> <span class="nx">setup</span><span class="p">.</span><span class="nx">locale</span> <span class="c1"># change locale back</span>
-    <span class="nx">moment</span><span class="p">.</span><span class="nx">locale</span> <span class="nx">oldLocale</span>
+  <span class="nx">addBody</span> <span class="nx">setup</span><span class="p">,</span> <span class="nx">context</span><span class="p">,</span> <span class="nf">-&gt;</span>
+    <span class="k">if</span> <span class="nx">setup</span><span class="p">.</span><span class="nx">locale</span> <span class="c1"># change locale back</span>
+      <span class="nx">moment</span><span class="p">.</span><span class="nx">locale</span> <span class="nx">oldLocale</span>
 
 </pre></div>
         </td>
@@ -461,11 +468,11 @@
 <p>add attachements</p>
         </td>
         <td class="code highlight"><div class="highlight"><pre>
-  <span class="nv">setup.attachments = </span><span class="p">[]</span>
-  <span class="k">for</span> <span class="nx">name</span><span class="p">,</span> <span class="nx">csv</span> <span class="k">of</span> <span class="nx">data</span>
-    <span class="nx">setup</span><span class="p">.</span><span class="nx">attachments</span><span class="p">.</span><span class="nx">push</span>
-      <span class="nv">filename: </span><span class="s">&quot;</span><span class="si">#{</span><span class="nx">name</span><span class="si">}</span><span class="s">.csv&quot;</span>
-      <span class="nv">content: </span><span class="nx">csv</span>
+    <span class="nv">setup.attachments = </span><span class="p">[]</span>
+    <span class="k">for</span> <span class="nx">name</span><span class="p">,</span> <span class="nx">csv</span> <span class="k">of</span> <span class="nx">data</span>
+      <span class="nx">setup</span><span class="p">.</span><span class="nx">attachments</span><span class="p">.</span><span class="nx">push</span>
+        <span class="nv">filename: </span><span class="s">&quot;</span><span class="si">#{</span><span class="nx">name</span><span class="si">}</span><span class="s">.csv&quot;</span>
+        <span class="nv">content: </span><span class="nx">csv</span>
 
 </pre></div>
         </td>
@@ -475,11 +482,13 @@
 <div class="pilwrap">
   <a class="pilcrow" href="#section-25" id="section-25">&#182;</a>
 </div>
-<p>send email</p>
+<p>test mode</p>
         </td>
         <td class="code highlight"><div class="highlight"><pre>
-  <span class="nv">mails = </span><span class="nx">setup</span><span class="p">.</span><span class="nx">to</span><span class="o">?</span><span class="p">.</span><span class="nx">map</span> <span class="nf">(e) -&gt;</span> <span class="nx">e</span><span class="p">.</span><span class="nx">replace</span> <span class="sr">/&quot;.*?&quot; &lt;(.*?)&gt;/g</span><span class="p">,</span> <span class="s">&#39;$1&#39;</span>
-  <span class="nx">debug</span> <span class="s">&quot;sending email to </span><span class="si">#{</span><span class="nx">mails</span><span class="o">?</span><span class="p">.</span><span class="nx">join</span> <span class="s">&#39;, &#39;</span><span class="si">}</span><span class="s">...&quot;</span>
+    <span class="k">if</span> <span class="nx">argv</span><span class="p">.</span><span class="nx">mail</span>
+      <span class="nv">setup.to = </span><span class="nx">argv</span><span class="p">.</span><span class="nx">mail</span>
+      <span class="k">delete</span> <span class="nx">setup</span><span class="p">.</span><span class="nx">cc</span>
+      <span class="k">delete</span> <span class="nx">setup</span><span class="p">.</span><span class="nx">bcc</span>
 
 </pre></div>
         </td>
@@ -489,12 +498,11 @@
 <div class="pilwrap">
   <a class="pilcrow" href="#section-26" id="section-26">&#182;</a>
 </div>
-<p>setup transporter</p>
+<p>send email</p>
         </td>
         <td class="code highlight"><div class="highlight"><pre>
-  <span class="nv">transporter = </span><span class="nx">nodemailer</span><span class="p">.</span><span class="nx">createTransport</span> <span class="nx">setup</span><span class="p">.</span><span class="nx">transport</span> <span class="o">?</span> <span class="s">&#39;direct:?name=hostname&#39;</span>
-  <span class="nx">transporter</span><span class="p">.</span><span class="nx">use</span> <span class="s">&#39;compile&#39;</span><span class="p">,</span> <span class="nx">inlineBase64</span>
-  <span class="nx">debug</span> <span class="nx">chalk</span><span class="p">.</span><span class="nx">grey</span> <span class="s">&quot;using </span><span class="si">#{</span><span class="nx">transporter</span><span class="p">.</span><span class="nx">transporter</span><span class="p">.</span><span class="nx">name</span><span class="si">}</span><span class="s">&quot;</span>
+    <span class="nv">mails = </span><span class="nx">setup</span><span class="p">.</span><span class="nx">to</span><span class="o">?</span><span class="p">.</span><span class="nx">map</span> <span class="nf">(e) -&gt;</span> <span class="nx">e</span><span class="p">.</span><span class="nx">replace</span> <span class="sr">/&quot;.*?&quot; &lt;(.*?)&gt;/g</span><span class="p">,</span> <span class="s">&#39;$1&#39;</span>
+    <span class="nx">debug</span> <span class="s">&quot;sending email to </span><span class="si">#{</span><span class="nx">mails</span><span class="o">?</span><span class="p">.</span><span class="nx">join</span> <span class="s">&#39;, &#39;</span><span class="si">}</span><span class="s">...&quot;</span>
 
 </pre></div>
         </td>
@@ -504,20 +512,35 @@
 <div class="pilwrap">
   <a class="pilcrow" href="#section-27" id="section-27">&#182;</a>
 </div>
+<p>setup transporter</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="nv">transporter = </span><span class="nx">nodemailer</span><span class="p">.</span><span class="nx">createTransport</span> <span class="nx">setup</span><span class="p">.</span><span class="nx">transport</span> <span class="o">?</span> <span class="s">&#39;direct:?name=hostname&#39;</span>
+    <span class="nx">transporter</span><span class="p">.</span><span class="nx">use</span> <span class="s">&#39;compile&#39;</span><span class="p">,</span> <span class="nx">inlineBase64</span>
+    <span class="nx">debug</span> <span class="nx">chalk</span><span class="p">.</span><span class="nx">grey</span> <span class="s">&quot;using </span><span class="si">#{</span><span class="nx">transporter</span><span class="p">.</span><span class="nx">transporter</span><span class="p">.</span><span class="nx">name</span><span class="si">}</span><span class="s">&quot;</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-28" id="section-28">&#182;</a>
+</div>
 <p>try to send email</p>
         </td>
         <td class="code highlight"><div class="highlight"><pre>
-  <span class="nx">transporter</span><span class="p">.</span><span class="nx">sendMail</span> <span class="nx">setup</span><span class="p">,</span> <span class="nf">(err, info) -&gt;</span>
-    <span class="k">if</span> <span class="nx">err</span>
-      <span class="k">if</span> <span class="nx">err</span><span class="p">.</span><span class="nx">errors</span>
-        <span class="nx">debug</span> <span class="nx">chalk</span><span class="p">.</span><span class="nx">red</span> <span class="nx">e</span><span class="p">.</span><span class="nx">message</span> <span class="k">for</span> <span class="nx">e</span> <span class="k">in</span> <span class="nx">err</span><span class="p">.</span><span class="nx">errors</span>
-      <span class="k">else</span>
-        <span class="nx">debug</span> <span class="nx">chalk</span><span class="p">.</span><span class="nx">red</span> <span class="nx">err</span><span class="p">.</span><span class="nx">message</span>
-      <span class="nx">debug</span> <span class="nx">chalk</span><span class="p">.</span><span class="nx">grey</span> <span class="s">&quot;send through &quot;</span> <span class="o">+</span> <span class="nx">util</span><span class="p">.</span><span class="nx">inspect</span> <span class="nx">setup</span><span class="p">.</span><span class="nx">transport</span>
-    <span class="k">if</span> <span class="nx">info</span>
-      <span class="nx">debug</span> <span class="s">&quot;message send: &quot;</span> <span class="o">+</span> <span class="nx">chalk</span><span class="p">.</span><span class="nx">grey</span> <span class="nx">util</span><span class="p">.</span><span class="nx">inspect</span><span class="p">(</span><span class="nx">info</span><span class="p">).</span><span class="nx">replace</span> <span class="sr">/\s+/</span><span class="p">,</span> <span class="s">&#39;&#39;</span>
-      <span class="k">return</span> <span class="nx">cb</span> <span class="k">new</span> <span class="nb">Error</span> <span class="s">&quot;Some messages were rejected: </span><span class="si">#{</span><span class="nx">info</span><span class="p">.</span><span class="nx">response</span><span class="si">}</span><span class="s">&quot;</span> <span class="k">if</span> <span class="nx">info</span><span class="p">.</span><span class="nx">rejected</span><span class="o">?</span><span class="p">.</span><span class="nx">length</span>
-    <span class="nx">cb</span> <span class="nx">err</span><span class="o">?</span><span class="p">.</span><span class="nx">errors</span><span class="o">?</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">?</span> <span class="nx">err</span> <span class="o">?</span> <span class="kc">null</span>
+    <span class="nx">transporter</span><span class="p">.</span><span class="nx">sendMail</span> <span class="nx">setup</span><span class="p">,</span> <span class="nf">(err, info) -&gt;</span>
+      <span class="k">if</span> <span class="nx">err</span>
+        <span class="k">if</span> <span class="nx">err</span><span class="p">.</span><span class="nx">errors</span>
+          <span class="nx">debug</span> <span class="nx">chalk</span><span class="p">.</span><span class="nx">red</span> <span class="nx">e</span><span class="p">.</span><span class="nx">message</span> <span class="k">for</span> <span class="nx">e</span> <span class="k">in</span> <span class="nx">err</span><span class="p">.</span><span class="nx">errors</span>
+        <span class="k">else</span>
+          <span class="nx">debug</span> <span class="nx">chalk</span><span class="p">.</span><span class="nx">red</span> <span class="nx">err</span><span class="p">.</span><span class="nx">message</span>
+        <span class="nx">debug</span> <span class="nx">chalk</span><span class="p">.</span><span class="nx">grey</span> <span class="s">&quot;send through &quot;</span> <span class="o">+</span> <span class="nx">util</span><span class="p">.</span><span class="nx">inspect</span> <span class="nx">setup</span><span class="p">.</span><span class="nx">transport</span>
+      <span class="k">if</span> <span class="nx">info</span>
+        <span class="nx">debug</span> <span class="s">&quot;message send: &quot;</span> <span class="o">+</span> <span class="nx">chalk</span><span class="p">.</span><span class="nx">grey</span> <span class="nx">util</span><span class="p">.</span><span class="nx">inspect</span><span class="p">(</span><span class="nx">info</span><span class="p">).</span><span class="nx">replace</span> <span class="sr">/\s+/</span><span class="p">,</span> <span class="s">&#39;&#39;</span>
+        <span class="k">return</span> <span class="nx">cb</span> <span class="k">new</span> <span class="nb">Error</span> <span class="s">&quot;Some messages were rejected: </span><span class="si">#{</span><span class="nx">info</span><span class="p">.</span><span class="nx">response</span><span class="si">}</span><span class="s">&quot;</span> <span class="k">if</span> <span class="nx">info</span><span class="p">.</span><span class="nx">rejected</span><span class="o">?</span><span class="p">.</span><span class="nx">length</span>
+      <span class="nx">cb</span> <span class="nx">err</span><span class="o">?</span><span class="p">.</span><span class="nx">errors</span><span class="o">?</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">?</span> <span class="nx">err</span> <span class="o">?</span> <span class="kc">null</span>
 
 
 
@@ -544,7 +567,7 @@
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-29" id="section-29">&#182;</a>
+  <a class="pilcrow" href="#section-30" id="section-30">&#182;</a>
 </div>
 <p>init
 add schema for module's configuration</p>
@@ -558,7 +581,7 @@ add schema for module's configuration</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-30" id="section-30">&#182;</a>
+  <a class="pilcrow" href="#section-31" id="section-31">&#182;</a>
 </div>
 <p>set module search path</p>
         </td>
@@ -571,7 +594,7 @@ add schema for module's configuration</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-31" id="section-31">&#182;</a>
+  <a class="pilcrow" href="#section-32" id="section-32">&#182;</a>
 </div>
 <p>initialize config</p>
         </td>
@@ -587,7 +610,7 @@ add schema for module's configuration</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-32" id="section-32">&#182;</a>
+  <a class="pilcrow" href="#section-33" id="section-33">&#182;</a>
 </div>
 <p>start job</p>
         </td>
