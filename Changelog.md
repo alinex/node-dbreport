@@ -4,6 +4,11 @@ Version changes
 The following list gives a short overview about what is changed between
 individual versions:
 
+Version 0.0.3 (2016-02-16)
+-------------------------------------------------
+- Support dates.
+- Added missing json2csv package.
+
 Version 0.0.2 (2016-02-16)
 -------------------------------------------------
 - Added mocha test.
