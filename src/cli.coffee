@@ -97,12 +97,18 @@ run = (name, cb) ->
     debug "run query #{n}: #{chalk.grey query.command.replace /\s+/g, ' '}"
     database.list query.database, query.command, (err, data) ->
       return cb err if err
+      # convert dates
+      for row in data
+        for field, value of row
+          row[field] = moment(value).format() if value instanceof Date
       json2csv
         data: data
         del: ';'
       , cb
   , (err, results) ->
     return cb err if err
+    console.log results
+    exit 1
     email name, results, cb
 
 addBody= (setup, context, cb) ->
