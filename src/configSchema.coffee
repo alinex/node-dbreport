@@ -28,6 +28,11 @@ email =
       title: "From"
       description: "the address emails are send from"
       type: 'string'
+    replyTo:
+      title: "Reply To"
+      description: "the address to send answers to"
+      type: 'string'
+      optional: true
     to:
       title: "To"
       description: "the address emails are send to"
