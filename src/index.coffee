@@ -43,9 +43,11 @@ exports.run = (name, cb) ->
   console.log "-> #{name}"
   debug "start #{name} job"
   async.mapOf conf.query, (query, n, cb) ->
-    debug "run query #{n}: #{chalk.grey query.command.replace /\s+/g, ' '}"
+    debug chalk.grey "#{n}: run query #{chalk.grey query.command.replace /\s+/g, ' '}"
     database.list query.database, query.command, (err, data) ->
       return cb err if err
+      debug "#{n}: #{data.length} rows fetched"
+      return cb() unless data.length # no entries
       # convert dates
       for row in data
         for field, value of row
@@ -100,12 +102,20 @@ email = (name, data, cb) ->
     setup = object.extend {}, base, setup
   # support handlebars
   if setup.locale # change locale
+    console.log 'locale', setup.locale
     oldLocale = moment.locale()
     moment.locale setup.locale
   context =
     name: name
     conf: config.get "/dbreport/job/#{name}"
     date: new Date()
+    result: {}
+  for name, conf of context.conf.query
+    context.result[name] =
+      rows: data[name]?.length ? 0
+      file: "#{conf.title ? name}.csv"
+      description: conf.description
+  console.log context
   setup.subject = setup.subject context if typeof setup.subject is 'function'
   addBody setup, context, ->
     if setup.locale # change locale back
@@ -113,8 +123,9 @@ email = (name, data, cb) ->
     # add attachements
     setup.attachments = []
     for name, csv of data
+      continue unless csv # skip empty ones
       setup.attachments.push
-        filename: "#{name}.csv"
+        filename: context.result[name].file
         content: csv
     # test mode
     if mode.mail

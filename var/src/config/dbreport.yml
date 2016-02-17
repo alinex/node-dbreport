@@ -12,6 +12,12 @@ email:
 
       {{conf.description}}
 
-      > Started at {{date}}
+      Started at {{dateFormat date "LLL"}}:
 
-      See the attached files!
+      | Zeilen | Datei    | Beschreibung |
+      | ------:| -------- | ------------ |
+      {{#each result}}
+      | {{rows}} | {{file}} | {{description}} |
+      {{/each}}
+
+      Find the files attached to your mail if data available!

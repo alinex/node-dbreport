@@ -80,7 +80,7 @@ job =
       type: 'string'
     description:
       title: "Description"
-      description: "a short abstract of what this job will check"
+      description: "a short abstract of what this job will retrieve"
       type: 'string'
     query:
       title: "Query List"
@@ -92,6 +92,16 @@ job =
         type: 'object'
         mandatoryKeys: true
         keys:
+          title:
+            title: "Title"
+            description: "the short title of the query to be used as file"
+            type: 'string'
+            optional: true
+          description:
+            title: "Description"
+            description: "a short abstract of what this query will do"
+            type: 'string'
+            optional: true
           database:
             title: "Database"
             description: "the alias name of the database to store to"
