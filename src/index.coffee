@@ -118,7 +118,7 @@ email = (name, data, cb) ->
         content: csv
     # test mode
     if mode.mail
-      setup.to = mode.mail
+      setup.to = mode.mail.split /,\s+/
       delete setup.cc
       delete setup.bcc
     # send email
