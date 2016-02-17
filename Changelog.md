@@ -4,6 +4,13 @@ Version changes
 The following list gives a short overview about what is changed between
 individual versions:
 
+Version 1.0.0 (2016-02-17)
+-------------------------------------------------
+- Added support for table of contents and remove empty attachements.
+- Fix bug in using alternative email per command.
+- Added list option support.
+- Modularize into api module.
+
 Version 0.1.0 (2016-02-16)
 -------------------------------------------------
 - Removed test output.
