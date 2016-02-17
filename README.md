@@ -11,6 +11,7 @@ Run some database queries and send their results using email. The main features 
 - fully configurable
 - send results as csv
 - cli interface
+- pretty email format
 
 It can be started from command line or triggered using cron.
 
@@ -51,6 +52,7 @@ reports:
 
     Initializing...
     Run the jobs...
+    -> tables
     Goodbye
 
 To get some more information call it with debugging:
@@ -59,8 +61,10 @@ To get some more information call it with debugging:
 
     Initializing...
     Run the jobs...
+    -> tables
       dbreport start tables job +0ms
       dbreport run query tables: SELECT table_schema, table_name FROM information_schema.tables ORDER BY table_schema, table_name +1ms
+      dbreport tables: 641 rows fetched +88ms
       dbreport sending email to betriebsteam@divibib.com... +547ms
       dbreport using SMTP +3ms
       dbreport message send {accepted: [ 'betriebsteam@divibib.com' ],
@@ -103,9 +107,10 @@ This templates are used for sending emails out. They will be defined under
 This will extend/overwrite the allready existing setup within the code.
 default:
   # specify how to connect to the server
-  transport: smtp://alexander.schilling%40divibib.com:<<<env://PW_ALEX_DIVIBIB_COM>>>@mail.divibib.com
+  transport: smtp://alexander.schilling%40mycompany.de:<PASSWORD>@mail.mycompany.de
   # sender address
-  from: alexander.schilling@divibib.com
+  from: alexander.schilling@mycompany.de
+  replyTo: somebody@mycompany.de
 
   # content
   locale: en
@@ -117,14 +122,32 @@ default:
 
     {{conf.description}}
 
-    > Started at {{date}}
+    Started at {{dateFormat date "LLL"}}:
 
-    See the attached files!
+    | Zeilen | Datei    | Beschreibung |
+    | ------:| -------- | ------------ |
+    {{#each result}}
+    | {{rows}} | {{file}} | {{description}} |
+    {{/each}}
+
+    Find the files attached to your mail if data available!
 ```
 
 Like you see, you can use handlebar syntax to use some variables from the code.
 You can also define different templates which can be referenced from within the
 job.
+
+The following context variables are possible:
+
+- name - the alias name for this job
+- conf... - configuration of job (object)
+- date - the date then the job was done (now)
+- result
+  - <job> - one entry for each job
+    - rows - number of rows in result
+    - file - filename
+    - description - description of job (from config)
+
 
 ### jobs
 
@@ -146,11 +169,14 @@ description: |+
 # -------------------------------------------------
 query:
   tables:
+    title: List of Tables
+    description: a complete list of all relations in the database
     database: dvb_manage_live
-    command: >
+    command: "
       SELECT    table_schema, table_name
       FROM      information_schema.tables
       ORDER BY  table_schema, table_name
+      "
 
 # Where to Send them to
 # -------------------------------------------------

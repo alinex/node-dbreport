@@ -12,6 +12,8 @@ description: |+
 # -------------------------------------------------
 query:
   tables:
+    title: List of Tables
+    description: a complete list of all relations in the database
     database: dvb_manage_live
     command: >
       SELECT    table_schema, table_name

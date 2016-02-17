@@ -5,8 +5,9 @@ Run some database queries and send their results using email. The main features 
 
 - work on any database
 - fully configurable
-- send results as csv or xlsx
+- send results as csv
 - cli interface
+- pretty email format
 
 It can be started from command line or triggered using cron.
 
@@ -20,6 +21,7 @@ reports:
 
     Initializing...
     Run the jobs...
+    -> tables
     Goodbye
 
 To get some more information call it with debugging:
@@ -28,8 +30,10 @@ To get some more information call it with debugging:
 
     Initializing...
     Run the jobs...
+    -> tables
       dbreport start tables job +0ms
       dbreport run query tables: SELECT table_schema, table_name FROM information_schema.tables ORDER BY table_schema, table_name +1ms
+      dbreport tables: 641 rows fetched +88ms
       dbreport sending email to betriebsteam@divibib.com... +547ms
       dbreport using SMTP +3ms
       dbreport message send {accepted: [ 'betriebsteam@divibib.com' ],
