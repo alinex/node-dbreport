@@ -49,19 +49,25 @@
         </td>
         <td class="code highlight"><div class="highlight"><pre><span class="l-Scalar-Plain">title</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">Bestellungen</span>
 <span class="l-Scalar-Plain">description</span><span class="p-Indicator">:</span> <span class="p-Indicator">|+</span>
-  <span class="no">Dieser Bericht erzeugt einige Bestelllisten zur Überwachung.</span>
-
-  <span class="no">- full-BT-order: listet Bestellungen älter als drei Tage, in denen nur B&amp;T-Titel enthalten sind</span>
-  <span class="no">- non-BT-order: listet die Bestellungen älter als drei Tage, in denen gar keinen B&amp;T-Title enthalten sind</span>
-  <span class="no">- non-full-BT-order: listet die Bestellungen älter als drei Tage, die sowohl normale Titel als auch B&amp;T-Titel enthalten</span>
-  <span class="no">- order-not-correctly-processed: listet alle Bestellungen die nicht auf Status „999001“, „999003“ und „999009“ stehen</span>
+  <span class="no">Dieser Bericht erzeugt einige Bestelllisten zur Überwachung der aktuellen</span>
+  <span class="no">Bestellverarbeitung.</span>
 
 <span class="l-Scalar-Plain">query</span><span class="p-Indicator">:</span>
-  <span class="l-Scalar-Plain">full-BT-order</span><span class="p-Indicator">:</span>
+  <span class="l-Scalar-Plain">tables</span><span class="p-Indicator">:</span>
+    <span class="l-Scalar-Plain">database</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">dvb_manage_live</span>
+    <span class="l-Scalar-Plain">command</span><span class="p-Indicator">:</span> <span class="p-Indicator">&gt;</span>
+      <span class="no">SELECT    table_schema, table_name</span>
+      <span class="no">FROM      information_schema.tables</span>
+      <span class="no">ORDER BY  table_schema, table_name</span>
+
+  <span class="l-Scalar-Plain">full-BT</span><span class="p-Indicator">:</span>
+    <span class="l-Scalar-Plain">title</span><span class="p-Indicator">:</span> <span class="s">&#39;reine</span><span class="nv"> </span><span class="s">BT</span><span class="nv"> </span><span class="s">Bestellungen&#39;</span>
+    <span class="l-Scalar-Plain">description</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">listet Bestellungen älter als drei Tage, in denen nur B&amp;T-Titel enthalten sind</span>
     <span class="l-Scalar-Plain">database</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">dvb_manage_live</span>
     <span class="l-Scalar-Plain">command</span><span class="p-Indicator">:</span> <span class="s">&quot;</span>
-    <span class="s">select</span><span class="nv"> </span><span class="s">count(lo.library_order_id),</span><span class="nv"> </span><span class="s">now()</span>
+    <span class="s">select</span><span class="nv"> </span><span class="s">l.name,</span><span class="nv"> </span><span class="s">lo.description,</span><span class="nv"> </span><span class="s">lo.order_date</span>
     <span class="s">from</span><span class="nv"> </span><span class="s">mng_library_order</span><span class="nv"> </span><span class="s">lo</span>
+    <span class="s">inner</span><span class="nv"> </span><span class="s">join</span><span class="nv"> </span><span class="s">mng_library</span><span class="nv"> </span><span class="s">l</span><span class="nv"> </span><span class="s">on</span><span class="nv"> </span><span class="s">l.library_id</span><span class="nv"> </span><span class="s">=</span><span class="nv"> </span><span class="s">lo.library_id</span>
     <span class="s">where</span><span class="nv"> </span><span class="s">lo.status_type_id</span><span class="nv"> </span><span class="s">=</span><span class="nv"> </span><span class="s">999001</span>
     <span class="s">and</span><span class="nv"> </span><span class="s">not</span><span class="nv"> </span><span class="s">exists</span><span class="nv"> </span><span class="s">(select</span><span class="nv"> </span><span class="s">1</span><span class="nv"> </span><span class="s">from</span><span class="nv"> </span><span class="s">mng_library_order_item</span><span class="nv"> </span><span class="s">loi</span>
                             <span class="s">inner</span><span class="nv"> </span><span class="s">join</span><span class="nv"> </span><span class="s">mng_package_license</span><span class="nv"> </span><span class="s">pl</span><span class="nv"> </span><span class="s">on</span><span class="nv"> </span><span class="s">pl.package_license_id</span><span class="nv"> </span><span class="s">=</span><span class="nv"> </span><span class="s">loi.package_license_id</span>
@@ -73,7 +79,7 @@
 
 <span class="l-Scalar-Plain">email</span><span class="p-Indicator">:</span>
   <span class="l-Scalar-Plain">base</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">default</span>
-  <span class="l-Scalar-Plain">to</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">betriebsteam@divibib.com</span>
+  <span class="l-Scalar-Plain">to</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">alexander.schilling@divibib.com</span>
 </pre></div>
         </td>
       </tr>

@@ -58,9 +58,15 @@
 
       <span class="no">{{conf.description}}</span>
 
-      <span class="no">&gt; Started at {{date}}</span>
+      <span class="no">Started at {{dateFormat date &quot;LLL&quot;}}:</span>
 
-      <span class="no">See the attached files!</span>
+      <span class="no">| Zeilen | Datei    | Beschreibung |</span>
+      <span class="no">| ------:| -------- | ------------ |</span>
+      <span class="no">{{#each result}}</span>
+      <span class="no">| {{rows}} | {{file}} | {{description}} |</span>
+      <span class="no">{{/each}}</span>
+
+      <span class="no">Find the files attached to your mail if data available!</span>
 </pre></div>
         </td>
       </tr>

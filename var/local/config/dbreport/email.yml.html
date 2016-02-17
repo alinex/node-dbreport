@@ -53,6 +53,7 @@
         <td class="code highlight"><div class="highlight"><pre><span class="l-Scalar-Plain">default</span><span class="p-Indicator">:</span>
   <span class="l-Scalar-Plain">transport</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">smtp://alexander.schilling%40divibib.com:&lt;&lt;&lt;env://PW_ALEX_DIVIBIB_COM&gt;&gt;&gt;@mail.divibib.com</span>
   <span class="l-Scalar-Plain">from</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">alexander.schilling@divibib.com</span>
+  <span class="l-Scalar-Plain">locale</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">de</span>
   <span class="l-Scalar-Plain">subject</span><span class="p-Indicator">:</span> <span class="p-Indicator">&gt;</span>
     <span class="no">{{conf.title}}</span>
   <span class="l-Scalar-Plain">body</span><span class="p-Indicator">:</span> <span class="p-Indicator">|+</span>
@@ -61,10 +62,19 @@
 
     <span class="no">{{conf.description}}</span>
 
-    <span class="no">Ausgeführt am {{date}}</span>
+    <span class="no">Ausgeführt wurde die Abfrage am {{dateFormat date &quot;LLLL&quot;}}:</span>
 
-    <span class="no">::: info</span>
-    <span class="no">Die Ergebnisse liegen der Email als Anhang bei!</span>
+    <span class="no">| Zeilen | Datei    | Beschreibung |</span>
+    <span class="no">| ------:| -------- | ------------ |</span>
+    <span class="no">{{#each result}}</span>
+    <span class="no">| {{rows}} | {{file}} | {{description}} |</span>
+    <span class="no">{{/each}}</span>
+
+    <span class="no">Wird nichts gefunden so fehlen die entsprechenden CSV Dateien auch.</span>
+
+    <span class="no">::: detail</span>
+    <span class="no">Die Ergebnisse liegen der Email als Anhang bei! Und können in jeder</span>
+    <span class="no">Tabellenkalkulation wie z.B. Excel problemlos geöffnet werden.</span>
     <span class="no">:::</span>
 
     <span class="no">Ausgeführte SQL Befehle</span>
