@@ -102,7 +102,6 @@ email = (name, data, cb) ->
     setup = object.extend {}, base, setup
   # support handlebars
   if setup.locale # change locale
-    console.log 'locale', setup.locale
     oldLocale = moment.locale()
     moment.locale setup.locale
   context =
@@ -115,7 +114,6 @@ email = (name, data, cb) ->
       rows: data[name]?.length ? 0
       file: "#{conf.title ? name}.csv"
       description: conf.description
-  console.log context
   setup.subject = setup.subject context if typeof setup.subject is 'function'
   addBody setup, context, ->
     if setup.locale # change locale back
