@@ -4,6 +4,11 @@ Version changes
 The following list gives a short overview about what is changed between
 individual versions:
 
+Version 1.0.1 (2016-02-17)
+-------------------------------------------------
+- Remove some debugging output.
+- Add replyTo header in configuration.
+
 Version 1.0.0 (2016-02-17)
 -------------------------------------------------
 - Added support for table of contents and remove empty attachements.
