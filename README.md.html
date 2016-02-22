@@ -78,6 +78,7 @@
 <li>fully configurable</li>
 <li>send results as csv</li>
 <li>cli interface</li>
+<li>pretty email format</li>
 </ul>
 
 <p>It can be started from command line or triggered using cron.</p>
@@ -136,6 +137,7 @@ reports:</p>
 
 <span class="nx">Initializing</span><span class="p">...</span>
 <span class="nx">Run</span> <span class="nx">the</span> <span class="nx">jobs</span><span class="p">...</span>
+<span class="o">-&gt;</span> <span class="nx">tables</span>
 <span class="nx">Goodbye</span>
 </code></pre></div>
 
@@ -147,8 +149,10 @@ reports:</p>
 
 Initializing...
 Run the jobs...
+-&gt; tables
   dbreport start tables job +0ms
   dbreport run query tables: SELECT table_schema, table_name FROM information_schema.tables ORDER BY table_schema, table_name +1ms
+  dbreport tables: 641 rows fetched +88ms
   dbreport sending email to <a href='mailto:betriebsteam@divibib.com'>betriebsteam@divibib.com</a>... +547ms
   dbreport using SMTP +3ms
   dbreport message send {accepted: [ '<a href='mailto:betriebsteam@divibib.com'>betriebsteam@divibib.com</a>' ],
@@ -211,9 +215,10 @@ Goodbye
 This will extend/overwrite the allready existing setup within the code.
 default:
   # specify how to connect to the server
-  transport: smtp://alexander.schilling%40divibib.com:&lt;&lt;&lt;env://PW_ALEX_DIVIBIB_COM&gt;&gt;&gt;@mail.divibib.com
+  transport: smtp://alexander.schilling%40mycompany.de:&lt;PASSWORD&gt;@mail.mycompany.de
   # sender address
-  from: <a href='mailto:alexander.schilling@divibib.com'>alexander.schilling@divibib.com</a>
+  from: <a href='mailto:alexander.schilling@mycompany.de'>alexander.schilling@mycompany.de</a>
+  replyTo: <a href='mailto:somebody@mycompany.de'>somebody@mycompany.de</a>
 
   # content
   locale: en
@@ -225,14 +230,33 @@ default:
 
     {{conf.description}}
 
-    &gt; Started at {{date}}
+    Started at {{dateFormat date "LLL"}}:
 
-    See the attached files!
+    | Zeilen | Datei    | Beschreibung |
+    | ------:| -------- | ------------ |
+    {{#each result}}
+    | {{rows}} | {{file}} | {{description}} |
+    {{/each}}
+
+    Find the files attached to your mail if data available!
 </code></pre>
 
 <p>Like you see, you can use handlebar syntax to use some variables from the code.
 You can also define different templates which can be referenced from within the
 job.</p>
+
+<p>The following context variables are possible:</p>
+
+<ul>
+<li>name - the alias name for this job</li>
+<li>conf... - configuration of job (object)</li>
+<li>date - the date then the job was done (now)</li>
+<li>result
+<ul><li><job> - one entry for each job</li>
+<li>rows - number of rows in result</li>
+<li>file - filename</li>
+<li>description - description of job (from config)</li></ul></li>
+</ul>
 
 
 <div class="pilwrap" id="jobs">
@@ -260,11 +284,14 @@ description: |+
 # -------------------------------------------------
 query:
   tables:
+    title: List of Tables
+    description: a complete list of all relations in the database
     database: dvb_manage_live
-    command: &gt;
+    command: "
       SELECT    table_schema, table_name
       FROM      information_schema.tables
       ORDER BY  table_schema, table_name
+      "
 
 # Where to Send them to
 # -------------------------------------------------

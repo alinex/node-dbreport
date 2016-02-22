@@ -57,8 +57,9 @@
 <ul>
 <li>work on any database</li>
 <li>fully configurable</li>
-<li>send results as csv or xlsx</li>
+<li>send results as csv</li>
 <li>cli interface</li>
+<li>pretty email format</li>
 </ul>
 
 <p>It can be started from command line or triggered using cron.</p>
@@ -80,6 +81,7 @@ reports:</p>
 
 <span class="nx">Initializing</span><span class="p">...</span>
 <span class="nx">Run</span> <span class="nx">the</span> <span class="nx">jobs</span><span class="p">...</span>
+<span class="o">-&gt;</span> <span class="nx">tables</span>
 <span class="nx">Goodbye</span>
 </code></pre></div>
 
@@ -91,8 +93,10 @@ reports:</p>
 
 Initializing...
 Run the jobs...
+-&gt; tables
   dbreport start tables job +0ms
   dbreport run query tables: SELECT table_schema, table_name FROM information_schema.tables ORDER BY table_schema, table_name +1ms
+  dbreport tables: 641 rows fetched +88ms
   dbreport sending email to <a href='mailto:betriebsteam@divibib.com'>betriebsteam@divibib.com</a>... +547ms
   dbreport using SMTP +3ms
   dbreport message send {accepted: [ '<a href='mailto:betriebsteam@divibib.com'>betriebsteam@divibib.com</a>' ],
