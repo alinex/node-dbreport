@@ -4,6 +4,11 @@ Version changes
 The following list gives a short overview about what is changed between
 individual versions:
 
+Version 1.0.2 (2016-02-22)
+-------------------------------------------------
+- Fixed row counting in csv.
+- Updated documentation.
+
 Version 1.0.1 (2016-02-17)
 -------------------------------------------------
 - Remove some debugging output.
