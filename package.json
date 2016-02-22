@@ -1,6 +1,6 @@
 {
   "name": "alinex-dbreport",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Run database queries and send their results using email.",
   "copyright": "Alexander Schilling 2016",
   "private": false,
