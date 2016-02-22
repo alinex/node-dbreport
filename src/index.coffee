@@ -111,7 +111,7 @@ email = (name, data, cb) ->
     result: {}
   for name, conf of context.conf.query
     context.result[name] =
-      rows: data[name]?.length ? 0
+      rows: data[name]?.split(/\n/).length-1 ? 0
       file: "#{conf.title ? name}.csv"
       description: conf.description
   setup.subject = setup.subject context if typeof setup.subject is 'function'
