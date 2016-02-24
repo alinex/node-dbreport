@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>tables.yml</title>
+  <title>append.yml</title>
   <meta http-equiv="content-type" content="text/html; charset=UTF-8">
   <link rel="stylesheet" media="all" href="../../../../../doc-style.css" />
   <script src="../../../../../doc-filelist.js"></script>
   <script>
-    var relativeDir = "../../../../../", thisFile = "home/alex/github/node-dbreport/var/example/config/dbreport/job/tablesyml", defaultSidebar = true;
+    var relativeDir = "../../../../../", thisFile = "home/alex/github/node-dbreport/var/example/config/dbreport/job/appendyml", defaultSidebar = true;
   </script>
   <script src="../../../../../doc-script.js"></script>
 </head>
@@ -36,6 +36,9 @@
       </div>
       <div class="heading h2">
         <a href="#queries%20to%20run">Queries to Run</a>
+      </div>
+      <div class="heading h2">
+        <a href="#compose">Compose</a>
       </div>
       <div class="heading h2">
         <a href="#where%20to%20send%20them%20to">Where to Send them to</a>
@@ -70,9 +73,9 @@
 
         </td>
         <td class="code highlight"><div class="highlight"><pre>
-<span class="l-Scalar-Plain">title</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">Vorhandene Tabellen</span>
+<span class="l-Scalar-Plain">title</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">Vorhandene Objekte</span>
 <span class="l-Scalar-Plain">description</span><span class="p-Indicator">:</span> <span class="p-Indicator">|+</span>
-  <span class="no">Dieser Bericht zeigt alle Tabellen die zum Zeitpunkt der Ausführung in der manage</span>
+  <span class="no">Dieser Bericht zeigt alle Objekte die zum Zeitpunkt der Ausführung in der manage</span>
   <span class="no">life Datenbank existieren. Die genaue Liste liegt als tables.csv dieser Email bei.</span>
 
 
@@ -94,11 +97,64 @@
   <span class="l-Scalar-Plain">tables</span><span class="p-Indicator">:</span>
     <span class="l-Scalar-Plain">title</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">List of Tables</span>
     <span class="l-Scalar-Plain">description</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">a complete list of all relations in the database</span>
-    <span class="l-Scalar-Plain">database</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">dvb_manage_live</span>
+    <span class="l-Scalar-Plain">database</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">test_postgresql</span>
     <span class="l-Scalar-Plain">command</span><span class="p-Indicator">:</span> <span class="p-Indicator">&gt;</span>
-      <span class="no">SELECT    table_schema, table_name</span>
-      <span class="no">FROM      information_schema.tables</span>
-      <span class="no">ORDER BY  table_schema, table_name</span>
+      <span class="no">SELECT relname</span>
+      <span class="no">FROM pg_class</span>
+      <span class="no">WHERE relname !~ &#39;^(pg_|sql_)&#39; AND relkind = &#39;r&#39;;</span>
+  <span class="l-Scalar-Plain">indexes</span><span class="p-Indicator">:</span>
+    <span class="l-Scalar-Plain">title</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">List of Indexes</span>
+    <span class="l-Scalar-Plain">description</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">a complete list of all indexes in the database</span>
+    <span class="l-Scalar-Plain">database</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">test_postgresql</span>
+    <span class="l-Scalar-Plain">command</span><span class="p-Indicator">:</span> <span class="p-Indicator">&gt;</span>
+      <span class="no">SELECT relname</span>
+      <span class="no">FROM pg_class</span>
+      <span class="no">WHERE relname !~ &#39;^(pg_|sql_)&#39; AND relkind = &#39;i&#39;;</span>
+  <span class="l-Scalar-Plain">views</span><span class="p-Indicator">:</span>
+    <span class="l-Scalar-Plain">title</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">List of Views</span>
+    <span class="l-Scalar-Plain">description</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">a complete list of all views in the database</span>
+    <span class="l-Scalar-Plain">database</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">test_postgresql</span>
+    <span class="l-Scalar-Plain">command</span><span class="p-Indicator">:</span> <span class="p-Indicator">&gt;</span>
+      <span class="no">SELECT relname</span>
+      <span class="no">FROM pg_class</span>
+      <span class="no">WHERE relname !~ &#39;^(pg_|sql_)&#39; AND relkind = &#39;v&#39;;</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-4" id="section-4">&#182;</a>
+</div>
+<p>also go on for empty results</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="l-Scalar-Plain">sendEmpty</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">true</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap" id="compose">
+  <h2>
+    <a href="#compose" name="compose" class="pilcrow">&#182;</a>
+    Compose
+  </h2>
+</div>
+
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="l-Scalar-Plain">compose</span><span class="p-Indicator">:</span>
+  <span class="l-Scalar-Plain">all</span><span class="p-Indicator">:</span>
+    <span class="l-Scalar-Plain">title</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">List of Objects</span>
+    <span class="l-Scalar-Plain">description</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">a complete list of all objects in the database</span>
+    <span class="l-Scalar-Plain">append</span><span class="p-Indicator">:</span>
+      <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">tables</span>
+      <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">indexes</span>
 
 
 </pre></div>
@@ -117,7 +173,7 @@
         <td class="code highlight"><div class="highlight"><pre>
 <span class="l-Scalar-Plain">email</span><span class="p-Indicator">:</span>
   <span class="l-Scalar-Plain">base</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">default</span>
-  <span class="l-Scalar-Plain">to</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">betriebsteam@divibib.com</span>
+  <span class="l-Scalar-Plain">to</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">alexander.schilling@anythere.net</span>
 </pre></div>
         </td>
       </tr>

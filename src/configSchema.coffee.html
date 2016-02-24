@@ -199,18 +199,38 @@
             <span class="nv">trim: </span><span class="kc">true</span>
             <span class="nv">replace: </span><span class="p">[</span><span class="sr">/\s+/</span><span class="p">,</span> <span class="s">&#39; &#39;</span><span class="p">]</span>
       <span class="p">]</span>
-
-</pre></div>
-        </td>
-      </tr>
-      <tr>
-        <td class="docs">
-<div class="pilwrap">
-  <a class="pilcrow" href="#section-4" id="section-4">&#182;</a>
-</div>
-<p>combine: <func></p>
-        </td>
-        <td class="code highlight"><div class="highlight"><pre>
+    <span class="nv">sendEmpty:</span>
+      <span class="nv">title: </span><span class="s">&quot;Send Empty Data&quot;</span>
+      <span class="nv">description: </span><span class="s">&quot;a flag indicating to also send an email if no data could be found&quot;</span>
+      <span class="nv">type: </span><span class="s">&#39;boolean&#39;</span>
+      <span class="nv">default: </span><span class="kc">true</span>
+    <span class="nv">compose:</span>
+      <span class="nv">title: </span><span class="s">&quot;Compose Data&quot;</span>
+      <span class="nv">description: </span><span class="s">&quot;the logic to compose results from data&quot;</span>
+      <span class="nv">type: </span><span class="s">&#39;object&#39;</span>
+      <span class="nv">entries: </span><span class="p">[</span>
+        <span class="nv">title: </span><span class="s">&quot;List&quot;</span>
+        <span class="nv">description: </span><span class="s">&quot;the alias name of the list to create&quot;</span>
+        <span class="nv">type: </span><span class="s">&#39;object&#39;</span>
+        <span class="nv">mandatoryKeys: </span><span class="kc">true</span>
+        <span class="nv">keys:</span>
+          <span class="nv">title:</span>
+            <span class="nv">title: </span><span class="s">&quot;Title&quot;</span>
+            <span class="nv">description: </span><span class="s">&quot;the short title of the list to be used as file&quot;</span>
+            <span class="nv">type: </span><span class="s">&#39;string&#39;</span>
+            <span class="nv">optional: </span><span class="kc">true</span>
+          <span class="nv">description:</span>
+            <span class="nv">title: </span><span class="s">&quot;Description&quot;</span>
+            <span class="nv">description: </span><span class="s">&quot;a short abstract of what this list will contain&quot;</span>
+            <span class="nv">type: </span><span class="s">&#39;string&#39;</span>
+            <span class="nv">optional: </span><span class="kc">true</span>
+          <span class="nv">append:</span>
+            <span class="nv">title: </span><span class="s">&quot;Table Data to Append&quot;</span>
+            <span class="nv">description: </span><span class="s">&quot;the list of table data (alias names) to append&quot;</span>
+            <span class="nv">type: </span><span class="s">&#39;array&#39;</span>
+            <span class="nv">toArray: </span><span class="kc">true</span>
+            <span class="nv">optional: </span><span class="kc">true</span>
+      <span class="p">]</span>
     <span class="nv">email: </span><span class="nx">email</span>
 
 

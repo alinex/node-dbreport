@@ -56,6 +56,9 @@
         <a href="#add%20body%20to%20mail%20setup%20from%20report">Add body to mail setup from report</a>
       </div>
       <div class="heading h3">
+        <a href="#make%20output%20objects">Make output objects</a>
+      </div>
+      <div class="heading h3">
         <a href="#send%20email">Send email</a>
       </div>
     </div>
@@ -205,9 +208,10 @@ be changed at any time.</p>
   <span class="nx">async</span><span class="p">.</span><span class="nx">mapOf</span> <span class="nx">conf</span><span class="p">.</span><span class="nx">query</span><span class="p">,</span> <span class="nf">(query, n, cb) -&gt;</span>
     <span class="nx">debug</span> <span class="nx">chalk</span><span class="p">.</span><span class="nx">grey</span> <span class="s">&quot;</span><span class="si">#{</span><span class="nx">n</span><span class="si">}</span><span class="s">: run query </span><span class="si">#{</span><span class="nx">chalk</span><span class="p">.</span><span class="nx">grey</span> <span class="nx">query</span><span class="p">.</span><span class="nx">command</span><span class="p">.</span><span class="nx">replace</span> <span class="sr">/\s+/g</span><span class="p">,</span> <span class="s">&#39; &#39;</span><span class="si">}</span><span class="s">&quot;</span>
     <span class="nx">database</span><span class="p">.</span><span class="nx">list</span> <span class="nx">query</span><span class="p">.</span><span class="nx">database</span><span class="p">,</span> <span class="nx">query</span><span class="p">.</span><span class="nx">command</span><span class="p">,</span> <span class="nf">(err, data) -&gt;</span>
-      <span class="k">return</span> <span class="nx">cb</span> <span class="nx">err</span> <span class="k">if</span> <span class="nx">err</span>
       <span class="nx">debug</span> <span class="s">&quot;</span><span class="si">#{</span><span class="nx">n</span><span class="si">}</span><span class="s">: </span><span class="si">#{</span><span class="nx">data</span><span class="p">.</span><span class="nx">length</span><span class="si">}</span><span class="s"> rows fetched&quot;</span>
-      <span class="k">return</span> <span class="nx">cb</span><span class="p">()</span> <span class="k">unless</span> <span class="nx">data</span><span class="p">.</span><span class="nx">length</span> <span class="c1"># no entries</span>
+      <span class="nx">cb</span> <span class="nx">err</span><span class="p">,</span> <span class="nx">data</span>
+  <span class="p">,</span> <span class="nf">(err, results) -&gt;</span>
+    <span class="k">return</span> <span class="nx">cb</span> <span class="nx">err</span> <span class="k">if</span> <span class="nx">err</span>
 
 </pre></div>
         </td>
@@ -217,19 +221,34 @@ be changed at any time.</p>
 <div class="pilwrap">
   <a class="pilcrow" href="#section-9" id="section-9">&#182;</a>
 </div>
-<p>convert dates</p>
+<p>check for sending</p>
         </td>
         <td class="code highlight"><div class="highlight"><pre>
-      <span class="k">for</span> <span class="nx">row</span> <span class="k">in</span> <span class="nx">data</span>
-        <span class="k">for</span> <span class="nx">field</span><span class="p">,</span> <span class="nx">value</span> <span class="k">of</span> <span class="nx">row</span>
-          <span class="nx">row</span><span class="p">[</span><span class="nx">field</span><span class="p">]</span> <span class="o">=</span> <span class="nx">moment</span><span class="p">(</span><span class="nx">value</span><span class="p">).</span><span class="nx">format</span><span class="p">()</span> <span class="k">if</span> <span class="nx">value</span> <span class="k">instanceof</span> <span class="nb">Date</span>
-      <span class="nx">json2csv</span>
-        <span class="nv">data: </span><span class="nx">data</span>
-        <span class="nv">del: </span><span class="s">&#39;;&#39;</span>
-      <span class="p">,</span> <span class="nx">cb</span>
-  <span class="p">,</span> <span class="nf">(err, results) -&gt;</span>
-    <span class="k">return</span> <span class="nx">cb</span> <span class="nx">err</span> <span class="k">if</span> <span class="nx">err</span>
-    <span class="nx">email</span> <span class="nx">name</span><span class="p">,</span> <span class="nx">results</span><span class="p">,</span> <span class="nx">cb</span>
+    <span class="nv">isEmpty = </span><span class="kc">true</span>
+    <span class="k">for</span> <span class="nx">query</span><span class="p">,</span> <span class="nx">data</span> <span class="k">of</span> <span class="nx">results</span>
+      <span class="k">continue</span> <span class="k">unless</span> <span class="nx">data</span><span class="p">.</span><span class="nx">length</span>
+      <span class="nv">isEmpty = </span><span class="kc">false</span>
+      <span class="k">break</span>
+    <span class="k">if</span> <span class="nx">isEmpty</span>
+      <span class="nx">debug</span> <span class="s">&quot;</span><span class="si">#{</span><span class="nx">name</span><span class="si">}</span><span class="s">: no data found&quot;</span>
+      <span class="k">return</span> <span class="nx">cb</span><span class="p">()</span> <span class="k">unless</span> <span class="nx">conf</span><span class="p">.</span><span class="nx">sendEmpty</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-10" id="section-10">&#182;</a>
+</div>
+<p>build results</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="nx">compose</span>
+      <span class="nv">job: </span><span class="nx">name</span>
+      <span class="nv">conf: </span><span class="nx">conf</span>
+      <span class="nv">isEmpty: </span><span class="nx">isEmpty</span>
+    <span class="p">,</span> <span class="nx">results</span><span class="p">,</span> <span class="nx">cb</span>
 
 
 
@@ -320,6 +339,120 @@ be changed at any time.</p>
       </tr>
       <tr>
         <td class="docs">
+<div class="pilwrap" id="make%20output%20objects">
+  <h3>
+    <a href="#make%20output%20objects" name="make%20output%20objects" class="pilcrow">&#182;</a>
+    Make output objects
+  </h3>
+</div>
+
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="nv">compose = </span><span class="nf">(meta, results, cb) -&gt;</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-16" id="section-16">&#182;</a>
+</div>
+<p>make data files</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+  <span class="nv">list = </span><span class="p">{}</span>
+  <span class="k">unless</span> <span class="nx">meta</span><span class="p">.</span><span class="nx">conf</span><span class="p">.</span><span class="nx">compose</span>
+    <span class="k">for</span> <span class="nx">name</span><span class="p">,</span> <span class="nx">setup</span> <span class="k">of</span> <span class="nx">meta</span><span class="p">.</span><span class="nx">conf</span><span class="p">.</span><span class="nx">query</span>
+      <span class="nx">list</span><span class="p">[</span><span class="nx">name</span><span class="p">]</span> <span class="o">=</span>
+        <span class="nv">data: </span><span class="nx">results</span><span class="p">[</span><span class="nx">name</span><span class="p">]</span>
+        <span class="nv">title: </span><span class="nx">setup</span><span class="p">.</span><span class="nx">title</span>
+        <span class="nv">description: </span><span class="nx">setup</span><span class="p">.</span><span class="nx">description</span>
+  <span class="k">else</span>
+    <span class="k">for</span> <span class="nx">name</span><span class="p">,</span> <span class="nx">setup</span> <span class="k">of</span> <span class="nx">meta</span><span class="p">.</span><span class="nx">conf</span><span class="p">.</span><span class="nx">compose</span>
+      <span class="nx">list</span><span class="p">[</span><span class="nx">name</span><span class="p">]</span> <span class="o">=</span>
+        <span class="nv">data: </span><span class="p">[]</span>
+        <span class="nv">title: </span><span class="nx">setup</span><span class="p">.</span><span class="nx">title</span>
+        <span class="nv">description: </span><span class="nx">setup</span><span class="p">.</span><span class="nx">description</span>
+      <span class="k">switch</span>
+        <span class="k">when</span> <span class="nx">setup</span><span class="p">.</span><span class="nx">append</span>
+          <span class="k">for</span> <span class="nx">alias</span> <span class="k">in</span> <span class="nx">setup</span><span class="p">.</span><span class="nx">append</span>
+            <span class="nx">list</span><span class="p">[</span><span class="nx">name</span><span class="p">].</span><span class="nv">data = </span><span class="nx">list</span><span class="p">[</span><span class="nx">name</span><span class="p">].</span><span class="nx">data</span><span class="p">.</span><span class="nx">concat</span> <span class="nx">results</span><span class="p">[</span><span class="nx">alias</span><span class="p">]</span>
+        <span class="k">else</span>
+          <span class="k">return</span> <span class="nx">cb</span> <span class="k">new</span> <span class="nb">Error</span> <span class="s">&quot;No supported combine method defined for entry </span><span class="si">#{</span><span class="nx">name</span><span class="si">}</span><span class="s"></span>
+<span class="s">          of </span><span class="si">#{</span><span class="nx">meta</span><span class="p">.</span><span class="nx">job</span><span class="si">}</span><span class="s">.&quot;</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-17" id="section-17">&#182;</a>
+</div>
+<p>add some meta information</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+  <span class="k">for</span> <span class="nx">name</span><span class="p">,</span> <span class="nx">data</span> <span class="k">of</span> <span class="nx">list</span>
+    <span class="nv">data.rows = </span><span class="nx">data</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">length</span>
+    <span class="nv">data.file = </span><span class="s">&quot;</span><span class="si">#{</span><span class="nx">data</span><span class="p">.</span><span class="nx">title</span> <span class="o">?</span> <span class="nx">name</span><span class="si">}</span><span class="s">.csv&quot;</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-18" id="section-18">&#182;</a>
+</div>
+<p>generate csv</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+  <span class="nx">async</span><span class="p">.</span><span class="nx">each</span> <span class="nb">Object</span><span class="p">.</span><span class="nx">keys</span><span class="p">(</span><span class="nx">list</span><span class="p">),</span> <span class="nf">(name, cb) -&gt;</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-19" id="section-19">&#182;</a>
+</div>
+<p>convert dates</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="k">for</span> <span class="nx">row</span> <span class="k">in</span> <span class="nx">list</span><span class="p">[</span><span class="nx">name</span><span class="p">].</span><span class="nx">data</span>
+      <span class="k">for</span> <span class="nx">field</span><span class="p">,</span> <span class="nx">value</span> <span class="k">of</span> <span class="nx">row</span>
+        <span class="nx">row</span><span class="p">[</span><span class="nx">field</span><span class="p">]</span> <span class="o">=</span> <span class="nx">moment</span><span class="p">(</span><span class="nx">value</span><span class="p">).</span><span class="nx">format</span><span class="p">()</span> <span class="k">if</span> <span class="nx">value</span> <span class="k">instanceof</span> <span class="nb">Date</span>
+    <span class="nx">json2csv</span>
+      <span class="nv">data: </span><span class="nx">list</span><span class="p">[</span><span class="nx">name</span><span class="p">].</span><span class="nx">data</span>
+      <span class="nv">del: </span><span class="s">&#39;;&#39;</span>
+    <span class="p">,</span> <span class="nf">(err, string) -&gt;</span>
+      <span class="k">return</span> <span class="nx">cb</span> <span class="nx">err</span> <span class="k">if</span> <span class="nx">err</span>
+      <span class="nx">list</span><span class="p">[</span><span class="nx">name</span><span class="p">].</span><span class="nv">csv = </span><span class="nx">string</span>
+      <span class="nx">cb</span><span class="p">()</span>
+  <span class="p">,</span> <span class="nf">(err) -&gt;</span>
+    <span class="k">return</span> <span class="nx">cb</span> <span class="nx">err</span> <span class="k">if</span> <span class="nx">err</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-20" id="section-20">&#182;</a>
+</div>
+<p>send email</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="nx">email</span> <span class="nx">meta</span><span class="p">,</span> <span class="nx">list</span><span class="p">,</span> <span class="nx">cb</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
 <div class="pilwrap" id="send%20email">
   <h3>
     <a href="#send%20email" name="send%20email" class="pilcrow">&#182;</a>
@@ -329,8 +462,7 @@ be changed at any time.</p>
 
         </td>
         <td class="code highlight"><div class="highlight"><pre>
-<span class="nv">email = </span><span class="nf">(name, data, cb) -&gt;</span>
-  <span class="nv">conf = </span><span class="nx">config</span><span class="p">.</span><span class="nx">get</span> <span class="s">&quot;/dbreport/job/</span><span class="si">#{</span><span class="nx">name</span><span class="si">}</span><span class="s">/email&quot;</span>
+<span class="nv">email = </span><span class="nf">(meta, list, cb) -&gt;</span>
 
 </pre></div>
         </td>
@@ -338,12 +470,12 @@ be changed at any time.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-15" id="section-15">&#182;</a>
+  <a class="pilcrow" href="#section-22" id="section-22">&#182;</a>
 </div>
 <p>configure email</p>
         </td>
         <td class="code highlight"><div class="highlight"><pre>
-  <span class="nv">setup = </span><span class="nx">object</span><span class="p">.</span><span class="nx">clone</span> <span class="nx">conf</span>
+  <span class="nv">setup = </span><span class="nx">object</span><span class="p">.</span><span class="nx">clone</span> <span class="nx">meta</span><span class="p">.</span><span class="nx">conf</span><span class="p">.</span><span class="nx">email</span>
 
 </pre></div>
         </td>
@@ -351,7 +483,7 @@ be changed at any time.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-16" id="section-16">&#182;</a>
+  <a class="pilcrow" href="#section-23" id="section-23">&#182;</a>
 </div>
 <p>use base settings</p>
         </td>
@@ -367,7 +499,7 @@ be changed at any time.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-17" id="section-17">&#182;</a>
+  <a class="pilcrow" href="#section-24" id="section-24">&#182;</a>
 </div>
 <p>support handlebars</p>
         </td>
@@ -376,15 +508,10 @@ be changed at any time.</p>
     <span class="nv">oldLocale = </span><span class="nx">moment</span><span class="p">.</span><span class="nx">locale</span><span class="p">()</span>
     <span class="nx">moment</span><span class="p">.</span><span class="nx">locale</span> <span class="nx">setup</span><span class="p">.</span><span class="nx">locale</span>
   <span class="nv">context =</span>
-    <span class="nv">name: </span><span class="nx">name</span>
-    <span class="nv">conf: </span><span class="nx">config</span><span class="p">.</span><span class="nx">get</span> <span class="s">&quot;/dbreport/job/</span><span class="si">#{</span><span class="nx">name</span><span class="si">}</span><span class="s">&quot;</span>
+    <span class="nv">name: </span><span class="nx">meta</span><span class="p">.</span><span class="nx">job</span>
+    <span class="nv">conf: </span><span class="nx">meta</span><span class="p">.</span><span class="nx">conf</span>
     <span class="nv">date: </span><span class="k">new</span> <span class="nb">Date</span><span class="p">()</span>
-    <span class="nv">result: </span><span class="p">{}</span>
-  <span class="k">for</span> <span class="nx">name</span><span class="p">,</span> <span class="nx">conf</span> <span class="k">of</span> <span class="nx">context</span><span class="p">.</span><span class="nx">conf</span><span class="p">.</span><span class="nx">query</span>
-    <span class="nx">context</span><span class="p">.</span><span class="nx">result</span><span class="p">[</span><span class="nx">name</span><span class="p">]</span> <span class="o">=</span>
-      <span class="nv">rows: </span><span class="k">if</span> <span class="nx">data</span><span class="p">[</span><span class="nx">name</span><span class="p">]</span><span class="o">?</span> <span class="k">then</span> <span class="nx">data</span><span class="p">[</span><span class="nx">name</span><span class="p">].</span><span class="nx">split</span><span class="p">(</span><span class="sr">/\n/</span><span class="p">).</span><span class="nx">length</span><span class="o">-</span><span class="mi">1</span> <span class="k">else</span> <span class="mi">0</span>
-      <span class="nv">file: </span><span class="s">&quot;</span><span class="si">#{</span><span class="nx">conf</span><span class="p">.</span><span class="nx">title</span> <span class="o">?</span> <span class="nx">name</span><span class="si">}</span><span class="s">.csv&quot;</span>
-      <span class="nv">description: </span><span class="nx">conf</span><span class="p">.</span><span class="nx">description</span>
+    <span class="nv">result: </span><span class="nx">list</span>
   <span class="nv">setup.subject = </span><span class="nx">setup</span><span class="p">.</span><span class="nx">subject</span> <span class="nx">context</span> <span class="k">if</span> <span class="k">typeof</span> <span class="nx">setup</span><span class="p">.</span><span class="nx">subject</span> <span class="o">is</span> <span class="s">&#39;function&#39;</span>
   <span class="nx">addBody</span> <span class="nx">setup</span><span class="p">,</span> <span class="nx">context</span><span class="p">,</span> <span class="nf">-&gt;</span>
     <span class="k">if</span> <span class="nx">setup</span><span class="p">.</span><span class="nx">locale</span> <span class="c1"># change locale back</span>
@@ -396,17 +523,17 @@ be changed at any time.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-18" id="section-18">&#182;</a>
+  <a class="pilcrow" href="#section-25" id="section-25">&#182;</a>
 </div>
 <p>add attachements</p>
         </td>
         <td class="code highlight"><div class="highlight"><pre>
     <span class="nv">setup.attachments = </span><span class="p">[]</span>
-    <span class="k">for</span> <span class="nx">name</span><span class="p">,</span> <span class="nx">csv</span> <span class="k">of</span> <span class="nx">data</span>
-      <span class="k">continue</span> <span class="k">unless</span> <span class="nx">csv</span> <span class="c1"># skip empty ones</span>
+    <span class="k">for</span> <span class="nx">name</span><span class="p">,</span> <span class="nx">data</span> <span class="k">of</span> <span class="nx">list</span>
+      <span class="k">continue</span> <span class="k">unless</span> <span class="nx">data</span><span class="p">.</span><span class="nx">csv</span> <span class="c1"># skip empty ones</span>
       <span class="nx">setup</span><span class="p">.</span><span class="nx">attachments</span><span class="p">.</span><span class="nx">push</span>
-        <span class="nv">filename: </span><span class="nx">context</span><span class="p">.</span><span class="nx">result</span><span class="p">[</span><span class="nx">name</span><span class="p">].</span><span class="nx">file</span>
-        <span class="nv">content: </span><span class="nx">csv</span>
+        <span class="nv">filename: </span><span class="nx">data</span><span class="p">.</span><span class="nx">file</span>
+        <span class="nv">content: </span><span class="nx">data</span><span class="p">.</span><span class="nx">csv</span>
 
 </pre></div>
         </td>
@@ -414,7 +541,7 @@ be changed at any time.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-19" id="section-19">&#182;</a>
+  <a class="pilcrow" href="#section-26" id="section-26">&#182;</a>
 </div>
 <p>test mode</p>
         </td>
@@ -430,7 +557,7 @@ be changed at any time.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-20" id="section-20">&#182;</a>
+  <a class="pilcrow" href="#section-27" id="section-27">&#182;</a>
 </div>
 <p>send email</p>
         </td>
@@ -444,7 +571,7 @@ be changed at any time.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-21" id="section-21">&#182;</a>
+  <a class="pilcrow" href="#section-28" id="section-28">&#182;</a>
 </div>
 <p>setup transporter</p>
         </td>
@@ -459,7 +586,7 @@ be changed at any time.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-22" id="section-22">&#182;</a>
+  <a class="pilcrow" href="#section-29" id="section-29">&#182;</a>
 </div>
 <p>try to send email</p>
         </td>

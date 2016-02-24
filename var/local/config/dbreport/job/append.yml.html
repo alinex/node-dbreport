@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>append.yml</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <link rel="stylesheet" media="all" href="../../../../../doc-style.css" />
+  <script src="../../../../../doc-filelist.js"></script>
+  <script>
+    var relativeDir = "../../../../../", thisFile = "home/alex/github/node-dbreport/var/local/config/dbreport/job/appendyml", defaultSidebar = true;
+  </script>
+  <script src="../../../../../doc-script.js"></script>
+</head>
+<body>
+  <nav>
+<div class="logo"><a href="http://alinex.github.io" onmouseover="lllogo.src='https://alinex.github.io/images/Alinex-200.png'" onmouseout="lllogo.src='https://alinex.github.io/images/Alinex-black-200.png'">
+  <img name="lllogo" src="https://alinex.github.io/images/Alinex-black-200.png" width="150" title="Alinex Universe Homepage" />
+  </a>
+  <img src="http://alinex.github.io/images/Alinex-200.png" style="display:none" alt="preloading" />
+</div>
+<div class="links">
+  <a href="http://alinex.github.io/blog" class="btn btn-primary"><span class="glyphicon-cog"></span> Blog</a>
+  <a href="http://alinex.github.io/code.html" class="btn btn-warning"><span class="glyphicon-pencil"></span> Code</a>
+</div>
+</nav><div id="sidebar_wrapper">
+    <div id="sidebar_switch">
+      <span class="tree">Files</span>
+      <span class="headings">Headings</span>
+    </div>
+    <div id="tree"></div>
+    <div id="headings">
+      <div class="heading h1">
+        <a href="#test%20job">Test Job</a>
+      </div>
+      <div class="heading h2">
+        <a href="#job%20meta">Job Meta</a>
+      </div>
+      <div class="heading h2">
+        <a href="#queries%20to%20run">Queries to Run</a>
+      </div>
+      <div class="heading h2">
+        <a href="#compose">Compose</a>
+      </div>
+      <div class="heading h2">
+        <a href="#where%20to%20send%20them%20to">Where to Send them to</a>
+      </div>
+    </div>
+  </div>
+  <div id="sidebar-toggle"></div>
+  <div id="container" tabindex="0"><a id="fork" href="https://github.com/alinex/node-dbreport" title="Fork me on GitHub"></a><div class="background highlight"></div>
+<table cellpadding="0" cellspacing="0">
+  <tbody>
+      <tr>
+        <td class="docs">
+<div class="pilwrap" id="test%20job">
+  <h1>
+    <a href="#test%20job" name="test%20job" class="pilcrow">&#182;</a>
+    Test Job
+  </h1>
+</div>
+
+        </td>
+        <td class="code highlight"><div class="highlight"><pre></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap" id="job%20meta">
+  <h2>
+    <a href="#job%20meta" name="job%20meta" class="pilcrow">&#182;</a>
+    Job Meta
+  </h2>
+</div>
+
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="l-Scalar-Plain">title</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">Vorhandene Objekte</span>
+<span class="l-Scalar-Plain">description</span><span class="p-Indicator">:</span> <span class="p-Indicator">|+</span>
+  <span class="no">Dieser Bericht zeigt alle Objekte die zum Zeitpunkt der Ausführung in der manage</span>
+  <span class="no">life Datenbank existieren. Die genaue Liste liegt als tables.csv dieser Email bei.</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap" id="queries%20to%20run">
+  <h2>
+    <a href="#queries%20to%20run" name="queries%20to%20run" class="pilcrow">&#182;</a>
+    Queries to Run
+  </h2>
+</div>
+
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="l-Scalar-Plain">query</span><span class="p-Indicator">:</span>
+  <span class="l-Scalar-Plain">tables</span><span class="p-Indicator">:</span>
+    <span class="l-Scalar-Plain">title</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">List of Tables</span>
+    <span class="l-Scalar-Plain">description</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">a complete list of all relations in the database</span>
+    <span class="l-Scalar-Plain">database</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">test_postgresql</span>
+    <span class="l-Scalar-Plain">command</span><span class="p-Indicator">:</span> <span class="p-Indicator">&gt;</span>
+      <span class="no">SELECT relname</span>
+      <span class="no">FROM pg_class</span>
+      <span class="no">WHERE relname !~ &#39;^(pg_|sql_)&#39; AND relkind = &#39;r&#39;;</span>
+  <span class="l-Scalar-Plain">indexes</span><span class="p-Indicator">:</span>
+    <span class="l-Scalar-Plain">title</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">List of Indexes</span>
+    <span class="l-Scalar-Plain">description</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">a complete list of all indexes in the database</span>
+    <span class="l-Scalar-Plain">database</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">test_postgresql</span>
+    <span class="l-Scalar-Plain">command</span><span class="p-Indicator">:</span> <span class="p-Indicator">&gt;</span>
+      <span class="no">SELECT relname</span>
+      <span class="no">FROM pg_class</span>
+      <span class="no">WHERE relname !~ &#39;^(pg_|sql_)&#39; AND relkind = &#39;i&#39;;</span>
+  <span class="l-Scalar-Plain">views</span><span class="p-Indicator">:</span>
+    <span class="l-Scalar-Plain">title</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">List of Views</span>
+    <span class="l-Scalar-Plain">description</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">a complete list of all views in the database</span>
+    <span class="l-Scalar-Plain">database</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">test_postgresql</span>
+    <span class="l-Scalar-Plain">command</span><span class="p-Indicator">:</span> <span class="p-Indicator">&gt;</span>
+      <span class="no">SELECT relname</span>
+      <span class="no">FROM pg_class</span>
+      <span class="no">WHERE relname !~ &#39;^(pg_|sql_)&#39; AND relkind = &#39;v&#39;;</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-4" id="section-4">&#182;</a>
+</div>
+<p>also go on for empty results</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="l-Scalar-Plain">sendEmpty</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">true</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap" id="compose">
+  <h2>
+    <a href="#compose" name="compose" class="pilcrow">&#182;</a>
+    Compose
+  </h2>
+</div>
+
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="l-Scalar-Plain">compose</span><span class="p-Indicator">:</span>
+  <span class="l-Scalar-Plain">all</span><span class="p-Indicator">:</span>
+    <span class="l-Scalar-Plain">title</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">List of Objects</span>
+    <span class="l-Scalar-Plain">description</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">a complete list of all objects in the database</span>
+    <span class="l-Scalar-Plain">append</span><span class="p-Indicator">:</span>
+      <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">tables</span>
+      <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">indexes</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap" id="where%20to%20send%20them%20to">
+  <h2>
+    <a href="#where%20to%20send%20them%20to" name="where%20to%20send%20them%20to" class="pilcrow">&#182;</a>
+    Where to Send them to
+  </h2>
+</div>
+
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="l-Scalar-Plain">email</span><span class="p-Indicator">:</span>
+  <span class="l-Scalar-Plain">base</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">default</span>
+  <span class="l-Scalar-Plain">to</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">alexander.schilling@divibib.com</span>
+</pre></div>
+        </td>
+      </tr>
+  </tbody>
+</table>
+  </div>
+</body>
+</html>

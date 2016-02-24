@@ -77,8 +77,8 @@
 <li>work on any database</li>
 <li>fully configurable</li>
 <li>send results as csv</li>
-<li>cli interface</li>
 <li>pretty email format</li>
+<li>combine queries</li>
 </ul>
 
 <p>It can be started from command line or triggered using cron.</p>
@@ -286,18 +286,38 @@ query:
   tables:
     title: List of Tables
     description: a complete list of all relations in the database
-    database: dvb_manage_live
-    command: "
-      SELECT    table_schema, table_name
-      FROM      information_schema.tables
-      ORDER BY  table_schema, table_name
-      "
+    database: test_postgresql
+    command: &gt;
+      SELECT relname
+      FROM pg_class
+      WHERE relname !~ '^(pg_|sql_)' AND relkind = 'r';
+  indexes:
+    title: List of Indexes
+    description: a complete list of all indexes in the database
+    database: test_postgresql
+    command: &gt;
+      SELECT relname
+      FROM pg_class
+      WHERE relname !~ '^(pg_|sql_)' AND relkind = 'i';
+
+# also go on for empty results
+sendEmpty: true
+
+# Compose
+# -------------------------------------------------
+compose:
+  all:
+    title: List of Objects
+    description: a complete list of all objects in the database
+    append:
+      - tables
+      - indexes
 
 # Where to Send them to
 # -------------------------------------------------
 email:
   base: default
-  to: <a href='mailto:betriebsteam@divibib.com'>betriebsteam@divibib.com</a>
+  to: <a href='mailto:betrieb@mycompany.com'>betrieb@mycompany.com</a>
 </code></pre>
 
 <p>As you see above you have the three parts to fill up:
