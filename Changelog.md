@@ -4,6 +4,14 @@ Version changes
 The following list gives a short overview about what is changed between
 individual versions:
 
+Version 1.1.0 (2016-02-24)
+-------------------------------------------------
+- Updated documentation.
+- Working append mechanism.
+- Updated examples.
+- Use queries as fallback if no compose
+- Updated config to allow compose settings.
+
 Version 1.0.3 (2016-02-22)
 -------------------------------------------------
 - Display 0 rows as so instead NaN.
