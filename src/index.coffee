@@ -51,7 +51,7 @@ exports.run = (name, cb) ->
     return cb err if err
     # check for sending
     isEmpty = true
-    for job, data of results
+    for query, data of results
       continue unless data.length
       isEmpty = false
       break
@@ -61,6 +61,7 @@ exports.run = (name, cb) ->
     # build results
     compose
       job: name
+      conf: conf
       isEmpty: isEmpty
     , results, cb
 
@@ -97,7 +98,17 @@ addBody= (setup, context, cb) ->
 # ### Make output objects
 compose = (meta, results, cb) ->
   # make data files
-  csv = {}
+  list = {}
+  unless meta.conf.compose
+    for name, setup of meta.conf.query
+      list[name] =
+        data: results[name]
+        title: setup.title
+        description: setup.description
+  for name, data of list
+    data.rows = data.data.length
+    data.file = "#{data.title ? name}.csv"
+  # generate csv
   async.each Object.keys(results), (name, cb) ->
     # convert dates
     for row in results[name]
@@ -108,19 +119,17 @@ compose = (meta, results, cb) ->
       del: ';'
     , (err, string) ->
       return cb err if err
-      csv[name] = string
+      list[name].csv = string
       cb()
   , (err) ->
     return cb err if err
     # send email
-    email meta.job, csv, cb
+    email meta, list, cb
 
 # ### Send email
-email = (name, data, cb) ->
-  console.log name, data
-  conf = config.get "/dbreport/job/#{name}/email"
+email = (meta, list, cb) ->
   # configure email
-  setup = object.clone conf
+  setup = object.clone meta.conf.email
   # use base settings
   while setup.base
     base = config.get "/dbreport/email/#{setup.base}"
@@ -131,26 +140,21 @@ email = (name, data, cb) ->
     oldLocale = moment.locale()
     moment.locale setup.locale
   context =
-    name: name
-    conf: config.get "/dbreport/job/#{name}"
+    name: meta.job
+    conf: meta.conf
     date: new Date()
-    result: {}
-  for name, conf of context.conf.query
-    context.result[name] =
-      rows: if data[name]? then data[name].split(/\n/).length-1 else 0
-      file: "#{conf.title ? name}.csv"
-      description: conf.description
+    result: list
   setup.subject = setup.subject context if typeof setup.subject is 'function'
   addBody setup, context, ->
     if setup.locale # change locale back
       moment.locale oldLocale
     # add attachements
     setup.attachments = []
-    for name, csv of data
-      continue unless csv # skip empty ones
+    for name, data of list
+      continue unless data.csv # skip empty ones
       setup.attachments.push
-        filename: context.result[name].file
-        content: csv
+        filename: data.file
+        content: data.csv
     # test mode
     if mode.mail
       setup.to = mode.mail.split /,\s+/
