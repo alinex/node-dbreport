@@ -105,17 +105,31 @@ compose = (meta, results, cb) ->
         data: results[name]
         title: setup.title
         description: setup.description
+  else
+    for name, setup of meta.conf.compose
+      list[name] =
+        data: []
+        title: setup.title
+        description: setup.description
+      switch
+        when setup.append
+          for alias in setup.append
+            list[name].data = list[name].data.concat results[alias]
+        else
+          return cb new Error "No supported combine method defined for entry #{name}
+          of #{meta.job}."
+  # add some meta information
   for name, data of list
     data.rows = data.data.length
     data.file = "#{data.title ? name}.csv"
   # generate csv
-  async.each Object.keys(results), (name, cb) ->
+  async.each Object.keys(list), (name, cb) ->
     # convert dates
-    for row in results[name]
+    for row in list[name].data
       for field, value of row
         row[field] = moment(value).format() if value instanceof Date
     json2csv
-      data: results[name]
+      data: list[name].data
       del: ';'
     , (err, string) ->
       return cb err if err

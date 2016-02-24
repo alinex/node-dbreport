@@ -43,9 +43,11 @@ sendEmpty: true
 # -------------------------------------------------
 compose:
   all:
-    title: List of Tables
-    description: a complete list of all relations in the database
-    append: tables, indexes
+    title: List of Objects
+    description: a complete list of all objects in the database
+    append:
+      - tables
+      - indexes
 
 # Where to Send them to
 # -------------------------------------------------
