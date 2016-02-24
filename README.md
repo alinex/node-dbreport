@@ -10,8 +10,8 @@ Run some database queries and send their results using email. The main features 
 - work on any database
 - fully configurable
 - send results as csv
-- cli interface
 - pretty email format
+- combine queries
 
 It can be started from command line or triggered using cron.
 
@@ -171,18 +171,38 @@ query:
   tables:
     title: List of Tables
     description: a complete list of all relations in the database
-    database: dvb_manage_live
-    command: "
-      SELECT    table_schema, table_name
-      FROM      information_schema.tables
-      ORDER BY  table_schema, table_name
-      "
+    database: test_postgresql
+    command: >
+      SELECT relname
+      FROM pg_class
+      WHERE relname !~ '^(pg_|sql_)' AND relkind = 'r';
+  indexes:
+    title: List of Indexes
+    description: a complete list of all indexes in the database
+    database: test_postgresql
+    command: >
+      SELECT relname
+      FROM pg_class
+      WHERE relname !~ '^(pg_|sql_)' AND relkind = 'i';
+
+# also go on for empty results
+sendEmpty: true
+
+# Compose
+# -------------------------------------------------
+compose:
+  all:
+    title: List of Objects
+    description: a complete list of all objects in the database
+    append:
+      - tables
+      - indexes
 
 # Where to Send them to
 # -------------------------------------------------
 email:
   base: default
-  to: betriebsteam@divibib.com
+  to: betrieb@mycompany.com
 ```
 
 As you see above you have the three parts to fill up:
