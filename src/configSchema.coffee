@@ -120,7 +120,38 @@ job =
             trim: true
             replace: [/\s+/, ' ']
       ]
-#    combine: <func>
+    sendEmpty:
+      title: "Send Empty Data"
+      description: "a flag indicating to also send an email if no data could be found"
+      type: 'boolean'
+      default: true
+    compose:
+      title: "Compose Data"
+      description: "the logic to compose results from data"
+      type: 'object'
+      entries: [
+        title: "List"
+        description: "the alias name of the list to create"
+        type: 'object'
+        mandatoryKeys: true
+        keys:
+          title:
+            title: "Title"
+            description: "the short title of the list to be used as file"
+            type: 'string'
+            optional: true
+          description:
+            title: "Description"
+            description: "a short abstract of what this list will contain"
+            type: 'string'
+            optional: true
+          append:
+            title: "Table Data to Append"
+            description: "the list of table data (alias names) to append"
+            type: 'array'
+            toArray: true
+            optional: true
+      ]
     email: email
 
 

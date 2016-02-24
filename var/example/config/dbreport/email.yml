@@ -7,9 +7,9 @@
 # This will extend/overwrite the allready existing setup within the code.
 default:
   # specify how to connect to the server
-  transport: smtp://alexander.schilling%40divibib.com:<<<env://PW_ALEX_DIVIBIB_COM>>>@mail.divibib.com
+  transport: smtp://alexander.schilling%40anythere.net:<<<env://PW_ALEX_MAIL>>>@mail.anythere.net
   # sender address
-  from: alexander.schilling@divibib.com
+  from: alexander.schilling@anythere.net
 
   # content
   locale: de

@@ -45,20 +45,24 @@ exports.run = (name, cb) ->
   async.mapOf conf.query, (query, n, cb) ->
     debug chalk.grey "#{n}: run query #{chalk.grey query.command.replace /\s+/g, ' '}"
     database.list query.database, query.command, (err, data) ->
-      return cb err if err
       debug "#{n}: #{data.length} rows fetched"
-      return cb() unless data.length # no entries
-      # convert dates
-      for row in data
-        for field, value of row
-          row[field] = moment(value).format() if value instanceof Date
-      json2csv
-        data: data
-        del: ';'
-      , cb
+      cb err, data
   , (err, results) ->
     return cb err if err
-    email name, results, cb
+    # check for sending
+    isEmpty = true
+    for job, data of results
+      continue unless data.length
+      isEmpty = false
+      break
+    if isEmpty
+      debug "#{name}: no data found"
+      return cb() unless conf.sendEmpty
+    # build results
+    compose
+      job: name
+      isEmpty: isEmpty
+    , results, cb
 
 
 # List possible jobs
@@ -90,8 +94,30 @@ addBody= (setup, context, cb) ->
     delete setup.body
     cb err
 
+# ### Make output objects
+compose = (meta, results, cb) ->
+  # make data files
+  csv = {}
+  async.each Object.keys(results), (name, cb) ->
+    # convert dates
+    for row in results[name]
+      for field, value of row
+        row[field] = moment(value).format() if value instanceof Date
+    json2csv
+      data: results[name]
+      del: ';'
+    , (err, string) ->
+      return cb err if err
+      csv[name] = string
+      cb()
+  , (err) ->
+    return cb err if err
+    # send email
+    email meta.job, csv, cb
+
 # ### Send email
 email = (name, data, cb) ->
+  console.log name, data
   conf = config.get "/dbreport/job/#{name}/email"
   # configure email
   setup = object.clone conf
