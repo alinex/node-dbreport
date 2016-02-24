@@ -3,9 +3,9 @@
 
 # Job Meta
 # -------------------------------------------------
-title: Vorhandene Tabellen
+title: Vorhandene Objekte
 description: |+
-  Dieser Bericht zeigt alle Tabellen die zum Zeitpunkt der Ausführung in der manage
+  Dieser Bericht zeigt alle Objekte die zum Zeitpunkt der Ausführung in der manage
   life Datenbank existieren. Die genaue Liste liegt als tables.csv dieser Email bei.
 
 # Queries to Run
