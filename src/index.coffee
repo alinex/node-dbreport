@@ -113,9 +113,7 @@ compose = (meta, results, cb) ->
         description: setup.description
       switch
         when setup.append
-          console.log setup.append, typeof setup.append
           setup.append = Object.keys meta.conf.query if typeof setup.append is 'boolean'
-          console.log setup.append
           for alias in setup.append
             list[name].data = list[name].data.concat results[alias]
         else
