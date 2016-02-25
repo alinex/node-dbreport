@@ -4,6 +4,10 @@ Version changes
 The following list gives a short overview about what is changed between
 individual versions:
 
+Version 1.1.1 (2016-02-25)
+-------------------------------------------------
+- Enhance documentation for configuration options.
+
 Version 1.1.0 (2016-02-24)
 -------------------------------------------------
 - Updated documentation.
