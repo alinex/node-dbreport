@@ -133,7 +133,84 @@ default:
     Find the files attached to your mail if data available!
 ```
 
-Like you see, you can use handlebar syntax to use some variables from the code.
+To make it more modular you may also add a `base` setting to use the setting defined
+there as a base and the options here may overwrite or enhance the base setup.
+
+#### Transport
+
+The transport setting defines how to send the email. This should specify the
+connection for the mailserver to use for sending. It is possible to do this using
+a connection url like above with the syntax:
+
+    <protocol>://<user>:<password>@<server>:<port>
+
+Or you may specify it as object like:
+
+``` yaml
+transport:
+  pool: <boolean> # use pooled connections defaults to false
+  direct: <boolean> # set to true to try to connect directly to recipients MX
+  service: <string> # name of well-known service (will set host, port and secure options)
+  # services: 1und1, AOL, DebugMail.io, DynectEmail, FastMail, GandiMail, Gmail,
+  # Godaddy, GodaddyAsia, GodaddyEurope, hot.ee, Hotmail, iCloud, mail.ee, Mail.ru,
+  # Mailgun, Mailjet, Mandrill, Naver, Postmark, QQ, QQex, SendCloud, SendGrid,
+  # SES, Sparkpost, Yahoo, Yandex, Zoho
+  host: <string> # the hostname or IP address to connect to
+  port: <integer> # the port to connect to (defaults to 25 or 465)
+  secure: <boolean> # if true the connection will only use TLS else (the default)
+  # TLS may still be upgraded to if available via the STARTTLS command
+  ignoreTLS: <boolean> # if this is true and secure is false, TLS will not be used
+  requireTLS: <boolean> # if this is true and secure is false, it uses STARTTLS
+  # even if the server does not advertise support for it
+  tls: <object> # additional socket options like `{rejectUnauthorized: true}`
+  auth: # authentication objects
+    user: <string> # the username
+    pass: <string> # the password for the user
+  authMethod: <string> # preferred authentication method, eg. ‘PLAIN’
+  name: <string> # hostname of the client, used for identifying to the server
+  localAddress: <string> # the local interface to bind to for network connections
+  connectionTimeout: <integer> # milliseconds to wait for the connection to establish
+  greetingTimeout: <integer> # milliseconds to wait for the greeting after connection is established
+  socketTimeout: <integer> # milliseconds of inactivity to allow
+  debug: <boolean> # set to true to log the complete SMTP traffic
+  # if pool is set to true:
+  maxConnections: <integer> # the count of maximum simultaneous connections (defaults to 5)
+  maxMessages: <integer> # limits the message count to be sent using a single connection (defaults to 100)
+  rateLimit: <integer> # limits the message count to be sent in a second (defaults to false)    
+```
+
+#### Addressing
+
+First you can define the sender address using:
+
+``` yaml
+from: <string> # the address used as sender(often the same as used in transport)
+replyTo: <string> # address which should be used for replys
+```
+
+And you give the addresses to send the mail to. In the following fields: `to`, `cc`
+and `bcc` you may give a single address or a list of addresses to use.
+All e-mail addresses can be plain e-mail addresses
+
+    name@mymailserver.com
+
+or with formatted name (includes unicode support)
+
+    "My Name" <name@mymailserver.com>
+
+#### Content
+
+The content of the mail consists of an subject line which should be not to long
+and the body. The body is given as [Markdown](http://alinex.github.io/develop/lang/markdown.html)
+syntax and supports all possibilities from
+[report](http://alinex.github.io/node-report/README.md.html#markup%20syntax).
+This will be converted to a plain text and html version for sending so that the
+mail client can choose the format to display.
+
+Like you see above, you can use handlebar syntax to use some variables from the
+code. This is possible in subject and body. And you may specify a
+local to use for date formatting.
+
 You can also define different templates which can be referenced from within the
 job.
 
@@ -148,6 +225,7 @@ The following context variables are possible:
     - file - filename
     - description - description of job (from config)
 
+Find more examples at [validator](http://alinex.github.io/node-validator/README.md.html#handlebars).
 
 ### jobs
 
@@ -185,9 +263,6 @@ query:
       FROM pg_class
       WHERE relname !~ '^(pg_|sql_)' AND relkind = 'i';
 
-# also go on for empty results
-sendEmpty: true
-
 # Compose
 # -------------------------------------------------
 compose:
@@ -200,19 +275,68 @@ compose:
 
 # Where to Send them to
 # -------------------------------------------------
+# also go on for empty results
+sendEmpty: true
+
 email:
   base: default
   to: betrieb@mycompany.com
 ```
 
-As you see above you have the three parts to fill up:
+As you see above you have the four parts to fill up:
+
 - meta data to be used in the email like: '{{conf.title}}'
 - queries with a name, the db reference name and code to execute
+- compose options (optional)
 - email sending
 
-The database is defined below. While the email mostly uses a 'base' template
-and only defines the parts which are changed to the base template. So a propper
-use of the templates will help you minimize the configuration for the jobs.
+#### Meta Data
+
+Here only the `title` and `description` can be set tzo be used within the email
+template. They are useable as  `{{conf.title}}` or `{{conf.description}}` in the
+template.
+
+#### Queries
+
+This let you define multiple database queries to execute. They are given as an
+object with an alias name as key. This name can be used later in composing
+multiple queries together.
+
+If no `compose` setting is given they will used directly as the attached csv files.
+Therefore the `title` and `description` may be given. The resulting CSV file names
+will use the title or alias.
+
+The `database` setting is a reference to the database connection to use. This is
+defined separately (see below).
+
+The `command` string is the SQL to be executed. This will be send as is to the
+database server. So there are no variables possible.
+
+#### Compose
+
+If you want to compose multiple query results together this section allows for.
+It should contain an object of compositions to send as separate files. The
+key of each entry is used as an alias.
+
+Each composition contains:
+
+- title <string> - to be used as filename and as template variable
+- description <string> - to be used as template variable
+- append 'true' or <list of query aliases>
+
+Other composition methods may follow later.
+
+#### Email
+
+Here you have the option to prevent sending empty emails (without attached csv)
+by setting `sendEmpty` to `false`.
+
+The email part is exactly like defined above in the base email settings. So you
+have the possibility to overwrite each value written there with the ones here.
+
+While the email mostly uses a 'base' template and only defines the parts which
+are changed to the base template. So a proper use of the templates will help
+you minimize the configuration for the jobs.
 
 ### Database
 
@@ -221,9 +345,9 @@ Also you need the setup under `/database` like described in
 This is used to make the specific database connections.
 
 
-Special Combine
+Compose
 -------------------------------------------------
-For special reports a special combine method may be coded to use.
+Like seen above the compose section can be used to
 
 
 License

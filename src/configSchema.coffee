@@ -148,8 +148,15 @@ job =
           append:
             title: "Table Data to Append"
             description: "the list of table data (alias names) to append"
-            type: 'array'
-            toArray: true
+            type: 'or'
+            or: [
+              type: 'array'
+              toArray: true
+              entries:
+                type: 'string'
+            ,
+              type: "boolean"
+            ]
             optional: true
       ]
     email: email
