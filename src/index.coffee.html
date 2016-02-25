@@ -376,6 +376,9 @@ be changed at any time.</p>
         <span class="nv">description: </span><span class="nx">setup</span><span class="p">.</span><span class="nx">description</span>
       <span class="k">switch</span>
         <span class="k">when</span> <span class="nx">setup</span><span class="p">.</span><span class="nx">append</span>
+          <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="nx">setup</span><span class="p">.</span><span class="nx">append</span><span class="p">,</span> <span class="k">typeof</span> <span class="nx">setup</span><span class="p">.</span><span class="nx">append</span>
+          <span class="nv">setup.append = </span><span class="nb">Object</span><span class="p">.</span><span class="nx">keys</span> <span class="nx">meta</span><span class="p">.</span><span class="nx">conf</span><span class="p">.</span><span class="nx">query</span> <span class="k">if</span> <span class="k">typeof</span> <span class="nx">setup</span><span class="p">.</span><span class="nx">append</span> <span class="o">is</span> <span class="s">&#39;boolean&#39;</span>
+          <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="nx">setup</span><span class="p">.</span><span class="nx">append</span>
           <span class="k">for</span> <span class="nx">alias</span> <span class="k">in</span> <span class="nx">setup</span><span class="p">.</span><span class="nx">append</span>
             <span class="nx">list</span><span class="p">[</span><span class="nx">name</span><span class="p">].</span><span class="nv">data = </span><span class="nx">list</span><span class="p">[</span><span class="nx">name</span><span class="p">].</span><span class="nx">data</span><span class="p">.</span><span class="nx">concat</span> <span class="nx">results</span><span class="p">[</span><span class="nx">alias</span><span class="p">]</span>
         <span class="k">else</span>

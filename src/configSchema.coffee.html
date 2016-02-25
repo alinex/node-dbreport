@@ -227,8 +227,15 @@
           <span class="nv">append:</span>
             <span class="nv">title: </span><span class="s">&quot;Table Data to Append&quot;</span>
             <span class="nv">description: </span><span class="s">&quot;the list of table data (alias names) to append&quot;</span>
-            <span class="nv">type: </span><span class="s">&#39;array&#39;</span>
-            <span class="nv">toArray: </span><span class="kc">true</span>
+            <span class="nv">type: </span><span class="s">&#39;or&#39;</span>
+            <span class="o">or:</span> <span class="p">[</span>
+              <span class="nv">type: </span><span class="s">&#39;array&#39;</span>
+              <span class="nv">toArray: </span><span class="kc">true</span>
+              <span class="nv">entries:</span>
+                <span class="nv">type: </span><span class="s">&#39;string&#39;</span>
+            <span class="p">,</span>
+              <span class="nv">type: </span><span class="s">&quot;boolean&quot;</span>
+            <span class="p">]</span>
             <span class="nv">optional: </span><span class="kc">true</span>
       <span class="p">]</span>
     <span class="nv">email: </span><span class="nx">email</span>

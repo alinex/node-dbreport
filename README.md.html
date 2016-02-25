@@ -43,14 +43,35 @@
       <div class="heading h3">
         <a href="#email%20templates">Email Templates</a>
       </div>
+      <div class="heading h4">
+        <a href="#transport">Transport</a>
+      </div>
+      <div class="heading h4">
+        <a href="#addressing">Addressing</a>
+      </div>
+      <div class="heading h4">
+        <a href="#content">Content</a>
+      </div>
       <div class="heading h3">
         <a href="#jobs">jobs</a>
+      </div>
+      <div class="heading h4">
+        <a href="#meta%20data">Meta Data</a>
+      </div>
+      <div class="heading h4">
+        <a href="#queries">Queries</a>
+      </div>
+      <div class="heading h4">
+        <a href="#compose">Compose</a>
+      </div>
+      <div class="heading h4">
+        <a href="#email">Email</a>
       </div>
       <div class="heading h3">
         <a href="#database">Database</a>
       </div>
       <div class="heading h2">
-        <a href="#special%20combine">Special Combine</a>
+        <a href="#compose">Compose</a>
       </div>
       <div class="heading h2">
         <a href="#license">License</a>
@@ -241,8 +262,116 @@ default:
     Find the files attached to your mail if data available!
 </code></pre>
 
-<p>Like you see, you can use handlebar syntax to use some variables from the code.
-You can also define different templates which can be referenced from within the
+<p>To make it more modular you may also add a <code>base</code> setting to use the setting defined
+there as a base and the options here may overwrite or enhance the base setup.</p>
+
+
+<div class="pilwrap" id="transport">
+  <h4>
+    <a href="#transport" name="transport" class="pilcrow">&#182;</a>
+    Transport
+  </h4>
+</div>
+
+
+<p>The transport setting defines how to send the email. This should specify the
+connection for the mailserver to use for sending. It is possible to do this using
+a connection url like above with the syntax:</p>
+
+
+<div class="highlight"><pre><code><span class="o">&lt;</span><span class="nx">protocol</span><span class="o">&gt;:</span><span class="c1">//&lt;user&gt;:&lt;password&gt;@&lt;server&gt;:&lt;port&gt;</span>
+</code></pre></div>
+
+
+
+<p>Or you may specify it as object like:</p>
+
+
+<div class="highlight"><pre><code><span class="l-Scalar-Plain">transport</span><span class="p-Indicator">:</span>
+  <span class="l-Scalar-Plain">pool</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">&lt;boolean&gt;</span> <span class="c1"># use pooled connections defaults to false</span>
+  <span class="l-Scalar-Plain">direct</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">&lt;boolean&gt;</span> <span class="c1"># set to true to try to connect directly to recipients MX</span>
+  <span class="l-Scalar-Plain">service</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">&lt;string&gt;</span> <span class="c1"># name of well-known service (will set host, port and secure options)</span>
+  <span class="c1"># services: 1und1, AOL, DebugMail.io, DynectEmail, FastMail, GandiMail, Gmail,</span>
+  <span class="c1"># Godaddy, GodaddyAsia, GodaddyEurope, hot.ee, Hotmail, iCloud, mail.ee, Mail.ru,</span>
+  <span class="c1"># Mailgun, Mailjet, Mandrill, Naver, Postmark, QQ, QQex, SendCloud, SendGrid,</span>
+  <span class="c1"># SES, Sparkpost, Yahoo, Yandex, Zoho</span>
+  <span class="l-Scalar-Plain">host</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">&lt;string&gt;</span> <span class="c1"># the hostname or IP address to connect to</span>
+  <span class="l-Scalar-Plain">port</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">&lt;integer&gt;</span> <span class="c1"># the port to connect to (defaults to 25 or 465)</span>
+  <span class="l-Scalar-Plain">secure</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">&lt;boolean&gt;</span> <span class="c1"># if true the connection will only use TLS else (the default)</span>
+  <span class="c1"># TLS may still be upgraded to if available via the STARTTLS command</span>
+  <span class="l-Scalar-Plain">ignoreTLS</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">&lt;boolean&gt;</span> <span class="c1"># if this is true and secure is false, TLS will not be used</span>
+  <span class="l-Scalar-Plain">requireTLS</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">&lt;boolean&gt;</span> <span class="c1"># if this is true and secure is false, it uses STARTTLS</span>
+  <span class="c1"># even if the server does not advertise support for it</span>
+  <span class="l-Scalar-Plain">tls</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">&lt;object&gt;</span> <span class="c1"># additional socket options like `{rejectUnauthorized: true}`</span>
+  <span class="l-Scalar-Plain">auth</span><span class="p-Indicator">:</span> <span class="c1"># authentication objects</span>
+    <span class="l-Scalar-Plain">user</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">&lt;string&gt;</span> <span class="c1"># the username</span>
+    <span class="l-Scalar-Plain">pass</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">&lt;string&gt;</span> <span class="c1"># the password for the user</span>
+  <span class="l-Scalar-Plain">authMethod</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">&lt;string&gt;</span> <span class="c1"># preferred authentication method, eg. ‘PLAIN’</span>
+  <span class="l-Scalar-Plain">name</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">&lt;string&gt;</span> <span class="c1"># hostname of the client, used for identifying to the server</span>
+  <span class="l-Scalar-Plain">localAddress</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">&lt;string&gt;</span> <span class="c1"># the local interface to bind to for network connections</span>
+  <span class="l-Scalar-Plain">connectionTimeout</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">&lt;integer&gt;</span> <span class="c1"># milliseconds to wait for the connection to establish</span>
+  <span class="l-Scalar-Plain">greetingTimeout</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">&lt;integer&gt;</span> <span class="c1"># milliseconds to wait for the greeting after connection is established</span>
+  <span class="l-Scalar-Plain">socketTimeout</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">&lt;integer&gt;</span> <span class="c1"># milliseconds of inactivity to allow</span>
+  <span class="l-Scalar-Plain">debug</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">&lt;boolean&gt;</span> <span class="c1"># set to true to log the complete SMTP traffic</span>
+  <span class="c1"># if pool is set to true:</span>
+  <span class="l-Scalar-Plain">maxConnections</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">&lt;integer&gt;</span> <span class="c1"># the count of maximum simultaneous connections (defaults to 5)</span>
+  <span class="l-Scalar-Plain">maxMessages</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">&lt;integer&gt;</span> <span class="c1"># limits the message count to be sent using a single connection (defaults to 100)</span>
+  <span class="l-Scalar-Plain">rateLimit</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">&lt;integer&gt;</span> <span class="c1"># limits the message count to be sent in a second (defaults to false)    </span>
+</code></pre></div>
+
+
+
+
+<div class="pilwrap" id="addressing">
+  <h4>
+    <a href="#addressing" name="addressing" class="pilcrow">&#182;</a>
+    Addressing
+  </h4>
+</div>
+
+
+<p>First you can define the sender address using:</p>
+
+
+<div class="highlight"><pre><code><span class="l-Scalar-Plain">from</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">&lt;string&gt;</span> <span class="c1"># the address used as sender(often the same as used in transport)</span>
+<span class="l-Scalar-Plain">replyTo</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">&lt;string&gt;</span> <span class="c1"># address which should be used for replys</span>
+</code></pre></div>
+
+
+
+<p>And you give the addresses to send the mail to. In the following fields: <code>to</code>, <code>cc</code>
+and <code>bcc</code> you may give a single address or a list of addresses to use.
+All e-mail addresses can be plain e-mail addresses</p>
+
+<pre><code><a href='mailto:name@mymailserver.com'>name@mymailserver.com</a>
+</code></pre>
+
+<p>or with formatted name (includes unicode support)</p>
+
+<pre><code>"My Name" &lt;<a href='mailto:name@mymailserver.com'>name@mymailserver.com</a>&gt;
+</code></pre>
+
+
+<div class="pilwrap" id="content">
+  <h4>
+    <a href="#content" name="content" class="pilcrow">&#182;</a>
+    Content
+  </h4>
+</div>
+
+
+<p>The content of the mail consists of an subject line which should be not to long
+and the body. The body is given as <a href="http://alinex.github.io/develop/lang/markdown.html">Markdown</a>
+syntax and supports all possibilities from
+<a href="http://alinex.github.io/node-report/README.md.html#markup%20syntax">report</a>.
+This will be converted to a plain text and html version for sending so that the
+mail client can choose the format to display.</p>
+
+<p>Like you see above, you can use handlebar syntax to use some variables from the
+code. This is possible in subject and body. And you may specify a
+local to use for date formatting.</p>
+
+<p>You can also define different templates which can be referenced from within the
 job.</p>
 
 <p>The following context variables are possible:</p>
@@ -257,6 +386,8 @@ job.</p>
 <li>file - filename</li>
 <li>description - description of job (from config)</li></ul></li>
 </ul>
+
+<p>Find more examples at <a href="http://alinex.github.io/node-validator/README.md.html#handlebars">validator</a>.</p>
 
 
 <div class="pilwrap" id="jobs">
@@ -300,9 +431,6 @@ query:
       FROM pg_class
       WHERE relname !~ '^(pg_|sql_)' AND relkind = 'i';
 
-# also go on for empty results
-sendEmpty: true
-
 # Compose
 # -------------------------------------------------
 compose:
@@ -315,19 +443,100 @@ compose:
 
 # Where to Send them to
 # -------------------------------------------------
+# also go on for empty results
+sendEmpty: true
+
 email:
   base: default
   to: <a href='mailto:betrieb@mycompany.com'>betrieb@mycompany.com</a>
 </code></pre>
 
-<p>As you see above you have the three parts to fill up:
-- meta data to be used in the email like: '{{conf.title}}'
-- queries with a name, the db reference name and code to execute
-- email sending</p>
+<p>As you see above you have the four parts to fill up:</p>
 
-<p>The database is defined below. While the email mostly uses a 'base' template
-and only defines the parts which are changed to the base template. So a propper
-use of the templates will help you minimize the configuration for the jobs.</p>
+<ul>
+<li>meta data to be used in the email like: '{{conf.title}}'</li>
+<li>queries with a name, the db reference name and code to execute</li>
+<li>compose options (optional)</li>
+<li>email sending</li>
+</ul>
+
+
+<div class="pilwrap" id="meta%20data">
+  <h4>
+    <a href="#meta%20data" name="meta%20data" class="pilcrow">&#182;</a>
+    Meta Data
+  </h4>
+</div>
+
+
+<p>Here only the <code>title</code> and <code>description</code> can be set tzo be used within the email
+template. They are useable as  <code>{{conf.title}}</code> or <code>{{conf.description}}</code> in the
+template.</p>
+
+
+<div class="pilwrap" id="queries">
+  <h4>
+    <a href="#queries" name="queries" class="pilcrow">&#182;</a>
+    Queries
+  </h4>
+</div>
+
+
+<p>This let you define multiple database queries to execute. They are given as an
+object with an alias name as key. This name can be used later in composing
+multiple queries together.</p>
+
+<p>If no <code>compose</code> setting is given they will used directly as the attached csv files.
+Therefore the <code>title</code> and <code>description</code> may be given. The resulting CSV file names
+will use the title or alias.</p>
+
+<p>The <code>database</code> setting is a reference to the database connection to use. This is
+defined separately (see below).</p>
+
+<p>The <code>command</code> string is the SQL to be executed. This will be send as is to the
+database server. So there are no variables possible.</p>
+
+
+<div class="pilwrap" id="compose">
+  <h4>
+    <a href="#compose" name="compose" class="pilcrow">&#182;</a>
+    Compose
+  </h4>
+</div>
+
+
+<p>If you want to compose multiple query results together this section allows for.
+It should contain an object of compositions to send as separate files. The
+key of each entry is used as an alias.</p>
+
+<p>Each composition contains:</p>
+
+<ul>
+<li>title <string> - to be used as filename and as template variable</li>
+<li>description <string> - to be used as template variable</li>
+<li>append 'true' or <list of query aliases></li>
+</ul>
+
+<p>Other composition methods may follow later.</p>
+
+
+<div class="pilwrap" id="email">
+  <h4>
+    <a href="#email" name="email" class="pilcrow">&#182;</a>
+    Email
+  </h4>
+</div>
+
+
+<p>Here you have the option to prevent sending empty emails (without attached csv)
+by setting <code>sendEmpty</code> to <code>false</code>.</p>
+
+<p>The email part is exactly like defined above in the base email settings. So you
+have the possibility to overwrite each value written there with the ones here.</p>
+
+<p>While the email mostly uses a 'base' template and only defines the parts which
+are changed to the base template. So a proper use of the templates will help
+you minimize the configuration for the jobs.</p>
 
 
 <div class="pilwrap" id="database">
@@ -343,15 +552,15 @@ use of the templates will help you minimize the configuration for the jobs.</p>
 This is used to make the specific database connections.</p>
 
 
-<div class="pilwrap" id="special%20combine">
+<div class="pilwrap" id="compose_1">
   <h2>
-    <a href="#special%20combine" name="special%20combine" class="pilcrow">&#182;</a>
-    Special Combine
+    <a href="#compose_1" name="compose_1" class="pilcrow">&#182;</a>
+    Compose
   </h2>
 </div>
 
 
-<p>For special reports a special combine method may be coded to use.</p>
+<p>Like seen above the compose section can be used to</p>
 
 
 <div class="pilwrap" id="license">
