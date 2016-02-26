@@ -15,7 +15,7 @@ async = require 'alinex-async'
 Report = require 'alinex-report'
 # include classes and helpers
 dbreport = require './index'
-logo = require('./logo') 'Database Reports'
+logo = require('alinex').logo 'Database Reports'
 schema = require './configSchema'
 
 process.title = 'DbReport'
