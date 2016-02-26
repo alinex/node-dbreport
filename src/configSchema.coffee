@@ -124,9 +124,8 @@ job =
             description: "the sort order for the results (if needed)"
             type: 'array'
             toArray: true
-            entries: [
+            entries:
               type: 'string'
-            ]
             optional: true
       ]
     sendEmpty:
@@ -172,9 +171,8 @@ job =
             description: "the sort order for the results (if needed)"
             type: 'array'
             toArray: true
-            entries: [
+            entries:
               type: 'string'
-            ]
             optional: true
       ]
     email: email

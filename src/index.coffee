@@ -45,7 +45,7 @@ exports.run = (name, cb) ->
   async.mapOf conf.query, (query, n, cb) ->
     debug chalk.grey "#{n}: run query #{chalk.grey query.command.replace /\s+/g, ' '}"
     database.list query.database, query.command, (err, data) ->
-      debug "#{n}: #{data.length} rows fetched"
+      debug "#{n}: #{data?.length} rows fetched"
       cb err, data
   , (err, results) ->
     return cb err if err
@@ -126,7 +126,7 @@ compose = (meta, results, cb) ->
   for name, file of list
     continue unless file.sort
     debug chalk.grey "#{meta.job}.#{name}: sort by #{file.sort}"
-    sorter = [array.sortBy].concat file.sort
+    sorter = [file.data].concat file.sort
     file.data = array.sortBy.apply this, sorter
   # add some meta information
   debug chalk.grey "#{meta.job}: convert to csv"
