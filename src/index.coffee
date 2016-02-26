@@ -16,7 +16,7 @@ moment = require 'moment'
 config = require 'alinex-config'
 database = require 'alinex-database'
 async = require 'alinex-async'
-{object} = require 'alinex-util'
+{array, object} = require 'alinex-util'
 Report = require 'alinex-report'
 
 
@@ -105,12 +105,15 @@ compose = (meta, results, cb) ->
         data: results[name]
         title: setup.title
         description: setup.description
+        sort: setup.sort
   else
+    debug chalk.grey "#{meta.job}: composing"
     for name, setup of meta.conf.compose
       list[name] =
         data: []
         title: setup.title
         description: setup.description
+        sort: setup.sort
       switch
         when setup.append
           setup.append = Object.keys meta.conf.query if typeof setup.append is 'boolean'
@@ -119,15 +122,26 @@ compose = (meta, results, cb) ->
         else
           return cb new Error "No supported combine method defined for entry #{name}
           of #{meta.job}."
+  # sort lists
+  for name, file of list
+    continue unless file.sort
+    debug chalk.grey "#{meta.job}.#{name}: sort by #{file.sort}"
+    sorter = [array.sortBy].concat file.sort
+    file.data = array.sortBy.apply this, sorter
   # add some meta information
-  for name, data of list
-    data.rows = data.data.length
-    data.file = "#{data.title ? name}.csv"
+  debug chalk.grey "#{meta.job}: convert to csv"
+  for name, file of list
+    file.rows = file.data.length
+    file.file = "#{file.title ? name}.csv"
   # generate csv
   async.each Object.keys(list), (name, cb) ->
-    # convert dates
+    # optimize structure
+    first = list[name].data[0]
     for row in list[name].data
       for field, value of row
+        # add missing fields
+        first[field] ?= null
+        # convert dates
         row[field] = moment(value).format() if value instanceof Date
     json2csv
       data: list[name].data
@@ -145,6 +159,7 @@ compose = (meta, results, cb) ->
 email = (meta, list, cb) ->
   # configure email
   setup = object.clone meta.conf.email
+  debug chalk.grey "#{meta.job}: building email"
   # use base settings
   while setup.base
     base = config.get "/dbreport/email/#{setup.base}"
@@ -177,7 +192,7 @@ email = (meta, list, cb) ->
       delete setup.bcc
     # send email
     mails = setup.to?.map (e) -> e.replace /".*?" <(.*?)>/g, '$1'
-    debug "sending email to #{mails?.join ', '}..."
+    debug chalk.grey "#{meta.job}: sending email to #{mails?.join ', '}..."
     # setup transporter
     transporter = nodemailer.createTransport setup.transport ? 'direct:?name=hostname'
     transporter.use 'compile', inlineBase64

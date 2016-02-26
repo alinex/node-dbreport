@@ -119,6 +119,15 @@ job =
             type: 'string'
             trim: true
             replace: [/\s+/, ' ']
+          sort:
+            title: "Sort Order"
+            description: "the sort order for the results (if needed)"
+            type: 'array'
+            toArray: true
+            entries: [
+              type: 'string'
+            ]
+            optional: true
       ]
     sendEmpty:
       title: "Send Empty Data"
@@ -156,6 +165,15 @@ job =
                 type: 'string'
             ,
               type: "boolean"
+            ]
+            optional: true
+          sort:
+            title: "Sort Order"
+            description: "the sort order for the results (if needed)"
+            type: 'array'
+            toArray: true
+            entries: [
+              type: 'string'
             ]
             optional: true
       ]
