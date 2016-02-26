@@ -440,6 +440,7 @@ compose:
     append:
       - tables
       - indexes
+    sort: relname
 
 # Where to Send them to
 # -------------------------------------------------
@@ -487,8 +488,8 @@ object with an alias name as key. This name can be used later in composing
 multiple queries together.</p>
 
 <p>If no <code>compose</code> setting is given they will used directly as the attached csv files.
-Therefore the <code>title</code> and <code>description</code> may be given. The resulting CSV file names
-will use the title or alias.</p>
+Therefore the <code>title</code>, <code>description</code> and <code>sort</code> settings may be given. The resulting
+CSV file names will use the title or alias.</p>
 
 <p>The <code>database</code> setting is a reference to the database connection to use. This is
 defined separately (see below).</p>
@@ -515,6 +516,7 @@ key of each entry is used as an alias.</p>
 <li>title <string> - to be used as filename and as template variable</li>
 <li>description <string> - to be used as template variable</li>
 <li>append 'true' or <list of query aliases></li>
+<li>sort [<field>]... - list of sort fields (prepend with '-' for decreasing order)</li>
 </ul>
 
 <p>Other composition methods may follow later.</p>
