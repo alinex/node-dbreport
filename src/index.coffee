@@ -135,6 +135,7 @@ compose = (meta, results, cb) ->
     file.file = "#{file.title ? name}.csv"
   # generate csv
   async.each Object.keys(list), (name, cb) ->
+    return cb() unless list[name].data.length
     # optimize structure
     first = list[name].data[0]
     for row in list[name].data
