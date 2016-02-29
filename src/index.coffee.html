@@ -467,6 +467,7 @@ Make output objects
         </td>
         <td class="code highlight">
           <pre class="coffeescript">  async.each Object.keys(list), <span class="hljs-function"><span class="hljs-params">(name, cb)</span> -&gt;</span>
+    <span class="hljs-keyword">return</span> cb() <span class="hljs-keyword">unless</span> list[name].data.length
 </pre>
         </td>
       </tr>
