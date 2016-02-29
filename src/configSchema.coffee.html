@@ -6,20 +6,31 @@
   <link rel="stylesheet" media="all" href="../doc-style.css" />
   <script src="../doc-filelist.js"></script>
   <script>
-    var relativeDir = "../", thisFile = "home/alex/github/node-dbreport/src/configSchemacoffee", defaultSidebar = true;
+    var relativeDir = "../";
+    var thisFile = "home/alex/github/node-dbreport/src/configSchema.coffee";
+    var defaultSidebar = true;
   </script>
   <script src="../doc-script.js"></script>
-</head>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0" /></head
 <body>
   <nav>
-<div class="logo"><a href="http://alinex.github.io" onmouseover="lllogo.src='https://alinex.github.io/images/Alinex-200.png'" onmouseout="lllogo.src='https://alinex.github.io/images/Alinex-black-200.png'">
-  <img name="lllogo" src="https://alinex.github.io/images/Alinex-black-200.png" width="150" title="Alinex Universe Homepage" />
+<div class="logo"><a href="http://alinex.github.io"
+  onmouseover="logo.src='https://alinex.github.io/images/Alinex-200.png'"
+  onmouseout="logo.src='https://alinex.github.io/images/Alinex-black-200.png'">
+  <img name="logo" src="https://alinex.github.io/images/Alinex-black-200.png"
+    width="150" title="Alinex Universe Homepage" />
   </a>
-  <img src="http://alinex.github.io/images/Alinex-200.png" style="display:none" alt="preloading" />
+  <img src="http://alinex.github.io/images/Alinex-200.png"
+    style="display:none" alt="preloading" />
 </div>
 <div class="links">
-  <a href="http://alinex.github.io/blog" class="btn btn-primary"><span class="glyphicon-cog"></span> Blog</a>
-  <a href="http://alinex.github.io/code.html" class="btn btn-warning"><span class="glyphicon-pencil"></span> Code</a>
+  <a href="http://alinex.github.io/blog"
+    class="btn btn-primary"><span class="glyphicon-pencil"></span> Blog</a>
+  <a href="http://alinex.github.io/develop"
+    class="btn btn-primary"><span class="glyphicon-book"></span> Develop</a>
+  <a href="http://alinex.github.io/code.html"
+    class="btn btn-warning"><span class="glyphicon-cog"></span> Code</a>
 </div>
 </nav><div id="sidebar_wrapper">
     <div id="sidebar_switch">
@@ -28,273 +39,288 @@
     </div>
     <div id="tree"></div>
     <div id="headings">
+
       <div class="heading h1">
-        <a href="#configuration%20schema">Configuration Schema</a>
+        <a href="#configuration-schema">Configuration Schema</a>
       </div>
+
       <div class="heading h2">
-        <a href="#email%20action">Email Action</a>
+        <a href="#email-action">Email Action</a>
       </div>
+
       <div class="heading h2">
-        <a href="#complete%20schema%20definition">Complete Schema Definition</a>
+        <a href="#complete-schema-definition">Complete Schema Definition</a>
       </div>
+
       <div class="heading h2">
-        <a href="#complete%20schema%20definition">Complete Schema Definition</a>
+        <a href="#complete-schema-definition-1">Complete Schema Definition</a>
       </div>
+
     </div>
   </div>
   <div id="sidebar-toggle"></div>
-  <div id="container" tabindex="0"><a id="fork" href="https://github.com/alinex/node-dbreport" title="Fork me on GitHub"></a><div class="background highlight"></div>
+  <div id="container" tabindex="0"><a id="fork" href="https://github.com/alinex/node-dbreport" title="Fork me on GitHub"></a>
+    <div class="background highlight"></div>
 <table cellpadding="0" cellspacing="0">
   <tbody>
+    
+    
       <tr>
         <td class="docs">
-<div class="pilwrap" id="configuration%20schema">
+          <div class="pilwrap" id="configuration-schema">
   <h1>
-    <a href="#configuration%20schema" name="configuration%20schema" class="pilcrow">&#182;</a>
-    Configuration Schema
+    <a href="#configuration-schema" name="configuration-schema" class="pilcrow"></a>
+Configuration Schema
   </h1>
 </div>
 
         </td>
-        <td class="code highlight"><div class="highlight"><pre></pre></div>
+        <td class="code highlight">
+          <pre class="coffeescript">
+
+</pre>
         </td>
       </tr>
+    
       <tr>
         <td class="docs">
-<div class="pilwrap" id="email%20action">
+          <div class="pilwrap" id="email-action">
   <h2>
-    <a href="#email%20action" name="email%20action" class="pilcrow">&#182;</a>
-    Email Action
+    <a href="#email-action" name="email-action" class="pilcrow"></a>
+Email Action
   </h2>
 </div>
 
         </td>
-        <td class="code highlight"><div class="highlight"><pre>
-<span class="nv">email =</span>
-  <span class="nv">title: </span><span class="s">&quot;Email Action&quot;</span>
-  <span class="nv">description: </span><span class="s">&quot;the setup for an individual email action&quot;</span>
-  <span class="nv">type: </span><span class="s">&#39;object&#39;</span>
-  <span class="nv">allowedKeys: </span><span class="kc">true</span>
-  <span class="nv">keys:</span>
-    <span class="nv">base:</span>
-      <span class="nv">title: </span><span class="s">&quot;Base Template&quot;</span>
-      <span class="nv">type: </span><span class="s">&#39;string&#39;</span>
-      <span class="nv">description: </span><span class="s">&quot;the template used as base for this&quot;</span>
-      <span class="nv">list: </span><span class="s">&#39;&lt;&lt;&lt;context:///email&gt;&gt;&gt;&#39;</span>
-    <span class="nv">transport:</span>
-      <span class="nv">title: </span><span class="s">&quot;Service Connection&quot;</span>
-      <span class="nv">description: </span><span class="s">&quot;the service connection to send mails through&quot;</span>
-      <span class="nv">type: </span><span class="s">&#39;or&#39;</span>
-      <span class="o">or:</span> <span class="p">[</span>
-        <span class="nv">type: </span><span class="s">&#39;string&#39;</span>
-      <span class="p">,</span>
-        <span class="nv">type: </span><span class="s">&#39;object&#39;</span>
-      <span class="p">]</span>
-    <span class="nv">from:</span>
-      <span class="nv">title: </span><span class="s">&quot;From&quot;</span>
-      <span class="nv">description: </span><span class="s">&quot;the address emails are send from&quot;</span>
-      <span class="nv">type: </span><span class="s">&#39;string&#39;</span>
-    <span class="nv">replyTo:</span>
-      <span class="nv">title: </span><span class="s">&quot;Reply To&quot;</span>
-      <span class="nv">description: </span><span class="s">&quot;the address to send answers to&quot;</span>
-      <span class="nv">type: </span><span class="s">&#39;string&#39;</span>
-      <span class="nv">optional: </span><span class="kc">true</span>
-    <span class="nv">to:</span>
-      <span class="nv">title: </span><span class="s">&quot;To&quot;</span>
-      <span class="nv">description: </span><span class="s">&quot;the address emails are send to&quot;</span>
-      <span class="nv">type: </span><span class="s">&#39;array&#39;</span>
-      <span class="nv">toArray: </span><span class="kc">true</span>
-      <span class="nv">entries:</span>
-        <span class="nv">type: </span><span class="s">&#39;string&#39;</span>
-    <span class="nv">cc:</span>
-      <span class="nv">title: </span><span class="s">&quot;Cc&quot;</span>
-      <span class="nv">description: </span><span class="s">&quot;the carbon copy addresses&quot;</span>
-      <span class="nv">type: </span><span class="s">&#39;array&#39;</span>
-      <span class="nv">toArray: </span><span class="kc">true</span>
-      <span class="nv">entries:</span>
-        <span class="nv">type: </span><span class="s">&#39;string&#39;</span>
-    <span class="nv">bcc:</span>
-      <span class="nv">title: </span><span class="s">&quot;Bcc&quot;</span>
-      <span class="nv">description: </span><span class="s">&quot;the blind carbon copy addresses&quot;</span>
-      <span class="nv">type: </span><span class="s">&#39;array&#39;</span>
-      <span class="nv">toArray: </span><span class="kc">true</span>
-      <span class="nv">entries:</span>
-        <span class="nv">type: </span><span class="s">&#39;string&#39;</span>
-    <span class="nv">locale:</span>
-      <span class="nv">title: </span><span class="s">&quot;Locale Setting&quot;</span>
-      <span class="nv">description: </span><span class="s">&quot;the locale setting for subject and body dates&quot;</span>
-      <span class="nv">type: </span><span class="s">&#39;string&#39;</span>
-      <span class="nv">minLength: </span><span class="mi">2</span>
-      <span class="nv">maxLength: </span><span class="mi">5</span>
-      <span class="nv">lowerCase: </span><span class="kc">true</span>
-      <span class="nv">match: </span><span class="sr">/^[a-z]{2}(-[a-z]{2})?$/</span>
-    <span class="nv">subject:</span>
-      <span class="nv">title: </span><span class="s">&quot;Subject&quot;</span>
-      <span class="nv">description: </span><span class="s">&quot;the subject line of the generated email&quot;</span>
-      <span class="nv">type: </span><span class="s">&#39;handlebars&#39;</span>
-    <span class="nv">body:</span>
-      <span class="nv">title: </span><span class="s">&quot;Content&quot;</span>
-      <span class="nv">description: </span><span class="s">&quot;the body content of the generated email&quot;</span>
-      <span class="nv">type: </span><span class="s">&#39;handlebars&#39;</span>
+        <td class="code highlight">
+          <pre class="coffeescript">email =
+  <span class="hljs-attribute">title</span>: <span class="hljs-string">"Email Action"</span>
+  <span class="hljs-attribute">description</span>: <span class="hljs-string">"the setup for an individual email action"</span>
+  <span class="hljs-attribute">type</span>: <span class="hljs-string">'object'</span>
+  <span class="hljs-attribute">allowedKeys</span>: <span class="hljs-literal">true</span>
+  <span class="hljs-attribute">keys</span>:
+    <span class="hljs-attribute">base</span>:
+      <span class="hljs-attribute">title</span>: <span class="hljs-string">"Base Template"</span>
+      <span class="hljs-attribute">type</span>: <span class="hljs-string">'string'</span>
+      <span class="hljs-attribute">description</span>: <span class="hljs-string">"the template used as base for this"</span>
+      <span class="hljs-attribute">list</span>: <span class="hljs-string">'&lt;&lt;&lt;context:///email&gt;&gt;&gt;'</span>
+    <span class="hljs-attribute">transport</span>:
+      <span class="hljs-attribute">title</span>: <span class="hljs-string">"Service Connection"</span>
+      <span class="hljs-attribute">description</span>: <span class="hljs-string">"the service connection to send mails through"</span>
+      <span class="hljs-attribute">type</span>: <span class="hljs-string">'or'</span>
+      <span class="hljs-attribute">or</span>: [
+        <span class="hljs-attribute">type</span>: <span class="hljs-string">'string'</span>
+      ,
+        <span class="hljs-attribute">type</span>: <span class="hljs-string">'object'</span>
+      ]
+    <span class="hljs-attribute">from</span>:
+      <span class="hljs-attribute">title</span>: <span class="hljs-string">"From"</span>
+      <span class="hljs-attribute">description</span>: <span class="hljs-string">"the address emails are send from"</span>
+      <span class="hljs-attribute">type</span>: <span class="hljs-string">'string'</span>
+    <span class="hljs-attribute">replyTo</span>:
+      <span class="hljs-attribute">title</span>: <span class="hljs-string">"Reply To"</span>
+      <span class="hljs-attribute">description</span>: <span class="hljs-string">"the address to send answers to"</span>
+      <span class="hljs-attribute">type</span>: <span class="hljs-string">'string'</span>
+      <span class="hljs-attribute">optional</span>: <span class="hljs-literal">true</span>
+    <span class="hljs-attribute">to</span>:
+      <span class="hljs-attribute">title</span>: <span class="hljs-string">"To"</span>
+      <span class="hljs-attribute">description</span>: <span class="hljs-string">"the address emails are send to"</span>
+      <span class="hljs-attribute">type</span>: <span class="hljs-string">'array'</span>
+      <span class="hljs-attribute">toArray</span>: <span class="hljs-literal">true</span>
+      <span class="hljs-attribute">entries</span>:
+        <span class="hljs-attribute">type</span>: <span class="hljs-string">'string'</span>
+    <span class="hljs-attribute">cc</span>:
+      <span class="hljs-attribute">title</span>: <span class="hljs-string">"Cc"</span>
+      <span class="hljs-attribute">description</span>: <span class="hljs-string">"the carbon copy addresses"</span>
+      <span class="hljs-attribute">type</span>: <span class="hljs-string">'array'</span>
+      <span class="hljs-attribute">toArray</span>: <span class="hljs-literal">true</span>
+      <span class="hljs-attribute">entries</span>:
+        <span class="hljs-attribute">type</span>: <span class="hljs-string">'string'</span>
+    <span class="hljs-attribute">bcc</span>:
+      <span class="hljs-attribute">title</span>: <span class="hljs-string">"Bcc"</span>
+      <span class="hljs-attribute">description</span>: <span class="hljs-string">"the blind carbon copy addresses"</span>
+      <span class="hljs-attribute">type</span>: <span class="hljs-string">'array'</span>
+      <span class="hljs-attribute">toArray</span>: <span class="hljs-literal">true</span>
+      <span class="hljs-attribute">entries</span>:
+        <span class="hljs-attribute">type</span>: <span class="hljs-string">'string'</span>
+    <span class="hljs-attribute">locale</span>:
+      <span class="hljs-attribute">title</span>: <span class="hljs-string">"Locale Setting"</span>
+      <span class="hljs-attribute">description</span>: <span class="hljs-string">"the locale setting for subject and body dates"</span>
+      <span class="hljs-attribute">type</span>: <span class="hljs-string">'string'</span>
+      <span class="hljs-attribute">minLength</span>: <span class="hljs-number">2</span>
+      <span class="hljs-attribute">maxLength</span>: <span class="hljs-number">5</span>
+      <span class="hljs-attribute">lowerCase</span>: <span class="hljs-literal">true</span>
+      <span class="hljs-attribute">match</span>: <span class="hljs-regexp">/^[a-z]{2}(-[a-z]{2})?$/</span>
+    <span class="hljs-attribute">subject</span>:
+      <span class="hljs-attribute">title</span>: <span class="hljs-string">"Subject"</span>
+      <span class="hljs-attribute">description</span>: <span class="hljs-string">"the subject line of the generated email"</span>
+      <span class="hljs-attribute">type</span>: <span class="hljs-string">'handlebars'</span>
+    <span class="hljs-attribute">body</span>:
+      <span class="hljs-attribute">title</span>: <span class="hljs-string">"Content"</span>
+      <span class="hljs-attribute">description</span>: <span class="hljs-string">"the body content of the generated email"</span>
+      <span class="hljs-attribute">type</span>: <span class="hljs-string">'handlebars'</span>
 
-
-</pre></div>
+</pre>
         </td>
       </tr>
+    
       <tr>
         <td class="docs">
-<div class="pilwrap" id="complete%20schema%20definition">
+          <div class="pilwrap" id="complete-schema-definition">
   <h2>
-    <a href="#complete%20schema%20definition" name="complete%20schema%20definition" class="pilcrow">&#182;</a>
-    Complete Schema Definition
+    <a href="#complete-schema-definition" name="complete-schema-definition" class="pilcrow"></a>
+Complete Schema Definition
   </h2>
 </div>
 
         </td>
-        <td class="code highlight"><div class="highlight"><pre>
-<span class="nv">job =</span>
-  <span class="nv">title: </span><span class="s">&quot;Report Job&quot;</span>
-  <span class="nv">description: </span><span class="s">&quot;the definition of a single report job&quot;</span>
-  <span class="nv">type: </span><span class="s">&#39;object&#39;</span>
-  <span class="nv">allowedKeys: </span><span class="kc">true</span>
-  <span class="nv">keys:</span>
-    <span class="nv">title:</span>
-      <span class="nv">title: </span><span class="s">&quot;Title&quot;</span>
-      <span class="nv">description: </span><span class="s">&quot;the short title of the job to be used in display&quot;</span>
-      <span class="nv">type: </span><span class="s">&#39;string&#39;</span>
-    <span class="nv">description:</span>
-      <span class="nv">title: </span><span class="s">&quot;Description&quot;</span>
-      <span class="nv">description: </span><span class="s">&quot;a short abstract of what this job will retrieve&quot;</span>
-      <span class="nv">type: </span><span class="s">&#39;string&#39;</span>
-    <span class="nv">query:</span>
-      <span class="nv">title: </span><span class="s">&quot;Query List&quot;</span>
-      <span class="nv">description: </span><span class="s">&quot;the queries to run to retrieve the measurement result&quot;</span>
-      <span class="nv">type: </span><span class="s">&#39;object&#39;</span>
-      <span class="nv">entries: </span><span class="p">[</span>
-        <span class="nv">title: </span><span class="s">&quot;Query&quot;</span>
-        <span class="nv">description: </span><span class="s">&quot;the query to run to retrieve the measurement result&quot;</span>
-        <span class="nv">type: </span><span class="s">&#39;object&#39;</span>
-        <span class="nv">mandatoryKeys: </span><span class="kc">true</span>
-        <span class="nv">keys:</span>
-          <span class="nv">title:</span>
-            <span class="nv">title: </span><span class="s">&quot;Title&quot;</span>
-            <span class="nv">description: </span><span class="s">&quot;the short title of the query to be used as file&quot;</span>
-            <span class="nv">type: </span><span class="s">&#39;string&#39;</span>
-            <span class="nv">optional: </span><span class="kc">true</span>
-          <span class="nv">description:</span>
-            <span class="nv">title: </span><span class="s">&quot;Description&quot;</span>
-            <span class="nv">description: </span><span class="s">&quot;a short abstract of what this query will do&quot;</span>
-            <span class="nv">type: </span><span class="s">&#39;string&#39;</span>
-            <span class="nv">optional: </span><span class="kc">true</span>
-          <span class="nv">database:</span>
-            <span class="nv">title: </span><span class="s">&quot;Database&quot;</span>
-            <span class="nv">description: </span><span class="s">&quot;the alias name of the database to store to&quot;</span>
-            <span class="nv">type: </span><span class="s">&#39;string&#39;</span>
-            <span class="nv">list: </span><span class="s">&#39;&lt;&lt;&lt;context:///database&gt;&gt;&gt;&#39;</span>
-            <span class="nv">optional: </span><span class="kc">true</span>
-          <span class="nv">command:</span>
-            <span class="nv">title: </span><span class="s">&quot;Command&quot;</span>
-            <span class="nv">description: </span><span class="s">&quot;the concrete sql to run to retrieve the measurement result&quot;</span>
-            <span class="nv">type: </span><span class="s">&#39;string&#39;</span>
-            <span class="nv">trim: </span><span class="kc">true</span>
-            <span class="nv">replace: </span><span class="p">[</span><span class="sr">/\s+/</span><span class="p">,</span> <span class="s">&#39; &#39;</span><span class="p">]</span>
-          <span class="nv">sort:</span>
-            <span class="nv">title: </span><span class="s">&quot;Sort Order&quot;</span>
-            <span class="nv">description: </span><span class="s">&quot;the sort order for the results (if needed)&quot;</span>
-            <span class="nv">type: </span><span class="s">&#39;array&#39;</span>
-            <span class="nv">toArray: </span><span class="kc">true</span>
-            <span class="nv">entries:</span>
-              <span class="nv">type: </span><span class="s">&#39;string&#39;</span>
-            <span class="nv">optional: </span><span class="kc">true</span>
-      <span class="p">]</span>
-    <span class="nv">sendEmpty:</span>
-      <span class="nv">title: </span><span class="s">&quot;Send Empty Data&quot;</span>
-      <span class="nv">description: </span><span class="s">&quot;a flag indicating to also send an email if no data could be found&quot;</span>
-      <span class="nv">type: </span><span class="s">&#39;boolean&#39;</span>
-      <span class="nv">default: </span><span class="kc">true</span>
-    <span class="nv">compose:</span>
-      <span class="nv">title: </span><span class="s">&quot;Compose Data&quot;</span>
-      <span class="nv">description: </span><span class="s">&quot;the logic to compose results from data&quot;</span>
-      <span class="nv">type: </span><span class="s">&#39;object&#39;</span>
-      <span class="nv">entries: </span><span class="p">[</span>
-        <span class="nv">title: </span><span class="s">&quot;List&quot;</span>
-        <span class="nv">description: </span><span class="s">&quot;the alias name of the list to create&quot;</span>
-        <span class="nv">type: </span><span class="s">&#39;object&#39;</span>
-        <span class="nv">mandatoryKeys: </span><span class="kc">true</span>
-        <span class="nv">keys:</span>
-          <span class="nv">title:</span>
-            <span class="nv">title: </span><span class="s">&quot;Title&quot;</span>
-            <span class="nv">description: </span><span class="s">&quot;the short title of the list to be used as file&quot;</span>
-            <span class="nv">type: </span><span class="s">&#39;string&#39;</span>
-            <span class="nv">optional: </span><span class="kc">true</span>
-          <span class="nv">description:</span>
-            <span class="nv">title: </span><span class="s">&quot;Description&quot;</span>
-            <span class="nv">description: </span><span class="s">&quot;a short abstract of what this list will contain&quot;</span>
-            <span class="nv">type: </span><span class="s">&#39;string&#39;</span>
-            <span class="nv">optional: </span><span class="kc">true</span>
-          <span class="nv">append:</span>
-            <span class="nv">title: </span><span class="s">&quot;Table Data to Append&quot;</span>
-            <span class="nv">description: </span><span class="s">&quot;the list of table data (alias names) to append&quot;</span>
-            <span class="nv">type: </span><span class="s">&#39;or&#39;</span>
-            <span class="o">or:</span> <span class="p">[</span>
-              <span class="nv">type: </span><span class="s">&#39;array&#39;</span>
-              <span class="nv">toArray: </span><span class="kc">true</span>
-              <span class="nv">entries:</span>
-                <span class="nv">type: </span><span class="s">&#39;string&#39;</span>
-            <span class="p">,</span>
-              <span class="nv">type: </span><span class="s">&quot;boolean&quot;</span>
-            <span class="p">]</span>
-            <span class="nv">optional: </span><span class="kc">true</span>
-          <span class="nv">sort:</span>
-            <span class="nv">title: </span><span class="s">&quot;Sort Order&quot;</span>
-            <span class="nv">description: </span><span class="s">&quot;the sort order for the results (if needed)&quot;</span>
-            <span class="nv">type: </span><span class="s">&#39;array&#39;</span>
-            <span class="nv">toArray: </span><span class="kc">true</span>
-            <span class="nv">entries:</span>
-              <span class="nv">type: </span><span class="s">&#39;string&#39;</span>
-            <span class="nv">optional: </span><span class="kc">true</span>
-      <span class="p">]</span>
-    <span class="nv">email: </span><span class="nx">email</span>
+        <td class="code highlight">
+          <pre class="coffeescript">job =
+  <span class="hljs-attribute">title</span>: <span class="hljs-string">"Report Job"</span>
+  <span class="hljs-attribute">description</span>: <span class="hljs-string">"the definition of a single report job"</span>
+  <span class="hljs-attribute">type</span>: <span class="hljs-string">'object'</span>
+  <span class="hljs-attribute">allowedKeys</span>: <span class="hljs-literal">true</span>
+  <span class="hljs-attribute">keys</span>:
+    <span class="hljs-attribute">title</span>:
+      <span class="hljs-attribute">title</span>: <span class="hljs-string">"Title"</span>
+      <span class="hljs-attribute">description</span>: <span class="hljs-string">"the short title of the job to be used in display"</span>
+      <span class="hljs-attribute">type</span>: <span class="hljs-string">'string'</span>
+    <span class="hljs-attribute">description</span>:
+      <span class="hljs-attribute">title</span>: <span class="hljs-string">"Description"</span>
+      <span class="hljs-attribute">description</span>: <span class="hljs-string">"a short abstract of what this job will retrieve"</span>
+      <span class="hljs-attribute">type</span>: <span class="hljs-string">'string'</span>
+    <span class="hljs-attribute">query</span>:
+      <span class="hljs-attribute">title</span>: <span class="hljs-string">"Query List"</span>
+      <span class="hljs-attribute">description</span>: <span class="hljs-string">"the queries to run to retrieve the measurement result"</span>
+      <span class="hljs-attribute">type</span>: <span class="hljs-string">'object'</span>
+      <span class="hljs-attribute">entries</span>: [
+        <span class="hljs-attribute">title</span>: <span class="hljs-string">"Query"</span>
+        <span class="hljs-attribute">description</span>: <span class="hljs-string">"the query to run to retrieve the measurement result"</span>
+        <span class="hljs-attribute">type</span>: <span class="hljs-string">'object'</span>
+        <span class="hljs-attribute">mandatoryKeys</span>: <span class="hljs-literal">true</span>
+        <span class="hljs-attribute">keys</span>:
+          <span class="hljs-attribute">title</span>:
+            <span class="hljs-attribute">title</span>: <span class="hljs-string">"Title"</span>
+            <span class="hljs-attribute">description</span>: <span class="hljs-string">"the short title of the query to be used as file"</span>
+            <span class="hljs-attribute">type</span>: <span class="hljs-string">'string'</span>
+            <span class="hljs-attribute">optional</span>: <span class="hljs-literal">true</span>
+          <span class="hljs-attribute">description</span>:
+            <span class="hljs-attribute">title</span>: <span class="hljs-string">"Description"</span>
+            <span class="hljs-attribute">description</span>: <span class="hljs-string">"a short abstract of what this query will do"</span>
+            <span class="hljs-attribute">type</span>: <span class="hljs-string">'string'</span>
+            <span class="hljs-attribute">optional</span>: <span class="hljs-literal">true</span>
+          <span class="hljs-attribute">database</span>:
+            <span class="hljs-attribute">title</span>: <span class="hljs-string">"Database"</span>
+            <span class="hljs-attribute">description</span>: <span class="hljs-string">"the alias name of the database to store to"</span>
+            <span class="hljs-attribute">type</span>: <span class="hljs-string">'string'</span>
+            <span class="hljs-attribute">list</span>: <span class="hljs-string">'&lt;&lt;&lt;context:///database&gt;&gt;&gt;'</span>
+            <span class="hljs-attribute">optional</span>: <span class="hljs-literal">true</span>
+          <span class="hljs-attribute">command</span>:
+            <span class="hljs-attribute">title</span>: <span class="hljs-string">"Command"</span>
+            <span class="hljs-attribute">description</span>: <span class="hljs-string">"the concrete sql to run to retrieve the measurement result"</span>
+            <span class="hljs-attribute">type</span>: <span class="hljs-string">'string'</span>
+            <span class="hljs-attribute">trim</span>: <span class="hljs-literal">true</span>
+            <span class="hljs-attribute">replace</span>: [<span class="hljs-regexp">/\s+/</span>, <span class="hljs-string">' '</span>]
+          <span class="hljs-attribute">sort</span>:
+            <span class="hljs-attribute">title</span>: <span class="hljs-string">"Sort Order"</span>
+            <span class="hljs-attribute">description</span>: <span class="hljs-string">"the sort order for the results (if needed)"</span>
+            <span class="hljs-attribute">type</span>: <span class="hljs-string">'array'</span>
+            <span class="hljs-attribute">toArray</span>: <span class="hljs-literal">true</span>
+            <span class="hljs-attribute">entries</span>:
+              <span class="hljs-attribute">type</span>: <span class="hljs-string">'string'</span>
+            <span class="hljs-attribute">optional</span>: <span class="hljs-literal">true</span>
+      ]
+    <span class="hljs-attribute">sendEmpty</span>:
+      <span class="hljs-attribute">title</span>: <span class="hljs-string">"Send Empty Data"</span>
+      <span class="hljs-attribute">description</span>: <span class="hljs-string">"a flag indicating to also send an email if no data could be found"</span>
+      <span class="hljs-attribute">type</span>: <span class="hljs-string">'boolean'</span>
+      <span class="hljs-attribute">default</span>: <span class="hljs-literal">true</span>
+    <span class="hljs-attribute">compose</span>:
+      <span class="hljs-attribute">title</span>: <span class="hljs-string">"Compose Data"</span>
+      <span class="hljs-attribute">description</span>: <span class="hljs-string">"the logic to compose results from data"</span>
+      <span class="hljs-attribute">type</span>: <span class="hljs-string">'object'</span>
+      <span class="hljs-attribute">entries</span>: [
+        <span class="hljs-attribute">title</span>: <span class="hljs-string">"List"</span>
+        <span class="hljs-attribute">description</span>: <span class="hljs-string">"the alias name of the list to create"</span>
+        <span class="hljs-attribute">type</span>: <span class="hljs-string">'object'</span>
+        <span class="hljs-attribute">mandatoryKeys</span>: <span class="hljs-literal">true</span>
+        <span class="hljs-attribute">keys</span>:
+          <span class="hljs-attribute">title</span>:
+            <span class="hljs-attribute">title</span>: <span class="hljs-string">"Title"</span>
+            <span class="hljs-attribute">description</span>: <span class="hljs-string">"the short title of the list to be used as file"</span>
+            <span class="hljs-attribute">type</span>: <span class="hljs-string">'string'</span>
+            <span class="hljs-attribute">optional</span>: <span class="hljs-literal">true</span>
+          <span class="hljs-attribute">description</span>:
+            <span class="hljs-attribute">title</span>: <span class="hljs-string">"Description"</span>
+            <span class="hljs-attribute">description</span>: <span class="hljs-string">"a short abstract of what this list will contain"</span>
+            <span class="hljs-attribute">type</span>: <span class="hljs-string">'string'</span>
+            <span class="hljs-attribute">optional</span>: <span class="hljs-literal">true</span>
+          <span class="hljs-attribute">append</span>:
+            <span class="hljs-attribute">title</span>: <span class="hljs-string">"Table Data to Append"</span>
+            <span class="hljs-attribute">description</span>: <span class="hljs-string">"the list of table data (alias names) to append"</span>
+            <span class="hljs-attribute">type</span>: <span class="hljs-string">'or'</span>
+            <span class="hljs-attribute">or</span>: [
+              <span class="hljs-attribute">type</span>: <span class="hljs-string">'array'</span>
+              <span class="hljs-attribute">toArray</span>: <span class="hljs-literal">true</span>
+              <span class="hljs-attribute">entries</span>:
+                <span class="hljs-attribute">type</span>: <span class="hljs-string">'string'</span>
+            ,
+              <span class="hljs-attribute">type</span>: <span class="hljs-string">"boolean"</span>
+            ]
+            <span class="hljs-attribute">optional</span>: <span class="hljs-literal">true</span>
+          <span class="hljs-attribute">sort</span>:
+            <span class="hljs-attribute">title</span>: <span class="hljs-string">"Sort Order"</span>
+            <span class="hljs-attribute">description</span>: <span class="hljs-string">"the sort order for the results (if needed)"</span>
+            <span class="hljs-attribute">type</span>: <span class="hljs-string">'array'</span>
+            <span class="hljs-attribute">toArray</span>: <span class="hljs-literal">true</span>
+            <span class="hljs-attribute">entries</span>:
+              <span class="hljs-attribute">type</span>: <span class="hljs-string">'string'</span>
+            <span class="hljs-attribute">optional</span>: <span class="hljs-literal">true</span>
+      ]
+    <span class="hljs-attribute">email</span>: email
 
 
-
-</pre></div>
+</pre>
         </td>
       </tr>
+    
       <tr>
         <td class="docs">
-<div class="pilwrap" id="complete%20schema%20definition">
+          <div class="pilwrap" id="complete-schema-definition-1">
   <h2>
-    <a href="#complete%20schema%20definition" name="complete%20schema%20definition" class="pilcrow">&#182;</a>
-    Complete Schema Definition
+    <a href="#complete-schema-definition-1" name="complete-schema-definition-1" class="pilcrow"></a>
+Complete Schema Definition
   </h2>
 </div>
 
         </td>
-        <td class="code highlight"><div class="highlight"><pre>
+        <td class="code highlight">
+          <pre class="coffeescript">
+<span class="hljs-built_in">module</span>.exports =
+  <span class="hljs-attribute">title</span>: <span class="hljs-string">"Report Setup"</span>
+  <span class="hljs-attribute">description</span>: <span class="hljs-string">"the configuration for the database report system"</span>
+  <span class="hljs-attribute">type</span>: <span class="hljs-string">'object'</span>
+  <span class="hljs-attribute">allowedKeys</span>: <span class="hljs-literal">true</span>
+  <span class="hljs-attribute">keys</span>:
+    <span class="hljs-attribute">job</span>:
+      <span class="hljs-attribute">title</span>: <span class="hljs-string">"Report Setup"</span>
+      <span class="hljs-attribute">description</span>: <span class="hljs-string">"the configuration for the database report system"</span>
+      <span class="hljs-attribute">type</span>: <span class="hljs-string">'object'</span>
+      <span class="hljs-attribute">allowedKeys</span>: <span class="hljs-literal">true</span>
+      <span class="hljs-attribute">entries</span>: [job]
+    <span class="hljs-attribute">email</span>:
+      <span class="hljs-attribute">title</span>: <span class="hljs-string">"Email Templates"</span>
+      <span class="hljs-attribute">description</span>: <span class="hljs-string">"the possible templates used for sending emails"</span>
+      <span class="hljs-attribute">type</span>: <span class="hljs-string">'object'</span>
+      <span class="hljs-attribute">entries</span>: [email]
 
-<span class="nv">module.exports =</span>
-  <span class="nv">title: </span><span class="s">&quot;Report Setup&quot;</span>
-  <span class="nv">description: </span><span class="s">&quot;the configuration for the database report system&quot;</span>
-  <span class="nv">type: </span><span class="s">&#39;object&#39;</span>
-  <span class="nv">allowedKeys: </span><span class="kc">true</span>
-  <span class="nv">keys:</span>
-    <span class="nv">job:</span>
-      <span class="nv">title: </span><span class="s">&quot;Report Setup&quot;</span>
-      <span class="nv">description: </span><span class="s">&quot;the configuration for the database report system&quot;</span>
-      <span class="nv">type: </span><span class="s">&#39;object&#39;</span>
-      <span class="nv">allowedKeys: </span><span class="kc">true</span>
-      <span class="nv">entries: </span><span class="p">[</span><span class="nx">job</span><span class="p">]</span>
-    <span class="nv">email:</span>
-      <span class="nv">title: </span><span class="s">&quot;Email Templates&quot;</span>
-      <span class="nv">description: </span><span class="s">&quot;the possible templates used for sending emails&quot;</span>
-      <span class="nv">type: </span><span class="s">&#39;object&#39;</span>
-      <span class="nv">entries: </span><span class="p">[</span><span class="nx">email</span><span class="p">]</span>
-</pre></div>
+</pre>
         </td>
       </tr>
+    
   </tbody>
 </table>
+
   </div>
 </body>
 </html>

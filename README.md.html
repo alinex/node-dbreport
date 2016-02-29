@@ -6,20 +6,31 @@
   <link rel="stylesheet" media="all" href="doc-style.css" />
   <script src="doc-filelist.js"></script>
   <script>
-    var relativeDir = "", thisFile = "home/alex/github/node-dbreport/READMEmd", defaultSidebar = true;
+    var relativeDir = "";
+    var thisFile = "home/alex/github/node-dbreport/README.md";
+    var defaultSidebar = true;
   </script>
   <script src="doc-script.js"></script>
-</head>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0" /></head
 <body>
   <nav>
-<div class="logo"><a href="http://alinex.github.io" onmouseover="lllogo.src='https://alinex.github.io/images/Alinex-200.png'" onmouseout="lllogo.src='https://alinex.github.io/images/Alinex-black-200.png'">
-  <img name="lllogo" src="https://alinex.github.io/images/Alinex-black-200.png" width="150" title="Alinex Universe Homepage" />
+<div class="logo"><a href="http://alinex.github.io"
+  onmouseover="logo.src='https://alinex.github.io/images/Alinex-200.png'"
+  onmouseout="logo.src='https://alinex.github.io/images/Alinex-black-200.png'">
+  <img name="logo" src="https://alinex.github.io/images/Alinex-black-200.png"
+    width="150" title="Alinex Universe Homepage" />
   </a>
-  <img src="http://alinex.github.io/images/Alinex-200.png" style="display:none" alt="preloading" />
+  <img src="http://alinex.github.io/images/Alinex-200.png"
+    style="display:none" alt="preloading" />
 </div>
 <div class="links">
-  <a href="http://alinex.github.io/blog" class="btn btn-primary"><span class="glyphicon-cog"></span> Blog</a>
-  <a href="http://alinex.github.io/code.html" class="btn btn-warning"><span class="glyphicon-pencil"></span> Code</a>
+  <a href="http://alinex.github.io/blog"
+    class="btn btn-primary"><span class="glyphicon-pencil"></span> Blog</a>
+  <a href="http://alinex.github.io/develop"
+    class="btn btn-primary"><span class="glyphicon-book"></span> Develop</a>
+  <a href="http://alinex.github.io/code.html"
+    class="btn btn-warning"><span class="glyphicon-cog"></span> Code</a>
 </div>
 </nav><div id="sidebar_wrapper">
     <div id="sidebar_switch">
@@ -28,72 +39,85 @@
     </div>
     <div id="tree"></div>
     <div id="headings">
+
       <div class="heading h1">
-        <a href="#package%3A%20alinex-dbreport">Package: alinex-dbreport</a>
+        <a href="#package-alinex-dbreport">Package: alinex-dbreport</a>
       </div>
+
       <div class="heading h2">
         <a href="#install">Install</a>
       </div>
+
       <div class="heading h2">
         <a href="#usage">Usage</a>
       </div>
+
       <div class="heading h2">
         <a href="#configuration">Configuration</a>
       </div>
+
       <div class="heading h3">
-        <a href="#email%20templates">Email Templates</a>
+        <a href="#email-templates">Email Templates</a>
       </div>
+
       <div class="heading h4">
         <a href="#transport">Transport</a>
       </div>
+
       <div class="heading h4">
         <a href="#addressing">Addressing</a>
       </div>
+
       <div class="heading h4">
         <a href="#content">Content</a>
       </div>
+
       <div class="heading h3">
         <a href="#jobs">jobs</a>
       </div>
+
       <div class="heading h4">
-        <a href="#meta%20data">Meta Data</a>
+        <a href="#meta-data">Meta Data</a>
       </div>
+
       <div class="heading h4">
         <a href="#queries">Queries</a>
       </div>
+
       <div class="heading h4">
         <a href="#compose">Compose</a>
       </div>
+
       <div class="heading h4">
         <a href="#email">Email</a>
       </div>
+
       <div class="heading h3">
         <a href="#database">Database</a>
       </div>
+
       <div class="heading h2">
-        <a href="#compose">Compose</a>
+        <a href="#compose-1">Compose</a>
       </div>
+
       <div class="heading h2">
         <a href="#license">License</a>
       </div>
+
     </div>
   </div>
   <div id="sidebar-toggle"></div>
-  <div id="container" tabindex="0"><a id="fork" href="https://github.com/alinex/node-dbreport" title="Fork me on GitHub"></a><div class="docs markdown">
-<div class="pilwrap" id="package%3A%20alinex-dbreport">
+  <div id="container" tabindex="0"><a id="fork" href="https://github.com/alinex/node-dbreport" title="Fork me on GitHub"></a>
+    <div class="docs markdown"><div class="pilwrap" id="package-alinex-dbreport">
   <h1>
-    <a href="#package%3A%20alinex-dbreport" name="package%3A%20alinex-dbreport" class="pilcrow">&#182;</a>
-    Package: alinex-dbreport
+    <a href="#package-alinex-dbreport" name="package-alinex-dbreport" class="pilcrow"></a>
+Package: alinex-dbreport
   </h1>
 </div>
-
-
-<p><a href="https://travis-ci.org/alinex/node-dbreport"><img src="https://travis-ci.org/alinex/node-dbreport.svg?branch=master" alt="Build Status" title="" /></a>
-<a href="https://coveralls.io/r/alinex/node-dbreport?branch=master"><img src="https://coveralls.io/repos/alinex/node-dbreport/badge.png?branch=master" alt="Coverage Status" title="" /></a>
-<a href="https://gemnasium.com/alinex/node-dbreport"><img src="https://gemnasium.com/alinex/node-dbreport.png" alt="Dependency Status" title="" /></a></p>
-
+<p><a href="https://travis-ci.org/alinex/node-dbreport"><img src="https://travis-ci.org/alinex/node-dbreport.svg?branch=master" alt="Build Status"></a>
+<a href="https://coveralls.io/r/alinex/node-dbreport?branch=master"><img src="https://coveralls.io/repos/alinex/node-dbreport/badge.png?branch=master" alt="Coverage Status"></a>
+<a href="https://gemnasium.com/alinex/node-dbreport"><img src="https://gemnasium.com/alinex/node-dbreport.png" alt="Dependency Status"></a></p>
 <p>Run some database queries and send their results using email. The main features are:</p>
-
 <ul>
 <li>work on any database</li>
 <li>fully configurable</li>
@@ -101,71 +125,44 @@
 <li>pretty email format</li>
 <li>combine queries</li>
 </ul>
-
 <p>It can be started from command line or triggered using cron.</p>
-
 <blockquote>
-  <p>It is one of the modules of the <a href="http://alinex.github.io/code.html">Alinex Universe</a>
-  following the code standards defined in the <a href="http://alinex.github.io/node-alinex">General Docs</a>.</p>
+<p>It is one of the modules of the <a href="http://alinex.github.io/code.html">Alinex Universe</a>
+following the code standards defined in the <a href="http://alinex.github.io/node-alinex">General Docs</a>.</p>
 </blockquote>
-
-
 <div class="pilwrap" id="install">
   <h2>
-    <a href="#install" name="install" class="pilcrow">&#182;</a>
-    Install
+    <a href="#install" name="install" class="pilcrow"></a>
+Install
   </h2>
 </div>
-
-
-<p><a href="https://www.npmjs.com/package/alinex-dbreport"><img src="https://nodei.co/npm/alinex-dbreport.png?downloads=true&amp;downloadRank=true&amp;stars=true" alt="NPM" title="" />
- <img src="https://nodei.co/npm-dl/alinex-dbreport.png?months=9&amp;height=3" alt="Downloads" title="" />
+<p><a href="https://www.npmjs.com/package/alinex-dbreport"><img src="https://nodei.co/npm/alinex-dbreport.png?downloads=true&amp;downloadRank=true&amp;stars=true" alt="NPM">
+<img src="https://nodei.co/npm-dl/alinex-dbreport.png?months=9&amp;height=3" alt="Downloads">
 </a></p>
-
 <p>Install the package globally using npm on a central server. From there all your
 machines may be checked:</p>
-
-
-<div class="highlight"><pre><code>sudo npm install -g alinex-dbreport --production
-</code></pre></div>
-
-
-
+<pre><code class="sh">sudo npm install -g alinex-dbreport --production
+</code></pre>
 <p>After global installation you may directly call <code>dbreport</code> from anywhere.</p>
-
-
-<div class="highlight"><pre><code>dbreport --help
-</code></pre></div>
-
-
-
-<p>Always have a look at the latest <a href="Changelog.md.html">changes</a>.</p>
-
-
+<pre><code class="sh">dbreport --help
+</code></pre>
+<p>Always have a look at the latest <a href="Changelog.md.html.html">changes</a>.</p>
 <div class="pilwrap" id="usage">
   <h2>
-    <a href="#usage" name="usage" class="pilcrow">&#182;</a>
-    Usage
+    <a href="#usage" name="usage" class="pilcrow"></a>
+Usage
   </h2>
 </div>
-
-
 <p>You can simple call the <code>dbreport</code> command with at least one of the configured
 reports:</p>
+<pre><code>&gt; dbreport &lt;job&gt;... [&lt;options&gt;]...
 
-
-<div class="highlight"><pre><code><span class="o">&gt;</span> <span class="nx">dbreport</span> <span class="o">&lt;</span><span class="nx">job</span><span class="o">&gt;</span><span class="p">...</span> <span class="p">[</span><span class="o">&lt;</span><span class="nx">options</span><span class="o">&gt;</span><span class="p">]...</span>
-
-<span class="nx">Initializing</span><span class="p">...</span>
-<span class="nx">Run</span> <span class="nx">the</span> <span class="nx">jobs</span><span class="p">...</span>
-<span class="o">-&gt;</span> <span class="nx">tables</span>
-<span class="nx">Goodbye</span>
-</code></pre></div>
-
-
-
+Initializing...
+Run the jobs...
+-&gt; tables
+Goodbye
+</code></pre>
 <p>To get some more information call it with debugging:</p>
-
 <pre><code>&gt; DEBUG=dbreport dbreport &lt;job&gt;... [&lt;options&gt;]...
 
 Initializing...
@@ -174,60 +171,41 @@ Run the jobs...
   dbreport start tables job +0ms
   dbreport run query tables: SELECT table_schema, table_name FROM information_schema.tables ORDER BY table_schema, table_name +1ms
   dbreport tables: 641 rows fetched +88ms
-  dbreport sending email to <a href='mailto:betriebsteam@divibib.com'>betriebsteam@divibib.com</a>... +547ms
+  dbreport sending email to betriebsteam@divibib.com... +547ms
   dbreport using SMTP +3ms
-  dbreport message send {accepted: [ '<a href='mailto:betriebsteam@divibib.com'>betriebsteam@divibib.com</a>' ],
+  dbreport message send {accepted: [ 'betriebsteam@divibib.com' ],
   rejected: [],
   response: '250 2.0.0 from MTA(smtp:[172.16.51.30]:10025): 250 2.0.0 Ok: queued as 7C61520AB5',
   envelope:
-   { from: '<a href='mailto:alexander.schilling@divibib.com'>alexander.schilling@divibib.com</a>',
-     to: [ '<a href='mailto:betriebsteam@divibib.com'>betriebsteam@divibib.com</a>' ] },
-  messageId: '<a href='mailto:1454671119582-6f16f637-c8a84be8-46bf2d0c@divibib.com'>1454671119582-6f16f637-c8a84be8-46bf2d0c@divibib.com</a>' } +2ms
+   { from: 'alexander.schilling@divibib.com',
+     to: [ 'betriebsteam@divibib.com' ] },
+  messageId: '1454671119582-6f16f637-c8a84be8-46bf2d0c@divibib.com' } +2ms
 Goodbye
 </code></pre>
-
 <p>Global options:</p>
-
-
-<div class="highlight"><pre><code><span class="o">-</span><span class="nx">C</span><span class="p">,</span> <span class="o">--</span><span class="nx">nocolors</span>  <span class="nx">turn</span> <span class="nx">of</span> <span class="nx">color</span> <span class="nx">output</span>
-<span class="o">-</span><span class="nx">v</span><span class="p">,</span> <span class="o">--</span><span class="nx">verbose</span>   <span class="nx">run</span> <span class="k">in</span> <span class="nx">verbose</span> <span class="nx">mode</span>
-<span class="o">-</span><span class="nx">h</span><span class="p">,</span> <span class="o">--</span><span class="nx">help</span>      <span class="nx">Show</span> <span class="nx">help</span>
-</code></pre></div>
-
-
-
+<pre><code>-C, --nocolors  turn of color output
+-v, --verbose   run in verbose mode
+-h, --help      Show help
+</code></pre>
 <p>Use other email address for test:</p>
-
-
-<div class="highlight"><pre><code><span class="o">-</span><span class="nx">m</span><span class="p">,</span> <span class="o">--</span><span class="nx">mail</span>      <span class="nx">give</span> <span class="nx">a</span> <span class="nx">specific</span> <span class="nx">mail</span> <span class="nx">address</span>
-</code></pre></div>
-
-
-
-
+<pre><code>-m, --mail      give a specific mail address
+</code></pre>
 <div class="pilwrap" id="configuration">
   <h2>
-    <a href="#configuration" name="configuration" class="pilcrow">&#182;</a>
-    Configuration
+    <a href="#configuration" name="configuration" class="pilcrow"></a>
+Configuration
   </h2>
 </div>
-
-
 <p>The most parts are configurable without any code change.</p>
-
-
-<div class="pilwrap" id="email%20templates">
+<div class="pilwrap" id="email-templates">
   <h3>
-    <a href="#email%20templates" name="email%20templates" class="pilcrow">&#182;</a>
-    Email Templates
+    <a href="#email-templates" name="email-templates" class="pilcrow"></a>
+Email Templates
   </h3>
 </div>
-
-
 <p>This templates are used for sending emails out. They will be defined under
 <code>/dbreport/email</code>:</p>
-
-<pre><code language='yaml'># Email Templates
+<pre><code class="yaml"># Email Templates
 # =================================================
 
 
@@ -238,8 +216,8 @@ default:
   # specify how to connect to the server
   transport: smtp://alexander.schilling%40mycompany.de:&lt;PASSWORD&gt;@mail.mycompany.de
   # sender address
-  from: <a href='mailto:alexander.schilling@mycompany.de'>alexander.schilling@mycompany.de</a>
-  replyTo: <a href='mailto:somebody@mycompany.de'>somebody@mycompany.de</a>
+  from: alexander.schilling@mycompany.de
+  replyTo: somebody@mycompany.de
 
   # content
   locale: en
@@ -251,7 +229,7 @@ default:
 
     {{conf.description}}
 
-    Started at {{dateFormat date "LLL"}}:
+    Started at {{dateFormat date &quot;LLL&quot;}}:
 
     | Zeilen | Datei    | Beschreibung |
     | ------:| -------- | ------------ |
@@ -261,147 +239,113 @@ default:
 
     Find the files attached to your mail if data available!
 </code></pre>
-
 <p>To make it more modular you may also add a <code>base</code> setting to use the setting defined
 there as a base and the options here may overwrite or enhance the base setup.</p>
-
-
 <div class="pilwrap" id="transport">
   <h4>
-    <a href="#transport" name="transport" class="pilcrow">&#182;</a>
-    Transport
+    <a href="#transport" name="transport" class="pilcrow"></a>
+Transport
   </h4>
 </div>
-
-
 <p>The transport setting defines how to send the email. This should specify the
 connection for the mailserver to use for sending. It is possible to do this using
 a connection url like above with the syntax:</p>
-
-
-<div class="highlight"><pre><code><span class="o">&lt;</span><span class="nx">protocol</span><span class="o">&gt;:</span><span class="c1">//&lt;user&gt;:&lt;password&gt;@&lt;server&gt;:&lt;port&gt;</span>
-</code></pre></div>
-
-
-
+<pre><code>&lt;protocol&gt;://&lt;user&gt;:&lt;password&gt;@&lt;server&gt;:&lt;port&gt;
+</code></pre>
 <p>Or you may specify it as object like:</p>
-
-
-<div class="highlight"><pre><code><span class="l-Scalar-Plain">transport</span><span class="p-Indicator">:</span>
-  <span class="l-Scalar-Plain">pool</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">&lt;boolean&gt;</span> <span class="c1"># use pooled connections defaults to false</span>
-  <span class="l-Scalar-Plain">direct</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">&lt;boolean&gt;</span> <span class="c1"># set to true to try to connect directly to recipients MX</span>
-  <span class="l-Scalar-Plain">service</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">&lt;string&gt;</span> <span class="c1"># name of well-known service (will set host, port and secure options)</span>
-  <span class="c1"># services: 1und1, AOL, DebugMail.io, DynectEmail, FastMail, GandiMail, Gmail,</span>
-  <span class="c1"># Godaddy, GodaddyAsia, GodaddyEurope, hot.ee, Hotmail, iCloud, mail.ee, Mail.ru,</span>
-  <span class="c1"># Mailgun, Mailjet, Mandrill, Naver, Postmark, QQ, QQex, SendCloud, SendGrid,</span>
-  <span class="c1"># SES, Sparkpost, Yahoo, Yandex, Zoho</span>
-  <span class="l-Scalar-Plain">host</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">&lt;string&gt;</span> <span class="c1"># the hostname or IP address to connect to</span>
-  <span class="l-Scalar-Plain">port</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">&lt;integer&gt;</span> <span class="c1"># the port to connect to (defaults to 25 or 465)</span>
-  <span class="l-Scalar-Plain">secure</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">&lt;boolean&gt;</span> <span class="c1"># if true the connection will only use TLS else (the default)</span>
-  <span class="c1"># TLS may still be upgraded to if available via the STARTTLS command</span>
-  <span class="l-Scalar-Plain">ignoreTLS</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">&lt;boolean&gt;</span> <span class="c1"># if this is true and secure is false, TLS will not be used</span>
-  <span class="l-Scalar-Plain">requireTLS</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">&lt;boolean&gt;</span> <span class="c1"># if this is true and secure is false, it uses STARTTLS</span>
-  <span class="c1"># even if the server does not advertise support for it</span>
-  <span class="l-Scalar-Plain">tls</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">&lt;object&gt;</span> <span class="c1"># additional socket options like `{rejectUnauthorized: true}`</span>
-  <span class="l-Scalar-Plain">auth</span><span class="p-Indicator">:</span> <span class="c1"># authentication objects</span>
-    <span class="l-Scalar-Plain">user</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">&lt;string&gt;</span> <span class="c1"># the username</span>
-    <span class="l-Scalar-Plain">pass</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">&lt;string&gt;</span> <span class="c1"># the password for the user</span>
-  <span class="l-Scalar-Plain">authMethod</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">&lt;string&gt;</span> <span class="c1"># preferred authentication method, eg. ‘PLAIN’</span>
-  <span class="l-Scalar-Plain">name</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">&lt;string&gt;</span> <span class="c1"># hostname of the client, used for identifying to the server</span>
-  <span class="l-Scalar-Plain">localAddress</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">&lt;string&gt;</span> <span class="c1"># the local interface to bind to for network connections</span>
-  <span class="l-Scalar-Plain">connectionTimeout</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">&lt;integer&gt;</span> <span class="c1"># milliseconds to wait for the connection to establish</span>
-  <span class="l-Scalar-Plain">greetingTimeout</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">&lt;integer&gt;</span> <span class="c1"># milliseconds to wait for the greeting after connection is established</span>
-  <span class="l-Scalar-Plain">socketTimeout</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">&lt;integer&gt;</span> <span class="c1"># milliseconds of inactivity to allow</span>
-  <span class="l-Scalar-Plain">debug</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">&lt;boolean&gt;</span> <span class="c1"># set to true to log the complete SMTP traffic</span>
-  <span class="c1"># if pool is set to true:</span>
-  <span class="l-Scalar-Plain">maxConnections</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">&lt;integer&gt;</span> <span class="c1"># the count of maximum simultaneous connections (defaults to 5)</span>
-  <span class="l-Scalar-Plain">maxMessages</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">&lt;integer&gt;</span> <span class="c1"># limits the message count to be sent using a single connection (defaults to 100)</span>
-  <span class="l-Scalar-Plain">rateLimit</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">&lt;integer&gt;</span> <span class="c1"># limits the message count to be sent in a second (defaults to false)    </span>
-</code></pre></div>
-
-
-
-
+<pre><code class="yaml">transport:
+  pool: &lt;boolean&gt; # use pooled connections defaults to false
+  direct: &lt;boolean&gt; # set to true to try to connect directly to recipients MX
+  service: &lt;string&gt; # name of well-known service (will set host, port and secure options)
+  # services: 1und1, AOL, DebugMail.io, DynectEmail, FastMail, GandiMail, Gmail,
+  # Godaddy, GodaddyAsia, GodaddyEurope, hot.ee, Hotmail, iCloud, mail.ee, Mail.ru,
+  # Mailgun, Mailjet, Mandrill, Naver, Postmark, QQ, QQex, SendCloud, SendGrid,
+  # SES, Sparkpost, Yahoo, Yandex, Zoho
+  host: &lt;string&gt; # the hostname or IP address to connect to
+  port: &lt;integer&gt; # the port to connect to (defaults to 25 or 465)
+  secure: &lt;boolean&gt; # if true the connection will only use TLS else (the default)
+  # TLS may still be upgraded to if available via the STARTTLS command
+  ignoreTLS: &lt;boolean&gt; # if this is true and secure is false, TLS will not be used
+  requireTLS: &lt;boolean&gt; # if this is true and secure is false, it uses STARTTLS
+  # even if the server does not advertise support for it
+  tls: &lt;object&gt; # additional socket options like `{rejectUnauthorized: true}`
+  auth: # authentication objects
+    user: &lt;string&gt; # the username
+    pass: &lt;string&gt; # the password for the user
+  authMethod: &lt;string&gt; # preferred authentication method, eg. ‘PLAIN’
+  name: &lt;string&gt; # hostname of the client, used for identifying to the server
+  localAddress: &lt;string&gt; # the local interface to bind to for network connections
+  connectionTimeout: &lt;integer&gt; # milliseconds to wait for the connection to establish
+  greetingTimeout: &lt;integer&gt; # milliseconds to wait for the greeting after connection is established
+  socketTimeout: &lt;integer&gt; # milliseconds of inactivity to allow
+  debug: &lt;boolean&gt; # set to true to log the complete SMTP traffic
+  # if pool is set to true:
+  maxConnections: &lt;integer&gt; # the count of maximum simultaneous connections (defaults to 5)
+  maxMessages: &lt;integer&gt; # limits the message count to be sent using a single connection (defaults to 100)
+  rateLimit: &lt;integer&gt; # limits the message count to be sent in a second (defaults to false)    
+</code></pre>
 <div class="pilwrap" id="addressing">
   <h4>
-    <a href="#addressing" name="addressing" class="pilcrow">&#182;</a>
-    Addressing
+    <a href="#addressing" name="addressing" class="pilcrow"></a>
+Addressing
   </h4>
 </div>
-
-
 <p>First you can define the sender address using:</p>
-
-
-<div class="highlight"><pre><code><span class="l-Scalar-Plain">from</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">&lt;string&gt;</span> <span class="c1"># the address used as sender(often the same as used in transport)</span>
-<span class="l-Scalar-Plain">replyTo</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">&lt;string&gt;</span> <span class="c1"># address which should be used for replys</span>
-</code></pre></div>
-
-
-
+<pre><code class="yaml">from: &lt;string&gt; # the address used as sender(often the same as used in transport)
+replyTo: &lt;string&gt; # address which should be used for replys
+</code></pre>
 <p>And you give the addresses to send the mail to. In the following fields: <code>to</code>, <code>cc</code>
 and <code>bcc</code> you may give a single address or a list of addresses to use.
 All e-mail addresses can be plain e-mail addresses</p>
-
-<pre><code><a href='mailto:name@mymailserver.com'>name@mymailserver.com</a>
+<pre><code>name@mymailserver.com
 </code></pre>
-
 <p>or with formatted name (includes unicode support)</p>
-
-<pre><code>"My Name" &lt;<a href='mailto:name@mymailserver.com'>name@mymailserver.com</a>&gt;
+<pre><code>&quot;My Name&quot; &lt;name@mymailserver.com&gt;
 </code></pre>
-
-
 <div class="pilwrap" id="content">
   <h4>
-    <a href="#content" name="content" class="pilcrow">&#182;</a>
-    Content
+    <a href="#content" name="content" class="pilcrow"></a>
+Content
   </h4>
 </div>
-
-
 <p>The content of the mail consists of an subject line which should be not to long
 and the body. The body is given as <a href="http://alinex.github.io/develop/lang/markdown.html">Markdown</a>
 syntax and supports all possibilities from
 <a href="http://alinex.github.io/node-report/README.md.html#markup%20syntax">report</a>.
 This will be converted to a plain text and html version for sending so that the
 mail client can choose the format to display.</p>
-
 <p>Like you see above, you can use handlebar syntax to use some variables from the
 code. This is possible in subject and body. And you may specify a
 local to use for date formatting.</p>
-
 <p>You can also define different templates which can be referenced from within the
 job.</p>
-
 <p>The following context variables are possible:</p>
-
 <ul>
 <li>name - the alias name for this job</li>
 <li>conf... - configuration of job (object)</li>
 <li>date - the date then the job was done (now)</li>
 <li>result
-<ul><li><job> - one entry for each job</li>
+<ul>
+<li><job> - one entry for each job
+<ul>
 <li>rows - number of rows in result</li>
 <li>file - filename</li>
-<li>description - description of job (from config)</li></ul></li>
+<li>description - description of job (from config)</li>
 </ul>
-
+</li>
+</ul>
+</li>
+</ul>
 <p>Find more examples at <a href="http://alinex.github.io/node-validator/README.md.html#handlebars">validator</a>.</p>
-
-
 <div class="pilwrap" id="jobs">
   <h3>
-    <a href="#jobs" name="jobs" class="pilcrow">&#182;</a>
-    jobs
+    <a href="#jobs" name="jobs" class="pilcrow"></a>
+jobs
   </h3>
 </div>
-
-
 <p>The main part is the configuration of each single, possible job. At best this
 should be done each in it's own file like <code>/dbreport/job/xxxx</code>:</p>
-
-<pre><code language='yaml'># Test Job
+<pre><code class="yaml"># Test Job
 # =================================================
 
 # Job Meta
@@ -449,145 +393,105 @@ sendEmpty: true
 
 email:
   base: default
-  to: <a href='mailto:betrieb@mycompany.com'>betrieb@mycompany.com</a>
+  to: betrieb@mycompany.com
 </code></pre>
-
 <p>As you see above you have the four parts to fill up:</p>
-
 <ul>
 <li>meta data to be used in the email like: '{{conf.title}}'</li>
 <li>queries with a name, the db reference name and code to execute</li>
 <li>compose options (optional)</li>
 <li>email sending</li>
 </ul>
-
-
-<div class="pilwrap" id="meta%20data">
+<div class="pilwrap" id="meta-data">
   <h4>
-    <a href="#meta%20data" name="meta%20data" class="pilcrow">&#182;</a>
-    Meta Data
+    <a href="#meta-data" name="meta-data" class="pilcrow"></a>
+Meta Data
   </h4>
 </div>
-
-
 <p>Here only the <code>title</code> and <code>description</code> can be set tzo be used within the email
 template. They are useable as  <code>{{conf.title}}</code> or <code>{{conf.description}}</code> in the
 template.</p>
-
-
 <div class="pilwrap" id="queries">
   <h4>
-    <a href="#queries" name="queries" class="pilcrow">&#182;</a>
-    Queries
+    <a href="#queries" name="queries" class="pilcrow"></a>
+Queries
   </h4>
 </div>
-
-
 <p>This let you define multiple database queries to execute. They are given as an
 object with an alias name as key. This name can be used later in composing
 multiple queries together.</p>
-
 <p>If no <code>compose</code> setting is given they will used directly as the attached csv files.
 Therefore the <code>title</code>, <code>description</code> and <code>sort</code> settings may be given. The resulting
 CSV file names will use the title or alias.</p>
-
 <p>The <code>database</code> setting is a reference to the database connection to use. This is
 defined separately (see below).</p>
-
 <p>The <code>command</code> string is the SQL to be executed. This will be send as is to the
 database server. So there are no variables possible.</p>
-
-
 <div class="pilwrap" id="compose">
   <h4>
-    <a href="#compose" name="compose" class="pilcrow">&#182;</a>
-    Compose
+    <a href="#compose" name="compose" class="pilcrow"></a>
+Compose
   </h4>
 </div>
-
-
 <p>If you want to compose multiple query results together this section allows for.
 It should contain an object of compositions to send as separate files. The
 key of each entry is used as an alias.</p>
-
 <p>Each composition contains:</p>
-
 <ul>
 <li>title <string> - to be used as filename and as template variable</li>
 <li>description <string> - to be used as template variable</li>
 <li>append 'true' or <list of query aliases></li>
 <li>sort [<field>]... - list of sort fields (prepend with '-' for decreasing order)</li>
 </ul>
-
 <p>Other composition methods may follow later.</p>
-
-
 <div class="pilwrap" id="email">
   <h4>
-    <a href="#email" name="email" class="pilcrow">&#182;</a>
-    Email
+    <a href="#email" name="email" class="pilcrow"></a>
+Email
   </h4>
 </div>
-
-
 <p>Here you have the option to prevent sending empty emails (without attached csv)
 by setting <code>sendEmpty</code> to <code>false</code>.</p>
-
 <p>The email part is exactly like defined above in the base email settings. So you
 have the possibility to overwrite each value written there with the ones here.</p>
-
 <p>While the email mostly uses a 'base' template and only defines the parts which
 are changed to the base template. So a proper use of the templates will help
 you minimize the configuration for the jobs.</p>
-
-
 <div class="pilwrap" id="database">
   <h3>
-    <a href="#database" name="database" class="pilcrow">&#182;</a>
-    Database
+    <a href="#database" name="database" class="pilcrow"></a>
+Database
   </h3>
 </div>
-
-
 <p>Also you need the setup under <code>/database</code> like described in
 <a href="http://alinex.github.io/node-database">Database</a>.
 This is used to make the specific database connections.</p>
-
-
-<div class="pilwrap" id="compose_1">
+<div class="pilwrap" id="compose-1">
   <h2>
-    <a href="#compose_1" name="compose_1" class="pilcrow">&#182;</a>
-    Compose
+    <a href="#compose-1" name="compose-1" class="pilcrow"></a>
+Compose
   </h2>
 </div>
-
-
 <p>Like seen above the compose section can be used to</p>
-
-
 <div class="pilwrap" id="license">
   <h2>
-    <a href="#license" name="license" class="pilcrow">&#182;</a>
-    License
+    <a href="#license" name="license" class="pilcrow"></a>
+License
   </h2>
 </div>
-
-
 <p>Copyright 2016 Alexander Schilling</p>
-
-<p>Licensed under the Apache License, Version 2.0 (the "License");
+<p>Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at</p>
-
 <blockquote>
-  <p><a href="http://www.apache.org/licenses/LICENSE-2.0">http://www.apache.org/licenses/LICENSE-2.0</a></p>
+<p><a href="http://www.apache.org/licenses/LICENSE-2.0">http://www.apache.org/licenses/LICENSE-2.0</a></p>
 </blockquote>
-
 <p>Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
+distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
-limitations under the License.</p></div>
+limitations under the License.</p>
+</div>
   </div>
 </body>
 </html>
