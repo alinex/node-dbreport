@@ -138,8 +138,7 @@ util = <span class="hljs-built_in">require</span> <span class="hljs-string">'uti
 nodemailer = <span class="hljs-built_in">require</span> <span class="hljs-string">'nodemailer'</span>
 inlineBase64 = <span class="hljs-built_in">require</span> <span class="hljs-string">'nodemailer-plugin-inline-base64'</span>
 json2csv = <span class="hljs-built_in">require</span> <span class="hljs-string">'json2csv'</span>
-moment = <span class="hljs-built_in">require</span> <span class="hljs-string">'moment'</span>
-</pre>
+moment = <span class="hljs-built_in">require</span> <span class="hljs-string">'moment'</span></pre>
         </td>
       </tr>
     
@@ -156,10 +155,7 @@ moment = <span class="hljs-built_in">require</span> <span class="hljs-string">'m
 database = <span class="hljs-built_in">require</span> <span class="hljs-string">'alinex-database'</span>
 async = <span class="hljs-built_in">require</span> <span class="hljs-string">'alinex-async'</span>
 {array, object} = <span class="hljs-built_in">require</span> <span class="hljs-string">'alinex-util'</span>
-Report = <span class="hljs-built_in">require</span> <span class="hljs-string">'alinex-report'</span>
-
-
-</pre>
+Report = <span class="hljs-built_in">require</span> <span class="hljs-string">'alinex-report'</span></pre>
         </td>
       </tr>
     
@@ -197,9 +193,7 @@ be changed at any time.</p>
   <span class="hljs-attribute">mail</span>: <span class="hljs-literal">null</span> <span class="hljs-comment"># alternative email to use</span>
 
 exports.init = <span class="hljs-function"><span class="hljs-params">(setup)</span> -&gt;</span>
-  mode = setup
-
-</pre>
+  mode = setup</pre>
         </td>
       </tr>
     
@@ -216,8 +210,7 @@ Run a job
         <td class="code highlight">
           <pre class="coffeescript">exports.run = <span class="hljs-function"><span class="hljs-params">(name, cb)</span> -&gt;</span>
   conf = config.get <span class="hljs-string">"/dbreport/job/<span class="hljs-subst">#{name}</span>"</span>
-  <span class="hljs-keyword">return</span> cb <span class="hljs-keyword">new</span> Error <span class="hljs-string">"Job <span class="hljs-subst">#{name}</span> is not configured"</span> <span class="hljs-keyword">unless</span> conf
-</pre>
+  <span class="hljs-keyword">return</span> cb <span class="hljs-keyword">new</span> Error <span class="hljs-string">"Job <span class="hljs-subst">#{name}</span> is not configured"</span> <span class="hljs-keyword">unless</span> conf</pre>
         </td>
       </tr>
     
@@ -238,8 +231,7 @@ Run a job
       debug <span class="hljs-string">"<span class="hljs-subst">#{n}</span>: <span class="hljs-subst">#{data?.length}</span> rows fetched"</span>
       cb err, data
   , <span class="hljs-function"><span class="hljs-params">(err, results)</span> -&gt;</span>
-    <span class="hljs-keyword">return</span> cb err <span class="hljs-keyword">if</span> err
-</pre>
+    <span class="hljs-keyword">return</span> cb err <span class="hljs-keyword">if</span> err</pre>
         </td>
       </tr>
     
@@ -259,8 +251,7 @@ Run a job
       <span class="hljs-keyword">break</span>
     <span class="hljs-keyword">if</span> isEmpty
       debug <span class="hljs-string">"<span class="hljs-subst">#{name}</span>: no data found"</span>
-      <span class="hljs-keyword">return</span> cb() <span class="hljs-keyword">unless</span> conf.sendEmpty
-</pre>
+      <span class="hljs-keyword">return</span> cb() <span class="hljs-keyword">unless</span> conf.sendEmpty</pre>
         </td>
       </tr>
     
@@ -277,10 +268,7 @@ Run a job
       <span class="hljs-attribute">job</span>: name
       <span class="hljs-attribute">conf</span>: conf
       <span class="hljs-attribute">isEmpty</span>: isEmpty
-    , results, cb
-
-
-</pre>
+    , results, cb</pre>
         </td>
       </tr>
     
@@ -296,10 +284,7 @@ List possible jobs
         </td>
         <td class="code highlight">
           <pre class="coffeescript">exports.list = <span class="hljs-function">-&gt;</span>
-  Object.keys config.get <span class="hljs-string">"/dbreport/job"</span>
-
-
-</pre>
+  Object.keys config.get <span class="hljs-string">"/dbreport/job"</span></pre>
         </td>
       </tr>
     
@@ -315,10 +300,7 @@ Get the job configuration
         </td>
         <td class="code highlight">
           <pre class="coffeescript">exports.get = <span class="hljs-function"><span class="hljs-params">(name)</span> -&gt;</span>
-  config.get <span class="hljs-string">"/dbreport/job/<span class="hljs-subst">#{name}</span>"</span>
-
-
-</pre>
+  config.get <span class="hljs-string">"/dbreport/job/<span class="hljs-subst">#{name}</span>"</span></pre>
         </td>
       </tr>
     
@@ -359,9 +341,7 @@ Add body to mail setup from report
     setup.text = report.toText()
     setup.html = html
     <span class="hljs-keyword">delete</span> setup.body
-    cb err
-
-</pre>
+    cb err</pre>
         </td>
       </tr>
     
@@ -376,8 +356,7 @@ Make output objects
 
         </td>
         <td class="code highlight">
-          <pre class="coffeescript"><span class="hljs-function"><span class="hljs-title">compose</span> = <span class="hljs-params">(meta, results, cb)</span> -&gt;</span>
-</pre>
+          <pre class="coffeescript"><span class="hljs-function"><span class="hljs-title">compose</span> = <span class="hljs-params">(meta, results, cb)</span> -&gt;</span></pre>
         </td>
       </tr>
     
@@ -413,8 +392,7 @@ Make output objects
             list[name].data = list[name].data.concat results[alias]
         <span class="hljs-keyword">else</span>
           <span class="hljs-keyword">return</span> cb <span class="hljs-keyword">new</span> Error <span class="hljs-string">"No supported combine method defined for entry <span class="hljs-subst">#{name}</span>
-          of <span class="hljs-subst">#{meta.job}</span>."</span>
-</pre>
+          of <span class="hljs-subst">#{meta.job}</span>."</span></pre>
         </td>
       </tr>
     
@@ -431,8 +409,7 @@ Make output objects
     <span class="hljs-keyword">continue</span> <span class="hljs-keyword">unless</span> file.sort
     debug chalk.grey <span class="hljs-string">"<span class="hljs-subst">#{meta.job}</span>.<span class="hljs-subst">#{name}</span>: sort by <span class="hljs-subst">#{file.sort}</span>"</span>
     sorter = [file.data].concat file.sort
-    file.data = array.sortBy.apply <span class="hljs-keyword">this</span>, sorter
-</pre>
+    file.data = array.sortBy.apply <span class="hljs-keyword">this</span>, sorter</pre>
         </td>
       </tr>
     
@@ -448,8 +425,7 @@ Make output objects
           <pre class="coffeescript">  debug chalk.grey <span class="hljs-string">"<span class="hljs-subst">#{meta.job}</span>: convert to csv"</span>
   <span class="hljs-keyword">for</span> name, file <span class="hljs-keyword">of</span> list
     file.rows = file.data.length
-    file.file = <span class="hljs-string">"<span class="hljs-subst">#{file.title ? name}</span>.csv"</span>
-</pre>
+    file.file = <span class="hljs-string">"<span class="hljs-subst">#{file.title ? name}</span>.csv"</span></pre>
         </td>
       </tr>
     
@@ -463,8 +439,7 @@ Make output objects
         </td>
         <td class="code highlight">
           <pre class="coffeescript">  async.each Object.keys(list), <span class="hljs-function"><span class="hljs-params">(name, cb)</span> -&gt;</span>
-    <span class="hljs-keyword">return</span> cb() <span class="hljs-keyword">unless</span> list[name].data.length
-</pre>
+    <span class="hljs-keyword">return</span> cb() <span class="hljs-keyword">unless</span> list[name].data.length</pre>
         </td>
       </tr>
     
@@ -479,8 +454,7 @@ Make output objects
         <td class="code highlight">
           <pre class="coffeescript">    first = list[name].data[<span class="hljs-number">0</span>]
     <span class="hljs-keyword">for</span> row <span class="hljs-keyword">in</span> list[name].data
-      <span class="hljs-keyword">for</span> field, value <span class="hljs-keyword">of</span> row
-</pre>
+      <span class="hljs-keyword">for</span> field, value <span class="hljs-keyword">of</span> row</pre>
         </td>
       </tr>
     
@@ -493,8 +467,7 @@ Make output objects
 
         </td>
         <td class="code highlight">
-          <pre class="coffeescript">        first[field] ?= <span class="hljs-literal">null</span>
-</pre>
+          <pre class="coffeescript">        first[field] ?= <span class="hljs-literal">null</span></pre>
         </td>
       </tr>
     
@@ -516,8 +489,7 @@ Make output objects
       list[name].csv = string
       cb()
   , <span class="hljs-function"><span class="hljs-params">(err)</span> -&gt;</span>
-    <span class="hljs-keyword">return</span> cb err <span class="hljs-keyword">if</span> err
-</pre>
+    <span class="hljs-keyword">return</span> cb err <span class="hljs-keyword">if</span> err</pre>
         </td>
       </tr>
     
@@ -530,9 +502,7 @@ Make output objects
 
         </td>
         <td class="code highlight">
-          <pre class="coffeescript">    email meta, list, cb
-
-</pre>
+          <pre class="coffeescript">    email meta, list, cb</pre>
         </td>
       </tr>
     
@@ -547,8 +517,7 @@ Send email
 
         </td>
         <td class="code highlight">
-          <pre class="coffeescript"><span class="hljs-function"><span class="hljs-title">email</span> = <span class="hljs-params">(meta, list, cb)</span> -&gt;</span>
-</pre>
+          <pre class="coffeescript"><span class="hljs-function"><span class="hljs-title">email</span> = <span class="hljs-params">(meta, list, cb)</span> -&gt;</span></pre>
         </td>
       </tr>
     
@@ -562,8 +531,7 @@ Send email
         </td>
         <td class="code highlight">
           <pre class="coffeescript">  setup = object.clone meta.conf.email
-  debug chalk.grey <span class="hljs-string">"<span class="hljs-subst">#{meta.job}</span>: building email"</span>
-</pre>
+  debug chalk.grey <span class="hljs-string">"<span class="hljs-subst">#{meta.job}</span>: building email"</span></pre>
         </td>
       </tr>
     
@@ -579,8 +547,7 @@ Send email
           <pre class="coffeescript">  <span class="hljs-keyword">while</span> setup.base
     base = config.get <span class="hljs-string">"/dbreport/email/<span class="hljs-subst">#{setup.base}</span>"</span>
     <span class="hljs-keyword">delete</span> setup.base
-    setup = object.extend {}, base, setup
-</pre>
+    setup = object.extend {}, base, setup</pre>
         </td>
       </tr>
     
@@ -604,8 +571,7 @@ Send email
   setup.subject = setup.subject context <span class="hljs-keyword">if</span> <span class="hljs-keyword">typeof</span> setup.subject <span class="hljs-keyword">is</span> <span class="hljs-string">'function'</span>
   addBody setup, context, <span class="hljs-function">-&gt;</span>
     <span class="hljs-keyword">if</span> setup.locale <span class="hljs-comment"># change locale back</span>
-      moment.locale oldLocale
-</pre>
+      moment.locale oldLocale</pre>
         </td>
       </tr>
     
@@ -623,8 +589,7 @@ Send email
       <span class="hljs-keyword">continue</span> <span class="hljs-keyword">unless</span> data.csv <span class="hljs-comment"># skip empty ones</span>
       setup.attachments.push
         <span class="hljs-attribute">filename</span>: data.file
-        <span class="hljs-attribute">content</span>: data.csv
-</pre>
+        <span class="hljs-attribute">content</span>: data.csv</pre>
         </td>
       </tr>
     
@@ -640,8 +605,7 @@ Send email
           <pre class="coffeescript">    <span class="hljs-keyword">if</span> mode.mail
       setup.to = mode.mail.split <span class="hljs-regexp">/,\s+/</span>
       <span class="hljs-keyword">delete</span> setup.cc
-      <span class="hljs-keyword">delete</span> setup.bcc
-</pre>
+      <span class="hljs-keyword">delete</span> setup.bcc</pre>
         </td>
       </tr>
     
@@ -655,8 +619,7 @@ Send email
         </td>
         <td class="code highlight">
           <pre class="coffeescript">    mails = setup.to?.map (e) -&gt; e.replace <span class="hljs-regexp">/".*?" &lt;(.*?)&gt;/g</span>, <span class="hljs-string">'$1'</span>
-    debug chalk.grey <span class="hljs-string">"<span class="hljs-subst">#{meta.job}</span>: sending email to <span class="hljs-subst">#{mails?.join <span class="hljs-string">', '</span>}</span>..."</span>
-</pre>
+    debug chalk.grey <span class="hljs-string">"<span class="hljs-subst">#{meta.job}</span>: sending email to <span class="hljs-subst">#{mails?.join <span class="hljs-string">', '</span>}</span>..."</span></pre>
         </td>
       </tr>
     
@@ -671,8 +634,7 @@ Send email
         <td class="code highlight">
           <pre class="coffeescript">    transporter = nodemailer.createTransport setup.transport ? <span class="hljs-string">'direct:?name=hostname'</span>
     transporter.use <span class="hljs-string">'compile'</span>, inlineBase64
-    debug chalk.grey <span class="hljs-string">"using <span class="hljs-subst">#{transporter.transporter.name}</span>"</span>
-</pre>
+    debug chalk.grey <span class="hljs-string">"using <span class="hljs-subst">#{transporter.transporter.name}</span>"</span></pre>
         </td>
       </tr>
     
@@ -695,9 +657,7 @@ Send email
       <span class="hljs-keyword">if</span> info
         debug <span class="hljs-string">"message send: "</span> + chalk.grey util.inspect(info).replace <span class="hljs-regexp">/\s+/</span>, <span class="hljs-string">''</span>
         <span class="hljs-keyword">return</span> cb <span class="hljs-keyword">new</span> Error <span class="hljs-string">"Some messages were rejected: <span class="hljs-subst">#{info.response}</span>"</span> <span class="hljs-keyword">if</span> info.rejected?.length
-      cb err?.errors?[<span class="hljs-number">0</span>] ? err ? <span class="hljs-literal">null</span>
-
-</pre>
+      cb err?.errors?[<span class="hljs-number">0</span>] ? err ? <span class="hljs-literal">null</span></pre>
         </td>
       </tr>
     
