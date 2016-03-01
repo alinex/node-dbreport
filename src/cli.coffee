@@ -25,7 +25,7 @@ process.title = 'DbReport'
 argv = yargs
 .usage """
   #{logo}
-  Usage: $0 [-Cmdh] <job...>
+  Usage: $0 [-Chml] <job...>
   """
 # examples
 .example '$0 stats', 'to simply run the stats job'
@@ -41,10 +41,6 @@ argv = yargs
 # change mail address
 .alias 'm', 'mail'
 .describe 'm', 'alternative email address to send to'
-# change mail address
-.alias 'd', 'daemon'
-.boolean 'd'
-.describe 'd', 'run in daemon mode (waiting for commands)'
 # general help
 .help 'h'
 .alias 'h', 'help'
