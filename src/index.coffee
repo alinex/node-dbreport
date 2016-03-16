@@ -12,6 +12,7 @@ nodemailer = require 'nodemailer'
 inlineBase64 = require 'nodemailer-plugin-inline-base64'
 json2csv = require 'json2csv'
 moment = require 'moment'
+iconv = require 'iconv-lite'
 # include alinex modules
 config = require 'alinex-config'
 database = require 'alinex-database'
@@ -149,7 +150,7 @@ compose = (meta, results, cb) ->
       del: ';'
     , (err, string) ->
       return cb err if err
-      list[name].csv = string
+      list[name].csv = iconv.encode string, 'windows1252'
       cb()
   , (err) ->
     return cb err if err

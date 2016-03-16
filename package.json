@@ -48,6 +48,7 @@
     "alinex-util": "^1.0.0",
     "chalk": "^1.1.1",
     "debug": "^2.2.0",
+    "iconv-lite": "^0.4.13",
     "json2csv": "^3.2.0",
     "moment": "^2.11.2",
     "nodemailer": "^2.1.0",
