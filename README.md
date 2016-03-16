@@ -65,15 +65,15 @@ To get some more information call it with debugging:
       dbreport start tables job +0ms
       dbreport run query tables: SELECT table_schema, table_name FROM information_schema.tables ORDER BY table_schema, table_name +1ms
       dbreport tables: 641 rows fetched +88ms
-      dbreport sending email to betriebsteam@divibib.com... +547ms
+      dbreport sending email to betriebsteam@mycompany.com.. +547ms
       dbreport using SMTP +3ms
-      dbreport message send {accepted: [ 'betriebsteam@divibib.com' ],
+      dbreport message send {accepted: [ 'betriebsteam@mycompany.com' ],
       rejected: [],
       response: '250 2.0.0 from MTA(smtp:[172.16.51.30]:10025): 250 2.0.0 Ok: queued as 7C61520AB5',
       envelope:
-       { from: 'alexander.schilling@divibib.com',
-         to: [ 'betriebsteam@divibib.com' ] },
-      messageId: '1454671119582-6f16f637-c8a84be8-46bf2d0c@divibib.com' } +2ms
+       { from: 'alexander.schilling@mycompany.com',
+         to: [ 'betriebsteam@mycompany.com' ] },
+      messageId: '1454671119582-6f16f637-c8a84be8-46bf2d0c@mycompany.com' } +2ms
     Goodbye
 
 Global options:
@@ -95,7 +95,7 @@ The most parts are configurable without any code change.
 ### Email Templates
 
 This templates are used for sending emails out. They will be defined under
-`/dbreport/email`:
+`/email`:
 
 ``` yaml
 # Email Templates
@@ -104,7 +104,7 @@ This templates are used for sending emails out. They will be defined under
 
 # Default Email Templates
 # -------------------------------------------------
-This will extend/overwrite the allready existing setup within the code.
+This will extend/overwrite the already existing setup within the code.
 default:
   # specify how to connect to the server
   transport: smtp://alexander.schilling%40mycompany.de:<PASSWORD>@mail.mycompany.de
@@ -139,7 +139,7 @@ there as a base and the options here may overwrite or enhance the base setup.
 #### Transport
 
 The transport setting defines how to send the email. This should specify the
-connection for the mailserver to use for sending. It is possible to do this using
+connection for the mail server to use for sending. It is possible to do this using
 a connection url like above with the syntax:
 
     <protocol>://<user>:<password>@<server>:<port>
