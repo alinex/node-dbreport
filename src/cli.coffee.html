@@ -126,7 +126,8 @@ fspath = <span class="hljs-built_in">require</span> <span class="hljs-string">'p
           <pre class="coffeescript">config = <span class="hljs-built_in">require</span> <span class="hljs-string">'alinex-config'</span>
 database = <span class="hljs-built_in">require</span> <span class="hljs-string">'alinex-database'</span>
 async = <span class="hljs-built_in">require</span> <span class="hljs-string">'alinex-async'</span>
-Report = <span class="hljs-built_in">require</span> <span class="hljs-string">'alinex-report'</span></pre>
+Report = <span class="hljs-built_in">require</span> <span class="hljs-string">'alinex-report'</span>
+mail = <span class="hljs-built_in">require</span> <span class="hljs-string">'alinex-mail'</span></pre>
         </td>
       </tr>
     
@@ -416,10 +417,12 @@ Main routine
 
         </td>
         <td class="code highlight">
-          <pre class="coffeescript">database.setup (err) -&gt;
+          <pre class="coffeescript">mail.setup (err) -&gt;
   exit <span class="hljs-number">1</span>, err <span class="hljs-keyword">if</span> err
-  config.init (err) -&gt;
-    exit <span class="hljs-number">1</span>, err <span class="hljs-keyword">if</span> err</pre>
+  database.setup (err) -&gt;
+    exit <span class="hljs-number">1</span>, err <span class="hljs-keyword">if</span> err
+    config.init (err) -&gt;
+      exit <span class="hljs-number">1</span>, err <span class="hljs-keyword">if</span> err</pre>
         </td>
       </tr>
     
@@ -432,22 +435,22 @@ Main routine
 
         </td>
         <td class="code highlight">
-          <pre class="coffeescript">    <span class="hljs-keyword">if</span> argv.list
-      data = []
-      <span class="hljs-keyword">for</span> job <span class="hljs-keyword">in</span> dbreport.list()
-        conf = dbreport.get job
-        data.push
-          <span class="hljs-attribute">job</span>: job
-          <span class="hljs-attribute">title</span>: conf.title
-          <span class="hljs-attribute">to</span>: conf.email.to
-      report = <span class="hljs-keyword">new</span> Report()
-      report.h1 <span class="hljs-string">"List of possible jobs:"</span>
-      report.table data, [<span class="hljs-string">'JOB'</span>, <span class="hljs-string">'TITLE'</span>, <span class="hljs-string">'TO'</span>]
-      report.p <span class="hljs-string">'Run them using their job name.'</span>
-      <span class="hljs-built_in">console</span>.log()
-      <span class="hljs-built_in">console</span>.log report.toConsole()
-      <span class="hljs-built_in">console</span>.log()
-      exit()</pre>
+          <pre class="coffeescript">      <span class="hljs-keyword">if</span> argv.list
+        data = []
+        <span class="hljs-keyword">for</span> job <span class="hljs-keyword">in</span> dbreport.list()
+          conf = dbreport.get job
+          data.push
+            <span class="hljs-attribute">job</span>: job
+            <span class="hljs-attribute">title</span>: conf.title
+            <span class="hljs-attribute">to</span>: conf.email.to
+        report = <span class="hljs-keyword">new</span> Report()
+        report.h1 <span class="hljs-string">"List of possible jobs:"</span>
+        report.table data, [<span class="hljs-string">'JOB'</span>, <span class="hljs-string">'TITLE'</span>, <span class="hljs-string">'TO'</span>]
+        report.p <span class="hljs-string">'Run them using their job name.'</span>
+        <span class="hljs-built_in">console</span>.log()
+        <span class="hljs-built_in">console</span>.log report.toConsole()
+        <span class="hljs-built_in">console</span>.log()
+        exit()</pre>
         </td>
       </tr>
     
@@ -460,11 +463,11 @@ Main routine
 
         </td>
         <td class="code highlight">
-          <pre class="coffeescript">    exit <span class="hljs-number">1</span>, <span class="hljs-keyword">new</span> Error <span class="hljs-string">"No job given to process"</span> <span class="hljs-keyword">unless</span> argv._.length
-    <span class="hljs-built_in">console</span>.log <span class="hljs-string">"Run the jobs..."</span>
-    async.each argv._, dbreport.run, <span class="hljs-function"><span class="hljs-params">(err)</span> -&gt;</span>
-      exit <span class="hljs-number">1</span>, err <span class="hljs-keyword">if</span> err
-      exit()</pre>
+          <pre class="coffeescript">      exit <span class="hljs-number">1</span>, <span class="hljs-keyword">new</span> Error <span class="hljs-string">"No job given to process"</span> <span class="hljs-keyword">unless</span> argv._.length
+      <span class="hljs-built_in">console</span>.log <span class="hljs-string">"Run the jobs..."</span>
+      async.each argv._, dbreport.run, <span class="hljs-function"><span class="hljs-params">(err)</span> -&gt;</span>
+        exit <span class="hljs-number">1</span>, err <span class="hljs-keyword">if</span> err
+        exit()</pre>
         </td>
       </tr>
     
