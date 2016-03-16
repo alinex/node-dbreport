@@ -4,6 +4,15 @@ Version changes
 The following list gives a short overview about what is changed between
 individual versions:
 
+Version 1.2.0 (2016-03-16)
+-------------------------------------------------
+- Moved email template config to upper level.
+- Use external mail package for email sending.
+- Fix encoding of csv to windows1252 to work better in excel.
+- Fixed general link in README.
+- Added schema test.
+- Change Usage info.
+
 Version 1.1.3 (2016-02-29)
 -------------------------------------------------
 - Move alinex to alinex-core module because of npm problems.
