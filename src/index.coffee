@@ -7,9 +7,6 @@
 # include base modules
 debug = require('debug')('dbreport')
 chalk = require 'chalk'
-util = require 'util'
-nodemailer = require 'nodemailer'
-inlineBase64 = require 'nodemailer-plugin-inline-base64'
 json2csv = require 'json2csv'
 moment = require 'moment'
 iconv = require 'iconv-lite'
@@ -18,7 +15,7 @@ config = require 'alinex-config'
 database = require 'alinex-database'
 async = require 'alinex-async'
 {array, object} = require 'alinex-util'
-Report = require 'alinex-report'
+mail = require 'alinex-mail'
 
 
 # Initialized Data
@@ -82,20 +79,6 @@ exports.get = (name) ->
 # Helper
 # -------------------------------------------------
 
-# ### Add body to mail setup from report
-addBody= (setup, context, cb) ->
-  return cb() unless setup.body
-  report = new Report
-    source: setup.body context
-  report.toHtml
-    inlineCss: true
-    locale: setup.locale
-  , (err, html) ->
-    setup.text = report.toText()
-    setup.html = html
-    delete setup.body
-    cb err
-
 # ### Make output objects
 compose = (meta, results, cb) ->
   # make data files
@@ -155,31 +138,8 @@ compose = (meta, results, cb) ->
   , (err) ->
     return cb err if err
     # send email
-    email meta, list, cb
-
-# ### Send email
-email = (meta, list, cb) ->
-  # configure email
-  setup = object.clone meta.conf.email
-  debug chalk.grey "#{meta.job}: building email"
-  # use base settings
-  while setup.base
-    base = config.get "/dbreport/email/#{setup.base}"
-    delete setup.base
-    setup = object.extend {}, base, setup
-  # support handlebars
-  if setup.locale # change locale
-    oldLocale = moment.locale()
-    moment.locale setup.locale
-  context =
-    name: meta.job
-    conf: meta.conf
-    date: new Date()
-    result: list
-  setup.subject = setup.subject context if typeof setup.subject is 'function'
-  addBody setup, context, ->
-    if setup.locale # change locale back
-      moment.locale oldLocale
+    #email meta, list, cb
+    setup = object.clone meta.conf.email
     # add attachements
     setup.attachments = []
     for name, data of list
@@ -190,24 +150,11 @@ email = (meta, list, cb) ->
     # test mode
     if mode.mail
       setup.to = mode.mail.split /,\s+/
-      delete setup.cc
-      delete setup.bcc
-    # send email
-    mails = setup.to?.map (e) -> e.replace /".*?" <(.*?)>/g, '$1'
-    debug chalk.grey "#{meta.job}: sending email to #{mails?.join ', '}..."
-    # setup transporter
-    transporter = nodemailer.createTransport setup.transport ? 'direct:?name=hostname'
-    transporter.use 'compile', inlineBase64
-    debug chalk.grey "using #{transporter.transporter.name}"
-    # try to send email
-    transporter.sendMail setup, (err, info) ->
-      if err
-        if err.errors
-          debug chalk.red e.message for e in err.errors
-        else
-          debug chalk.red err.message
-        debug chalk.grey "send through " + util.inspect setup.transport
-      if info
-        debug "message send: " + chalk.grey util.inspect(info).replace /\s+/, ''
-        return cb new Error "Some messages were rejected: #{info.response}" if info.rejected?.length
-      cb err?.errors?[0] ? err ? null
+      setup.cc = []
+      setup.bcc = []
+    mail.send setup,
+      name: meta.job
+      conf: meta.conf
+      date: new Date()
+      result: list
+    , cb

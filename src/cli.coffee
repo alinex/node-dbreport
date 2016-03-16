@@ -13,6 +13,7 @@ config = require 'alinex-config'
 database = require 'alinex-database'
 async = require 'alinex-async'
 Report = require 'alinex-report'
+mail = require 'alinex-mail'
 # include classes and helpers
 dbreport = require './index'
 logo = require('alinex-core').logo 'Database Reports'
@@ -91,30 +92,32 @@ config.setSchema '/dbreport', schema
 # set module search path
 config.register 'dbreport', fspath.dirname __dirname
 # initialize config
-database.setup (err) ->
+mail.setup (err) ->
   exit 1, err if err
-  config.init (err) ->
+  database.setup (err) ->
     exit 1, err if err
-    # show List
-    if argv.list
-      data = []
-      for job in dbreport.list()
-        conf = dbreport.get job
-        data.push
-          job: job
-          title: conf.title
-          to: conf.email.to
-      report = new Report()
-      report.h1 "List of possible jobs:"
-      report.table data, ['JOB', 'TITLE', 'TO']
-      report.p 'Run them using their job name.'
-      console.log()
-      console.log report.toConsole()
-      console.log()
-      exit()
-    # start job
-    exit 1, new Error "No job given to process" unless argv._.length
-    console.log "Run the jobs..."
-    async.each argv._, dbreport.run, (err) ->
+    config.init (err) ->
       exit 1, err if err
-      exit()
+      # show List
+      if argv.list
+        data = []
+        for job in dbreport.list()
+          conf = dbreport.get job
+          data.push
+            job: job
+            title: conf.title
+            to: conf.email.to
+        report = new Report()
+        report.h1 "List of possible jobs:"
+        report.table data, ['JOB', 'TITLE', 'TO']
+        report.p 'Run them using their job name.'
+        console.log()
+        console.log report.toConsole()
+        console.log()
+        exit()
+      # start job
+      exit 1, new Error "No job given to process" unless argv._.length
+      console.log "Run the jobs..."
+      async.each argv._, dbreport.run, (err) ->
+        exit 1, err if err
+        exit()
