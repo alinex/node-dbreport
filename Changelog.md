@@ -4,6 +4,13 @@ Version changes
 The following list gives a short overview about what is changed between
 individual versions:
 
+Version 1.3.2 (2016-03-17)
+-------------------------------------------------
+- Upgraded mail package.
+- Not add attachements if not allowed in email config.
+- No attachements if set to false.
+- Fixed validation if no _mail present.
+
 Version 1.3.1 (2016-03-17)
 -------------------------------------------------
 - Added checking for _mail variable.
