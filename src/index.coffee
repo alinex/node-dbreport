@@ -51,6 +51,7 @@ exports.run = (name, cb) ->
       keys: object.extend
         _mail:
           type: 'object'
+          optional: true
       , conf.variables
   , (err, variables) ->
     return cb err if err
