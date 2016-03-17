@@ -226,6 +226,7 @@ Run a job
       <span class="hljs-attribute">keys</span>: object.extend
         <span class="hljs-attribute">_mail</span>:
           <span class="hljs-attribute">type</span>: <span class="hljs-string">'object'</span>
+          <span class="hljs-attribute">optional</span>: <span class="hljs-literal">true</span>
       , conf.variables
   , <span class="hljs-function"><span class="hljs-params">(err, variables)</span> -&gt;</span>
     <span class="hljs-keyword">return</span> cb err <span class="hljs-keyword">if</span> err</pre>
@@ -508,12 +509,13 @@ email meta, list, cb</p>
 
         </td>
         <td class="code highlight">
-          <pre class="coffeescript">    setup.attachments = []
-    <span class="hljs-keyword">for</span> name, data <span class="hljs-keyword">of</span> list
-      <span class="hljs-keyword">continue</span> <span class="hljs-keyword">unless</span> data.csv <span class="hljs-comment"># skip empty ones</span>
-      setup.attachments.push
-        <span class="hljs-attribute">filename</span>: data.file
-        <span class="hljs-attribute">content</span>: data.csv</pre>
+          <pre class="coffeescript">    <span class="hljs-keyword">if</span> setup.attachements <span class="hljs-keyword">is</span> <span class="hljs-literal">false</span>
+      setup.attachments = []
+      <span class="hljs-keyword">for</span> name, data <span class="hljs-keyword">of</span> list
+        <span class="hljs-keyword">continue</span> <span class="hljs-keyword">unless</span> data.csv <span class="hljs-comment"># skip empty ones</span>
+        setup.attachments.push
+          <span class="hljs-attribute">filename</span>: data.file
+          <span class="hljs-attribute">content</span>: data.csv</pre>
         </td>
       </tr>
     
