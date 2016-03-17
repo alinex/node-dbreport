@@ -103,6 +103,16 @@ Complete Schema Definition
       <span class="hljs-attribute">title</span>: <span class="hljs-string">"Description"</span>
       <span class="hljs-attribute">description</span>: <span class="hljs-string">"a short abstract of what this job will retrieve"</span>
       <span class="hljs-attribute">type</span>: <span class="hljs-string">'string'</span>
+    <span class="hljs-attribute">variables</span>:
+      <span class="hljs-attribute">type</span>: <span class="hljs-string">'object'</span>
+      <span class="hljs-attribute">entries</span>: [
+        <span class="hljs-attribute">type</span>: <span class="hljs-string">'object'</span>
+        <span class="hljs-attribute">mandatoryKeys</span>: [<span class="hljs-string">'type'</span>]
+        <span class="hljs-attribute">keys</span>:
+          <span class="hljs-attribute">type</span>:
+            <span class="hljs-attribute">type</span>: <span class="hljs-string">'string'</span>
+      ]
+      <span class="hljs-attribute">optional</span>: <span class="hljs-literal">true</span>
     <span class="hljs-attribute">query</span>:
       <span class="hljs-attribute">title</span>: <span class="hljs-string">"Query List"</span>
       <span class="hljs-attribute">description</span>: <span class="hljs-string">"the queries to run to retrieve the measurement result"</span>
@@ -112,6 +122,7 @@ Complete Schema Definition
         <span class="hljs-attribute">description</span>: <span class="hljs-string">"the query to run to retrieve the measurement result"</span>
         <span class="hljs-attribute">type</span>: <span class="hljs-string">'object'</span>
         <span class="hljs-attribute">mandatoryKeys</span>: <span class="hljs-literal">true</span>
+        <span class="hljs-attribute">allowedKeys</span>: <span class="hljs-literal">true</span>
         <span class="hljs-attribute">keys</span>:
           <span class="hljs-attribute">title</span>:
             <span class="hljs-attribute">title</span>: <span class="hljs-string">"Title"</span>
@@ -132,10 +143,22 @@ Complete Schema Definition
           <span class="hljs-attribute">command</span>:
             <span class="hljs-attribute">title</span>: <span class="hljs-string">"Command"</span>
             <span class="hljs-attribute">description</span>: <span class="hljs-string">"the concrete sql to run to retrieve the measurement result"</span>
-            <span class="hljs-attribute">type</span>: <span class="hljs-string">'string'</span>
-            <span class="hljs-attribute">trim</span>: <span class="hljs-literal">true</span>
-            <span class="hljs-attribute">replace</span>: [<span class="hljs-regexp">/\s+/</span>, <span class="hljs-string">' '</span>]
-          <span class="hljs-attribute">sort</span>:
+            <span class="hljs-attribute">type</span>: <span class="hljs-string">'handlebars'</span></pre>
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="docs">
+          <div class="pilwrap">
+  <a class="pilcrow" href="#section-3" id="section-3"></a>
+</div>
+<pre><code>       trim: true
+       replace: [/\s+/, ' ']
+</code></pre>
+
+        </td>
+        <td class="code highlight">
+          <pre class="coffeescript">          <span class="hljs-attribute">sort</span>:
             <span class="hljs-attribute">title</span>: <span class="hljs-string">"Sort Order"</span>
             <span class="hljs-attribute">description</span>: <span class="hljs-string">"the sort order for the results (if needed)"</span>
             <span class="hljs-attribute">type</span>: <span class="hljs-string">'array'</span>

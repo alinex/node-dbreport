@@ -243,6 +243,20 @@ Start argument parsing
           <div class="pilwrap">
   <a class="pilcrow" href="#section-12" id="section-12"></a>
 </div>
+<p>add variables</p>
+
+        </td>
+        <td class="code highlight">
+          <pre class="coffeescript">.alias <span class="hljs-string">'j'</span>, <span class="hljs-string">'json'</span>
+.describe <span class="hljs-string">'j'</span>, <span class="hljs-string">'json formatted data object'</span></pre>
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="docs">
+          <div class="pilwrap">
+  <a class="pilcrow" href="#section-13" id="section-13"></a>
+</div>
 <p>general help</p>
 
         </td>
@@ -257,7 +271,7 @@ Start argument parsing
       <tr>
         <td class="docs">
           <div class="pilwrap">
-  <a class="pilcrow" href="#section-13" id="section-13"></a>
+  <a class="pilcrow" href="#section-14" id="section-14"></a>
 </div>
 <p>.strict()</p>
 
@@ -272,7 +286,7 @@ Start argument parsing
       <tr>
         <td class="docs">
           <div class="pilwrap">
-  <a class="pilcrow" href="#section-14" id="section-14"></a>
+  <a class="pilcrow" href="#section-15" id="section-15"></a>
 </div>
 <p>{logo}
 {chalk.red.bold 'CLI Parameter Failure:'} #{chalk.red err}</p>
@@ -290,7 +304,7 @@ Start argument parsing
       <tr>
         <td class="docs">
           <div class="pilwrap">
-  <a class="pilcrow" href="#section-15" id="section-15"></a>
+  <a class="pilcrow" href="#section-16" id="section-16"></a>
 </div>
 <p>implement some global switches</p>
 
@@ -318,7 +332,7 @@ Error management
       <tr>
         <td class="docs">
           <div class="pilwrap">
-  <a class="pilcrow" href="#section-17" id="section-17"></a>
+  <a class="pilcrow" href="#section-18" id="section-18"></a>
 </div>
 <p>exit without error</p>
 
@@ -331,7 +345,7 @@ Error management
       <tr>
         <td class="docs">
           <div class="pilwrap">
-  <a class="pilcrow" href="#section-18" id="section-18"></a>
+  <a class="pilcrow" href="#section-19" id="section-19"></a>
 </div>
 <p>exit with error</p>
 
@@ -371,21 +385,27 @@ Main routine
       <tr>
         <td class="docs">
           <div class="pilwrap">
-  <a class="pilcrow" href="#section-20" id="section-20"></a>
+  <a class="pilcrow" href="#section-21" id="section-21"></a>
 </div>
 <p>init</p>
 
         </td>
         <td class="code highlight">
-          <pre class="coffeescript">dbreport.init
-  <span class="hljs-attribute">mail</span>: argv.mail</pre>
+          <pre class="coffeescript"><span class="hljs-keyword">if</span> argv.json
+  <span class="hljs-keyword">try</span>
+    variables = JSON.parse argv.json
+  <span class="hljs-keyword">catch</span> error
+    exit <span class="hljs-number">255</span>, error
+dbreport.init
+  <span class="hljs-attribute">mail</span>: argv.mail
+  <span class="hljs-attribute">variables</span>: variables ? {}</pre>
         </td>
       </tr>
     
       <tr>
         <td class="docs">
           <div class="pilwrap">
-  <a class="pilcrow" href="#section-21" id="section-21"></a>
+  <a class="pilcrow" href="#section-22" id="section-22"></a>
 </div>
 <p>add schema for module's configuration</p>
 
@@ -398,7 +418,7 @@ Main routine
       <tr>
         <td class="docs">
           <div class="pilwrap">
-  <a class="pilcrow" href="#section-22" id="section-22"></a>
+  <a class="pilcrow" href="#section-23" id="section-23"></a>
 </div>
 <p>set module search path</p>
 
@@ -411,7 +431,7 @@ Main routine
       <tr>
         <td class="docs">
           <div class="pilwrap">
-  <a class="pilcrow" href="#section-23" id="section-23"></a>
+  <a class="pilcrow" href="#section-24" id="section-24"></a>
 </div>
 <p>initialize config</p>
 
@@ -429,7 +449,7 @@ Main routine
       <tr>
         <td class="docs">
           <div class="pilwrap">
-  <a class="pilcrow" href="#section-24" id="section-24"></a>
+  <a class="pilcrow" href="#section-25" id="section-25"></a>
 </div>
 <p>show List</p>
 
@@ -457,7 +477,7 @@ Main routine
       <tr>
         <td class="docs">
           <div class="pilwrap">
-  <a class="pilcrow" href="#section-25" id="section-25"></a>
+  <a class="pilcrow" href="#section-26" id="section-26"></a>
 </div>
 <p>start job</p>
 

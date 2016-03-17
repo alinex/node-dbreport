@@ -57,22 +57,6 @@
       </div>
 
       <div class="heading h3">
-        <a href="#email-templates">Email Templates</a>
-      </div>
-
-      <div class="heading h4">
-        <a href="#transport">Transport</a>
-      </div>
-
-      <div class="heading h4">
-        <a href="#addressing">Addressing</a>
-      </div>
-
-      <div class="heading h4">
-        <a href="#content">Content</a>
-      </div>
-
-      <div class="heading h3">
         <a href="#jobs">jobs</a>
       </div>
 
@@ -90,6 +74,22 @@
 
       <div class="heading h4">
         <a href="#email">Email</a>
+      </div>
+
+      <div class="heading h3">
+        <a href="#email-templates">Email Templates</a>
+      </div>
+
+      <div class="heading h4">
+        <a href="#transport">Transport</a>
+      </div>
+
+      <div class="heading h4">
+        <a href="#addressing">Addressing</a>
+      </div>
+
+      <div class="heading h4">
+        <a href="#content">Content</a>
       </div>
 
       <div class="heading h3">
@@ -189,6 +189,7 @@ Goodbye
 </code></pre>
 <p>Use other email address for test:</p>
 <pre><code>-m, --mail      give a specific mail address
+-j, --json      give an optional object of variables to the job
 </code></pre>
 <div class="pilwrap" id="configuration">
   <h2>
@@ -197,6 +198,132 @@ Configuration
   </h2>
 </div>
 <p>The most parts are configurable without any code change.</p>
+<div class="pilwrap" id="jobs">
+  <h3>
+    <a href="#jobs" name="jobs" class="pilcrow"></a>
+jobs
+  </h3>
+</div>
+<p>The main part is the configuration of each single, possible job. At best this
+should be done each in it's own file like <code>/dbreport/job/xxxx</code>:</p>
+<pre><code class="yaml"># Test Job
+# =================================================
+
+# Job Meta
+# -------------------------------------------------
+title: Vorhandene Tabellen
+description: |+
+  Dieser Bericht zeigt alle Tabellen die zum Zeitpunkt der Ausführung in der manage
+  life Datenbank existieren. Die genaue Liste liegt als tables.csv dieser Email bei.
+variables:
+  schema:
+    type: 'string'
+
+# Queries to Run
+# -------------------------------------------------
+query:
+  tables:
+    title: List of Tables
+    description: a complete list of all relations in the database
+    database: test_postgresql
+    command: &gt;
+      SELECT relname
+      FROM pg_class
+      WHERE relname !~ '^(pg_|sql_)' AND relkind = 'r'
+      AND relname not like '{{schema}}.%';
+  indexes:
+    title: List of Indexes
+    description: a complete list of all indexes in the database
+    database: test_postgresql
+    command: &gt;
+      SELECT relname
+      FROM pg_class
+      WHERE relname !~ '^(pg_|sql_)' AND relkind = 'i';
+
+# Compose
+# -------------------------------------------------
+compose:
+  all:
+    title: List of Objects
+    description: a complete list of all objects in the database
+    append:
+      - tables
+      - indexes
+    sort: relname
+
+# Where to Send them to
+# -------------------------------------------------
+# also go on for empty results
+sendEmpty: true
+
+email:
+  base: default
+  to: betrieb@mycompany.com
+</code></pre>
+<p>As you see above you have the four parts to fill up:</p>
+<ul>
+<li>meta data to be used in the email like: '{{conf.title}}'</li>
+<li>queries with a name, the db reference name and code to execute</li>
+<li>compose options (optional)</li>
+<li>email sending</li>
+</ul>
+<div class="pilwrap" id="meta-data">
+  <h4>
+    <a href="#meta-data" name="meta-data" class="pilcrow"></a>
+Meta Data
+  </h4>
+</div>
+<p>Here only the <code>title</code> and <code>description</code> can be set tzo be used within the email
+template. They are useable as  <code>{{conf.title}}</code> or <code>{{conf.description}}</code> in the
+template.</p>
+<p>The variables object define which variables are used within this job. You have to
+give them from the command line by <code>--json ...</code>.</p>
+<div class="pilwrap" id="queries">
+  <h4>
+    <a href="#queries" name="queries" class="pilcrow"></a>
+Queries
+  </h4>
+</div>
+<p>This let you define multiple database queries to execute. They are given as an
+object with an alias name as key. This name can be used later in composing
+multiple queries together.</p>
+<p>If no <code>compose</code> setting is given they will used directly as the attached csv files.
+Therefore the <code>title</code>, <code>description</code> and <code>sort</code> settings may be given. The resulting
+CSV file names will use the title or alias.</p>
+<p>The <code>database</code> setting is a reference to the database connection to use. This is
+defined separately (see below).</p>
+<p>The <code>command</code> string is the SQL to be executed. This will be send as is to the
+database server. So there are no variables possible.</p>
+<div class="pilwrap" id="compose">
+  <h4>
+    <a href="#compose" name="compose" class="pilcrow"></a>
+Compose
+  </h4>
+</div>
+<p>If you want to compose multiple query results together this section allows for.
+It should contain an object of compositions to send as separate files. The
+key of each entry is used as an alias.</p>
+<p>Each composition contains:</p>
+<ul>
+<li>title <string> - to be used as filename and as template variable</li>
+<li>description <string> - to be used as template variable</li>
+<li>append 'true' or <list of query aliases></li>
+<li>sort [<field>]... - list of sort fields (prepend with '-' for decreasing order)</li>
+</ul>
+<p>Other composition methods may follow later.</p>
+<div class="pilwrap" id="email">
+  <h4>
+    <a href="#email" name="email" class="pilcrow"></a>
+Email
+  </h4>
+</div>
+<p>Here you have the option to prevent sending empty emails (without attached csv)
+by setting <code>sendEmpty</code> to <code>false</code>.</p>
+<p>The email part is exactly like defined above in the base email settings. So you
+have the possibility to overwrite each value written there with the ones here.</p>
+<p>While the email mostly uses a 'base' template and only defines the parts which
+are changed to the base template. So a proper use of the templates will help
+you minimize the configuration for the jobs.</p>
 <div class="pilwrap" id="email-templates">
   <h3>
     <a href="#email-templates" name="email-templates" class="pilcrow"></a>
@@ -337,126 +464,6 @@ job.</p>
 </li>
 </ul>
 <p>Find more examples at <a href="http://alinex.github.io/node-validator/README.md.html#handlebars">validator</a>.</p>
-<div class="pilwrap" id="jobs">
-  <h3>
-    <a href="#jobs" name="jobs" class="pilcrow"></a>
-jobs
-  </h3>
-</div>
-<p>The main part is the configuration of each single, possible job. At best this
-should be done each in it's own file like <code>/dbreport/job/xxxx</code>:</p>
-<pre><code class="yaml"># Test Job
-# =================================================
-
-# Job Meta
-# -------------------------------------------------
-title: Vorhandene Tabellen
-description: |+
-  Dieser Bericht zeigt alle Tabellen die zum Zeitpunkt der Ausführung in der manage
-  life Datenbank existieren. Die genaue Liste liegt als tables.csv dieser Email bei.
-
-# Queries to Run
-# -------------------------------------------------
-query:
-  tables:
-    title: List of Tables
-    description: a complete list of all relations in the database
-    database: test_postgresql
-    command: &gt;
-      SELECT relname
-      FROM pg_class
-      WHERE relname !~ '^(pg_|sql_)' AND relkind = 'r';
-  indexes:
-    title: List of Indexes
-    description: a complete list of all indexes in the database
-    database: test_postgresql
-    command: &gt;
-      SELECT relname
-      FROM pg_class
-      WHERE relname !~ '^(pg_|sql_)' AND relkind = 'i';
-
-# Compose
-# -------------------------------------------------
-compose:
-  all:
-    title: List of Objects
-    description: a complete list of all objects in the database
-    append:
-      - tables
-      - indexes
-    sort: relname
-
-# Where to Send them to
-# -------------------------------------------------
-# also go on for empty results
-sendEmpty: true
-
-email:
-  base: default
-  to: betrieb@mycompany.com
-</code></pre>
-<p>As you see above you have the four parts to fill up:</p>
-<ul>
-<li>meta data to be used in the email like: '{{conf.title}}'</li>
-<li>queries with a name, the db reference name and code to execute</li>
-<li>compose options (optional)</li>
-<li>email sending</li>
-</ul>
-<div class="pilwrap" id="meta-data">
-  <h4>
-    <a href="#meta-data" name="meta-data" class="pilcrow"></a>
-Meta Data
-  </h4>
-</div>
-<p>Here only the <code>title</code> and <code>description</code> can be set tzo be used within the email
-template. They are useable as  <code>{{conf.title}}</code> or <code>{{conf.description}}</code> in the
-template.</p>
-<div class="pilwrap" id="queries">
-  <h4>
-    <a href="#queries" name="queries" class="pilcrow"></a>
-Queries
-  </h4>
-</div>
-<p>This let you define multiple database queries to execute. They are given as an
-object with an alias name as key. This name can be used later in composing
-multiple queries together.</p>
-<p>If no <code>compose</code> setting is given they will used directly as the attached csv files.
-Therefore the <code>title</code>, <code>description</code> and <code>sort</code> settings may be given. The resulting
-CSV file names will use the title or alias.</p>
-<p>The <code>database</code> setting is a reference to the database connection to use. This is
-defined separately (see below).</p>
-<p>The <code>command</code> string is the SQL to be executed. This will be send as is to the
-database server. So there are no variables possible.</p>
-<div class="pilwrap" id="compose">
-  <h4>
-    <a href="#compose" name="compose" class="pilcrow"></a>
-Compose
-  </h4>
-</div>
-<p>If you want to compose multiple query results together this section allows for.
-It should contain an object of compositions to send as separate files. The
-key of each entry is used as an alias.</p>
-<p>Each composition contains:</p>
-<ul>
-<li>title <string> - to be used as filename and as template variable</li>
-<li>description <string> - to be used as template variable</li>
-<li>append 'true' or <list of query aliases></li>
-<li>sort [<field>]... - list of sort fields (prepend with '-' for decreasing order)</li>
-</ul>
-<p>Other composition methods may follow later.</p>
-<div class="pilwrap" id="email">
-  <h4>
-    <a href="#email" name="email" class="pilcrow"></a>
-Email
-  </h4>
-</div>
-<p>Here you have the option to prevent sending empty emails (without attached csv)
-by setting <code>sendEmpty</code> to <code>false</code>.</p>
-<p>The email part is exactly like defined above in the base email settings. So you
-have the possibility to overwrite each value written there with the ones here.</p>
-<p>While the email mostly uses a 'base' template and only defines the parts which
-are changed to the base template. So a proper use of the templates will help
-you minimize the configuration for the jobs.</p>
 <div class="pilwrap" id="database">
   <h3>
     <a href="#database" name="database" class="pilcrow"></a>
