@@ -7,6 +7,7 @@
 # include base modules
 debug = require('debug')('dbreport')
 chalk = require 'chalk'
+util = require 'util'
 json2csv = require 'json2csv'
 moment = require 'moment'
 iconv = require 'iconv-lite'
@@ -16,6 +17,7 @@ database = require 'alinex-database'
 async = require 'alinex-async'
 {array, object} = require 'alinex-util'
 mail = require 'alinex-mail'
+validator = require 'alinex-validator'
 
 
 # Initialized Data
@@ -28,6 +30,7 @@ mail = require 'alinex-mail'
 # be changed at any time.
 mode =
   mail: null # alternative email to use
+  variables: {} # list of additional command variables
 
 exports.init = (setup) ->
   mode = setup
@@ -37,31 +40,42 @@ exports.init = (setup) ->
 exports.run = (name, cb) ->
   conf = config.get "/dbreport/job/#{name}"
   return cb new Error "Job #{name} is not configured" unless conf
-  # run the queries
-  console.log "-> #{name}"
-  debug "start #{name} job"
-  async.mapOf conf.query, (query, n, cb) ->
-    debug chalk.grey "#{n}: run query #{chalk.grey query.command.replace /\s+/g, ' '}"
-    database.list query.database, query.command, (err, data) ->
-      debug "#{n}: #{data?.length} rows fetched"
-      cb err, data
-  , (err, results) ->
+  # validate variables
+  validator.check
+    name: 'cli-variables'
+    value: mode.variables
+    schema:
+      type: 'object'
+      allowedKeys: true
+      mandatoryKeys: true
+      keys: conf.variables
+  , (err, variables) ->
     return cb err if err
-    # check for sending
-    isEmpty = true
-    for query, data of results
-      continue unless data.length
-      isEmpty = false
-      break
-    if isEmpty
-      debug "#{name}: no data found"
-      return cb() unless conf.sendEmpty
-    # build results
-    compose
-      job: name
-      conf: conf
-      isEmpty: isEmpty
-    , results, cb
+    # run the queries
+    console.log "-> #{name} with", chalk.grey util.inspect(variables).replace /\n/g, ' '
+    debug "start #{name} job"
+    async.mapOf conf.query, (query, n, cb) ->
+      debug chalk.grey "#{n}: run query #{chalk.grey query.command(variables).replace /\s+/g, ' '}"
+      database.list query.database, query.command(variables), (err, data) ->
+        debug "#{n}: #{data?.length} rows fetched"
+        cb err, data
+    , (err, results) ->
+      return cb err if err
+      # check for sending
+      isEmpty = true
+      for query, data of results
+        continue unless data.length
+        isEmpty = false
+        break
+      if isEmpty
+        debug "#{name}: no data found"
+        return cb() unless conf.sendEmpty
+      # build results
+      compose
+        job: name
+        conf: conf
+        isEmpty: isEmpty
+      , results, cb
 
 
 # List possible jobs

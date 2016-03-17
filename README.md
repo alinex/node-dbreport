@@ -85,12 +85,133 @@ Global options:
 Use other email address for test:
 
     -m, --mail      give a specific mail address
+    -j, --json      give an optional object of variables to the job
 
 
 Configuration
 -------------------------------------------------
 The most parts are configurable without any code change.
 
+
+### jobs
+
+The main part is the configuration of each single, possible job. At best this
+should be done each in it's own file like `/dbreport/job/xxxx`:
+
+``` yaml
+# Test Job
+# =================================================
+
+# Job Meta
+# -------------------------------------------------
+title: Vorhandene Tabellen
+description: |+
+  Dieser Bericht zeigt alle Tabellen die zum Zeitpunkt der Ausführung in der manage
+  life Datenbank existieren. Die genaue Liste liegt als tables.csv dieser Email bei.
+variables:
+  schema:
+    type: 'string'
+
+# Queries to Run
+# -------------------------------------------------
+query:
+  tables:
+    title: List of Tables
+    description: a complete list of all relations in the database
+    database: test_postgresql
+    command: >
+      SELECT relname
+      FROM pg_class
+      WHERE relname !~ '^(pg_|sql_)' AND relkind = 'r'
+      AND relname not like '{{schema}}.%';
+  indexes:
+    title: List of Indexes
+    description: a complete list of all indexes in the database
+    database: test_postgresql
+    command: >
+      SELECT relname
+      FROM pg_class
+      WHERE relname !~ '^(pg_|sql_)' AND relkind = 'i';
+
+# Compose
+# -------------------------------------------------
+compose:
+  all:
+    title: List of Objects
+    description: a complete list of all objects in the database
+    append:
+      - tables
+      - indexes
+    sort: relname
+
+# Where to Send them to
+# -------------------------------------------------
+# also go on for empty results
+sendEmpty: true
+
+email:
+  base: default
+  to: betrieb@mycompany.com
+```
+
+As you see above you have the four parts to fill up:
+
+- meta data to be used in the email like: '{{conf.title}}'
+- queries with a name, the db reference name and code to execute
+- compose options (optional)
+- email sending
+
+#### Meta Data
+
+Here only the `title` and `description` can be set tzo be used within the email
+template. They are useable as  `{{conf.title}}` or `{{conf.description}}` in the
+template.
+
+The variables object define which variables are used within this job. You have to
+give them from the command line by `--json ...`.
+
+#### Queries
+
+This let you define multiple database queries to execute. They are given as an
+object with an alias name as key. This name can be used later in composing
+multiple queries together.
+
+If no `compose` setting is given they will used directly as the attached csv files.
+Therefore the `title`, `description` and `sort` settings may be given. The resulting
+CSV file names will use the title or alias.
+
+The `database` setting is a reference to the database connection to use. This is
+defined separately (see below).
+
+The `command` string is the SQL to be executed. This will be send as is to the
+database server. So there are no variables possible.
+
+#### Compose
+
+If you want to compose multiple query results together this section allows for.
+It should contain an object of compositions to send as separate files. The
+key of each entry is used as an alias.
+
+Each composition contains:
+
+- title <string> - to be used as filename and as template variable
+- description <string> - to be used as template variable
+- append 'true' or <list of query aliases>
+- sort [<field>]... - list of sort fields (prepend with '-' for decreasing order)
+
+Other composition methods may follow later.
+
+#### Email
+
+Here you have the option to prevent sending empty emails (without attached csv)
+by setting `sendEmpty` to `false`.
+
+The email part is exactly like defined above in the base email settings. So you
+have the possibility to overwrite each value written there with the ones here.
+
+While the email mostly uses a 'base' template and only defines the parts which
+are changed to the base template. So a proper use of the templates will help
+you minimize the configuration for the jobs.
 
 ### Email Templates
 
@@ -226,119 +347,6 @@ The following context variables are possible:
     - description - description of job (from config)
 
 Find more examples at [validator](http://alinex.github.io/node-validator/README.md.html#handlebars).
-
-### jobs
-
-The main part is the configuration of each single, possible job. At best this
-should be done each in it's own file like `/dbreport/job/xxxx`:
-
-``` yaml
-# Test Job
-# =================================================
-
-# Job Meta
-# -------------------------------------------------
-title: Vorhandene Tabellen
-description: |+
-  Dieser Bericht zeigt alle Tabellen die zum Zeitpunkt der Ausführung in der manage
-  life Datenbank existieren. Die genaue Liste liegt als tables.csv dieser Email bei.
-
-# Queries to Run
-# -------------------------------------------------
-query:
-  tables:
-    title: List of Tables
-    description: a complete list of all relations in the database
-    database: test_postgresql
-    command: >
-      SELECT relname
-      FROM pg_class
-      WHERE relname !~ '^(pg_|sql_)' AND relkind = 'r';
-  indexes:
-    title: List of Indexes
-    description: a complete list of all indexes in the database
-    database: test_postgresql
-    command: >
-      SELECT relname
-      FROM pg_class
-      WHERE relname !~ '^(pg_|sql_)' AND relkind = 'i';
-
-# Compose
-# -------------------------------------------------
-compose:
-  all:
-    title: List of Objects
-    description: a complete list of all objects in the database
-    append:
-      - tables
-      - indexes
-    sort: relname
-
-# Where to Send them to
-# -------------------------------------------------
-# also go on for empty results
-sendEmpty: true
-
-email:
-  base: default
-  to: betrieb@mycompany.com
-```
-
-As you see above you have the four parts to fill up:
-
-- meta data to be used in the email like: '{{conf.title}}'
-- queries with a name, the db reference name and code to execute
-- compose options (optional)
-- email sending
-
-#### Meta Data
-
-Here only the `title` and `description` can be set tzo be used within the email
-template. They are useable as  `{{conf.title}}` or `{{conf.description}}` in the
-template.
-
-#### Queries
-
-This let you define multiple database queries to execute. They are given as an
-object with an alias name as key. This name can be used later in composing
-multiple queries together.
-
-If no `compose` setting is given they will used directly as the attached csv files.
-Therefore the `title`, `description` and `sort` settings may be given. The resulting
-CSV file names will use the title or alias.
-
-The `database` setting is a reference to the database connection to use. This is
-defined separately (see below).
-
-The `command` string is the SQL to be executed. This will be send as is to the
-database server. So there are no variables possible.
-
-#### Compose
-
-If you want to compose multiple query results together this section allows for.
-It should contain an object of compositions to send as separate files. The
-key of each entry is used as an alias.
-
-Each composition contains:
-
-- title <string> - to be used as filename and as template variable
-- description <string> - to be used as template variable
-- append 'true' or <list of query aliases>
-- sort [<field>]... - list of sort fields (prepend with '-' for decreasing order)
-
-Other composition methods may follow later.
-
-#### Email
-
-Here you have the option to prevent sending empty emails (without attached csv)
-by setting `sendEmpty` to `false`.
-
-The email part is exactly like defined above in the base email settings. So you
-have the possibility to overwrite each value written there with the ones here.
-
-While the email mostly uses a 'base' template and only defines the parts which
-are changed to the base template. So a proper use of the templates will help
-you minimize the configuration for the jobs.
 
 ### Database
 

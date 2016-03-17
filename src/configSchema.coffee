@@ -20,6 +20,16 @@ job =
       title: "Description"
       description: "a short abstract of what this job will retrieve"
       type: 'string'
+    variables:
+      type: 'object'
+      entries: [
+        type: 'object'
+        mandatoryKeys: ['type']
+        keys:
+          type:
+            type: 'string'
+      ]
+      optional: true
     query:
       title: "Query List"
       description: "the queries to run to retrieve the measurement result"
@@ -29,6 +39,7 @@ job =
         description: "the query to run to retrieve the measurement result"
         type: 'object'
         mandatoryKeys: true
+        allowedKeys: true
         keys:
           title:
             title: "Title"
@@ -49,9 +60,9 @@ job =
           command:
             title: "Command"
             description: "the concrete sql to run to retrieve the measurement result"
-            type: 'string'
-            trim: true
-            replace: [/\s+/, ' ']
+            type: 'handlebars'
+#            trim: true
+#            replace: [/\s+/, ' ']
           sort:
             title: "Sort Order"
             description: "the sort order for the results (if needed)"

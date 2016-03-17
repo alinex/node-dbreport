@@ -42,6 +42,9 @@ argv = yargs
 # change mail address
 .alias 'm', 'mail'
 .describe 'm', 'alternative email address to send to'
+# add variables
+.alias 'j', 'json'
+.describe 'j', 'json formatted data object'
 # general help
 .help 'h'
 .alias 'h', 'help'
@@ -85,8 +88,14 @@ process.on 'exit', ->
 console.log logo
 console.log "Initializing..."
 # init
+if argv.json
+  try
+    variables = JSON.parse argv.json
+  catch error
+    exit 255, error
 dbreport.init
   mail: argv.mail
+  variables: variables ? {}
 # add schema for module's configuration
 config.setSchema '/dbreport', schema
 # set module search path
