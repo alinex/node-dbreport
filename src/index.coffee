@@ -159,7 +159,7 @@ compose = (meta, results, cb) ->
     #email meta, list, cb
     setup = object.clone meta.conf.email
     # add attachements
-    unless setup.attachements is false
+    if setup.attachements is false
       setup.attachments = []
       for name, data of list
         continue unless data.csv # skip empty ones
