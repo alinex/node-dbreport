@@ -159,12 +159,13 @@ compose = (meta, results, cb) ->
     #email meta, list, cb
     setup = object.clone meta.conf.email
     # add attachements
-    setup.attachments = []
-    for name, data of list
-      continue unless data.csv # skip empty ones
-      setup.attachments.push
-        filename: data.file
-        content: data.csv
+    unless setup.attachements is false
+      setup.attachments = []
+      for name, data of list
+        continue unless data.csv # skip empty ones
+        setup.attachments.push
+          filename: data.file
+          content: data.csv
     # test mode
     if mode.mail
       setup.to = mode.mail.split /,\s+/
