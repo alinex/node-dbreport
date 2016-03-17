@@ -4,6 +4,10 @@ Version changes
 The following list gives a short overview about what is changed between
 individual versions:
 
+Version 1.3.1 (2016-03-17)
+-------------------------------------------------
+- Added checking for _mail variable.
+
 Version 1.3.0 (2016-03-17)
 -------------------------------------------------
 - Allow variables to be used in query.
