@@ -48,7 +48,10 @@ exports.run = (name, cb) ->
       type: 'object'
       allowedKeys: true
       mandatoryKeys: true
-      keys: conf.variables
+      keys: object.extend
+        _mail:
+          type: 'object'
+      , conf.variables
   , (err, variables) ->
     return cb err if err
     # run the queries
