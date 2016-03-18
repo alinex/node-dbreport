@@ -162,7 +162,6 @@ compose = (meta, results, cb) ->
     #email meta, list, cb
     setup = object.clone meta.conf.email
     # add attachements
-    console.log setup.attachements, setup.attachements?, setup.attachements is false
     unless setup.attachements? and not setup.attachements
       setup.attachments = []
       for name, data of list
