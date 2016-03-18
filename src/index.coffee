@@ -56,7 +56,10 @@ exports.run = (name, cb) ->
   , (err, variables) ->
     return cb err if err
     # run the queries
-    console.log "-> #{name} with", chalk.grey util.inspect(variables).replace /\n/g, ' '
+    if variables.length
+      console.log "-> #{name}", chalk.grey "with " + util.inspect(variables).replace /\n/g, ' '
+    else
+      console.log "-> #{name}"
     debug "start #{name} job"
     async.mapOf conf.query, (query, n, cb) ->
       debug chalk.grey "#{n}: run query #{chalk.grey query.command(variables).replace /\s+/g, ' '}"
@@ -159,7 +162,8 @@ compose = (meta, results, cb) ->
     #email meta, list, cb
     setup = object.clone meta.conf.email
     # add attachements
-    if setup.attachements is false
+    console.log setup.attachements, setup.attachements?, setup.attachements is false
+    unless setup.attachements? and not setup.attachements
       setup.attachments = []
       for name, data of list
         continue unless data.csv # skip empty ones
