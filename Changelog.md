@@ -4,6 +4,12 @@ Version changes
 The following list gives a short overview about what is changed between
 individual versions:
 
+Version 1.3.3 (2016-03-21)
+-------------------------------------------------
+- Upgrade validator, config, util, yaml and builder.
+- Removed debug output.
+- Fixed attachement check.
+
 Version 1.3.2 (2016-03-17)
 -------------------------------------------------
 - Upgraded mail package.
