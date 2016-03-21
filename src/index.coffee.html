@@ -242,7 +242,10 @@ Run a job
 
         </td>
         <td class="code highlight">
-          <pre class="coffeescript">    <span class="hljs-built_in">console</span>.log <span class="hljs-string">"-&gt; <span class="hljs-subst">#{name}</span> with"</span>, chalk.grey util.inspect(variables).replace <span class="hljs-regexp">/\n/g</span>, <span class="hljs-string">' '</span>
+          <pre class="coffeescript">    <span class="hljs-keyword">if</span> variables.length
+      <span class="hljs-built_in">console</span>.log <span class="hljs-string">"-&gt; <span class="hljs-subst">#{name}</span>"</span>, chalk.grey <span class="hljs-string">"with "</span> + util.inspect(variables).replace <span class="hljs-regexp">/\n/g</span>, <span class="hljs-string">' '</span>
+    <span class="hljs-keyword">else</span>
+      <span class="hljs-built_in">console</span>.log <span class="hljs-string">"-&gt; <span class="hljs-subst">#{name}</span>"</span>
     debug <span class="hljs-string">"start <span class="hljs-subst">#{name}</span> job"</span>
     async.mapOf conf.query, <span class="hljs-function"><span class="hljs-params">(query, n, cb)</span> -&gt;</span>
       debug chalk.grey <span class="hljs-string">"<span class="hljs-subst">#{n}</span>: run query <span class="hljs-subst">#{chalk.grey query.command(variables).replace <span class="hljs-regexp">/\s+/g</span>, <span class="hljs-string">' '</span>}</span>"</span>
@@ -509,7 +512,7 @@ email meta, list, cb</p>
 
         </td>
         <td class="code highlight">
-          <pre class="coffeescript">    <span class="hljs-keyword">if</span> setup.attachements <span class="hljs-keyword">is</span> <span class="hljs-literal">false</span>
+          <pre class="coffeescript">    <span class="hljs-keyword">unless</span> setup.attachements? <span class="hljs-keyword">and</span> <span class="hljs-keyword">not</span> setup.attachements
       setup.attachments = []
       <span class="hljs-keyword">for</span> name, data <span class="hljs-keyword">of</span> list
         <span class="hljs-keyword">continue</span> <span class="hljs-keyword">unless</span> data.csv <span class="hljs-comment"># skip empty ones</span>
