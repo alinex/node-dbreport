@@ -1,0 +1,76 @@
+# Test Job
+# =================================================
+
+# Job Meta
+# -------------------------------------------------
+title: All Config Options
+description: |+
+  Dieser Bericht zeigt alle Objekte die zum Zeitpunkt der Ausführung in der manage
+  life Datenbank existieren. Die genaue Liste liegt als tables.csv dieser Email bei.
+
+# Queries to Run
+# -------------------------------------------------
+query:
+  tables:
+    title: List of Tables
+    description: a complete list of all relations in the database
+    database: test_postgresql
+    command: >
+      SELECT relname
+      FROM pg_class
+      WHERE relname !~ '^(pg_|sql_)' AND relkind = 'r';
+  indexes:
+    title: List of Indexes
+    description: a complete list of all indexes in the database
+    database: test_postgresql
+    command: >
+      SELECT relname
+      FROM pg_class
+      WHERE relname !~ '^(pg_|sql_)' AND relkind = 'i';
+  views:
+    title: List of Views
+    description: a complete list of all views in the database
+    database: test_postgresql
+    command: >
+      SELECT relname
+      FROM pg_class
+      WHERE relname !~ '^(pg_|sql_)' AND relkind = 'v';
+
+# also go on for empty results
+sendEmpty: true
+
+# Compose
+# -------------------------------------------------
+compose:
+  all:
+    title: List of Objects
+    description: a complete list of all objects in the database
+    append:
+      - tables
+      - indexes
+#    join:
+    sort: relname
+#    reverse: true
+#    deduplicate: true
+#    fields: ['name', 'id']
+#    flip: true
+#    flip: 'name'
+
+#csv: false
+#csv:
+#  - all
+
+#pdf:
+#  all: >
+#    {{title}}
+
+#xls:
+
+
+# Where to Send them to
+# -------------------------------------------------
+email:
+  base: default
+  to: alexander.schilling@anythere.net
+
+#save: <dir>
