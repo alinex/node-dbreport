@@ -134,7 +134,6 @@ compose = (meta, results, cb) ->
       file.data.reverse()
     # filter fields
     if file.fields
-      console.log file.fields
       for row in file.data
         for col in Object.keys row
           delete row[col] unless col in file.fields
@@ -163,9 +162,6 @@ compose = (meta, results, cb) ->
         for col, y in row
           file.data[x] ?= {}
           file.data[x][flipped[0][y]] = col
-  for name, file of list
-    console.log file.data
-  process.exit 1
   debug chalk.grey "#{meta.job}: convert to csv"
   for name, file of list
     file.rows = file.data.length
@@ -194,13 +190,18 @@ compose = (meta, results, cb) ->
     #email meta, list, cb
     setup = object.clone meta.conf.email
     # add attachements
-    unless setup.attachements? and not setup.attachements
+    if meta.conf.csv
       setup.attachments = []
-      for name, data of list
-        continue unless data.csv # skip empty ones
+      names = if typeof meta.conf.csv is 'string' then meta.conf.csv else Object.keys list
+      for name in names
+        data = list[name]
         setup.attachments.push
           filename: data.file
           content: data.csv
+    if pdf = meta.conf.pdf
+      console.log pdf
+      console.log '-----< EXIT >-----'
+      process.exit 1
     # test mode
     if mode.mail
       setup.to = mode.mail.split /,\s+/

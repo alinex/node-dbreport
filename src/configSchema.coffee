@@ -78,6 +78,7 @@ job =
         description: "the alias name of the list to create"
         type: 'object'
         mandatoryKeys: true
+        allowedKeys: true
         keys:
           title:
             title: "Title"
@@ -133,6 +134,39 @@ job =
             description: "the x and y axes are changed"
             type: 'boolean'
             optional: true
+      ]
+    csv:
+      title: "Include CSV"
+      description: "a flag if or which csv data should be attached"
+      type: 'or'
+      or: [
+        type: 'boolean'
+      ,
+        type: 'array'
+        entries:
+          type: 'string'
+      ]
+      default: true
+    pdf:
+      title: "Create PDF"
+      description: "the list of PDF Reports to generate"
+      type: 'object'
+      entries: [
+        title: "List"
+        description: "the alias name of the list to create"
+        type: 'object'
+        mandatoryKeys: true
+        allowedKeys: true
+        keys:
+          title:
+            title: "Title"
+            description: "the short title of the report to be used as file"
+            type: 'string'
+            optional: true
+          content:
+            title: "Content"
+            description: "the content of the generated pdf report"
+            type: 'handlebars'
       ]
     email: email
 

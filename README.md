@@ -151,12 +151,16 @@ compose:
     # change x and y axes
     flip: true
 
+# Define contents
+# -------------------------------------------------
+# also go on for empty results - else skip
+sendEmpty: true
+# which csv files to send (list) or true for all
+csv:
+  - all
 
 # Where to Send them to
 # -------------------------------------------------
-# also go on for empty results
-sendEmpty: true
-
 email:
   base: default
   to: betrieb@mycompany.com
