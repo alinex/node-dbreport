@@ -139,12 +139,14 @@ compose:
   all:
     title: List of Objects
     description: a complete list of all objects in the database
+    # combine methods
     append:
       - tables
       - indexes
     # sort the list
     sort: relname
-    reverse: true
+    reverse: true    
+    unique: true
 
 # Where to Send them to
 # -------------------------------------------------

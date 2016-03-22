@@ -71,6 +71,16 @@ job =
             entries:
               type: 'string'
             optional: true
+          reverse:
+            title: "Reverse Order"
+            description: "the list will be reversed"
+            type: 'boolean'
+            optional: true
+          unique:
+            title: "Remove Duplicates"
+            description: "the duplicated rows will be removed"
+            type: 'boolean'
+            optional: true
       ]
     sendEmpty:
       title: "Send Empty Data"

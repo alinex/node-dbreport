@@ -129,15 +129,18 @@ compose = (meta, results, cb) ->
         else
           return cb new Error "No supported combine method defined for entry #{name}
           of #{meta.job}."
-  # sort lists
+  # optimize lists
   for name, file of list
-    continue unless file.sort
-    debug chalk.grey "#{meta.job}.#{name}: sort by #{file.sort}"
-    sorter = [file.data].concat file.sort
-    file.data = array.sortBy.apply this, sorter
-  # reverse lists
-  for name, file of list
-    file.data.reverse() if file.reverse
+    # sort lists
+    if file.sort
+      debug chalk.grey "#{meta.job}.#{name}: sort by #{file.sort}"
+      sorter = [file.data].concat file.sort
+      file.data = array.sortBy.apply this, sorter
+    if file.reverse
+      file.data.reverse()
+    # unique lists
+    if file.unique
+      file.data = array.unique file.data
   # add some meta information
   debug chalk.grey "#{meta.job}: convert to csv"
   for name, file of list
