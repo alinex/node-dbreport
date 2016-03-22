@@ -21,47 +21,6 @@ schema = require './configSchema'
 
 process.title = 'DbReport'
 
-# Start argument parsing
-# -------------------------------------------------
-argv = yargs
-.usage """
-  #{logo}
-  Usage: $0 [-Chml] <job...>
-  """
-# examples
-.example '$0 stats', 'to simply run the stats job'
-.example '$0 stats -m info@alinex.de', 'run the job but send to given address'
-# general options
-.alias 'C', 'nocolors'
-.describe 'C', 'turn of color output'
-.boolean 'C'
-# list jobs
-.alias 'l', 'list'
-.boolean 'l'
-.describe 'l', 'only list the possible jobs'
-# change mail address
-.alias 'm', 'mail'
-.describe 'm', 'alternative email address to send to'
-# add variables
-.alias 'j', 'json'
-.describe 'j', 'json formatted data object'
-# general help
-.help 'h'
-.alias 'h', 'help'
-.epilogue "For more information, look into the man page."
-.showHelpOnFail false, "Specify --help for available options"
-#.strict()
-.fail (err) ->
-  console.error """
-    #{logo}
-    #{chalk.red.bold 'CLI Parameter Failure:'} #{chalk.red err}
-
-    """
-  process.exit 1
-.argv
-# implement some global switches
-chalk.enabled = false if argv.nocolors
-
 
 # Error management
 # -------------------------------------------------
@@ -87,14 +46,71 @@ process.on 'exit', ->
 # -------------------------------------------------
 console.log logo
 console.log "Initializing..."
+
+
+# Start argument parsing
+# -------------------------------------------------
+yargs
+.usage "\nUsage: $0 [-Chml] <job...>"
+.env 'DBREPORT' # use environment arguments prefixed with DBREPORT_
+# examples
+.example '$0 stats', 'to simply run the stats job'
+.example '$0 stats -m info@alinex.de', 'run the job but send to given address'
+# general options
+.options
+  help:
+    alias: 'h',
+    description: 'display help message'
+  nocolors:
+    alias: 'C'
+    description: 'turn of color output'
+    type: 'boolean'
+  list:
+    alias: 'l'
+    description: 'only list the possible jobs'
+    type: 'boolean'
+  mail:
+    alias: 'm'
+    description: 'alternative email address to send to'
+    type: 'string'
+  json:
+    alias: 'j'
+    description: 'json formatted data object'
+    type: 'string'
+.group ['m', 'j'], 'Report Options:'
+# general help
+.help 'help'
+.updateStrings
+  'Options:': 'General Options:'
+.epilogue "For more information, look into the man page."
+# validation
+.strict()
+.fail (err) ->
+  err = new Error "CLI #{err}"
+  err.description = 'Specify --help for available options'
+  exit 1, err
+# now parse the arguments
+args = yargs.argv
+# refine yargs and rerun if option needs command
+unless args.list
+  yargs.demand 1, "Needs a report name to run."
+  args = yargs.argv
+
+# implement some global switches
+chalk.enabled = false if args.nocolors
+
+
+
+# Main routine
+# -------------------------------------------------
 # init
-if argv.json
+if args.json
   try
-    variables = JSON.parse argv.json
+    variables = JSON.parse args.json
   catch error
     exit 255, error
 dbreport.init
-  mail: argv.mail
+  mail: args.mail
   variables: variables ? {}
 # add schema for module's configuration
 config.setSchema '/dbreport', schema
@@ -108,7 +124,7 @@ mail.setup (err) ->
     config.init (err) ->
       exit 1, err if err
       # show List
-      if argv.list
+      if args.list
         data = []
         for job in dbreport.list()
           conf = dbreport.get job
@@ -125,8 +141,8 @@ mail.setup (err) ->
         console.log()
         exit()
       # start job
-      exit 1, new Error "No job given to process" unless argv._.length
+      exit 1, new Error "No job given to process" unless args._.length
       console.log "Run the jobs..."
-      async.each argv._, dbreport.run, (err) ->
+      async.each args._, dbreport.run, (err) ->
         exit 1, err if err
         exit()
