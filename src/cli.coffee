@@ -82,7 +82,12 @@ yargs
 .help 'help'
 .updateStrings
   'Options:': 'General Options:'
-.epilogue "For more information, look into the man page."
+.epilogue """
+  You may use environment variables prefixed with 'DBREPORT_' to set any of
+  the options like 'DBREPORT_MAIL' to set the email address.
+
+  For more information, look into the man page.
+  """
 # validation
 .strict()
 .fail (err) ->
