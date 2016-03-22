@@ -132,6 +132,12 @@ compose = (meta, results, cb) ->
       file.data = array.sortBy.apply this, sorter
     if file.reverse
       file.data.reverse()
+    # filter fields
+    if file.fields
+      console.log file.fields
+      for row in file.data
+        for col in Object.keys row
+          delete row[col] unless col in file.fields
     # unique lists
     if file.unique
       file.data = array.unique file.data
@@ -157,6 +163,9 @@ compose = (meta, results, cb) ->
         for col, y in row
           file.data[x] ?= {}
           file.data[x][flipped[0][y]] = col
+  for name, file of list
+    console.log file.data
+  process.exit 1
   debug chalk.grey "#{meta.job}: convert to csv"
   for name, file of list
     file.rows = file.data.length

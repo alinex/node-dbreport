@@ -63,30 +63,6 @@ job =
             type: 'handlebars'
 #            trim: true
 #            replace: [/\s+/, ' ']
-          sort:
-            title: "Sort Order"
-            description: "the sort order for the results (if needed)"
-            type: 'array'
-            toArray: true
-            entries:
-              type: 'string'
-            optional: true
-          reverse:
-            title: "Reverse Order"
-            description: "the list will be reversed"
-            type: 'boolean'
-            optional: true
-          unique:
-            title: "Remove Duplicates"
-            description: "the duplicated rows will be removed"
-            type: 'boolean'
-            optional: true
-          flip:
-            title: "Flip x/y Axis"
-            description: "the x and y axes are changed"
-            type: 'or'
-            type: 'boolean'
-            optional: true
       ]
     sendEmpty:
       title: "Send Empty Data"
@@ -133,6 +109,29 @@ job =
             toArray: true
             entries:
               type: 'string'
+            optional: true
+          reverse:
+            title: "Reverse Order"
+            description: "the list will be reversed"
+            type: 'boolean'
+            optional: true
+          fields:
+            title: "Display Fields"
+            description: "the list of fields to include"
+            type: 'array'
+            delimiter: /\s*,\s*/
+            entries:
+              type: 'string'
+            optional: true
+          unique:
+            title: "Remove Duplicates"
+            description: "the duplicated rows will be removed"
+            type: 'boolean'
+            optional: true
+          flip:
+            title: "Flip x/y Axis"
+            description: "the x and y axes are changed"
+            type: 'boolean'
             optional: true
       ]
     email: email

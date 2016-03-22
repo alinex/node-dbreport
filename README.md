@@ -143,6 +143,7 @@ compose:
     append:
       - tables
       - indexes
+    fields: name, value
     # sort the list
     sort: relname
     reverse: true    
