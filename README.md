@@ -147,6 +147,9 @@ compose:
     sort: relname
     reverse: true    
     unique: true
+    # change x and y axes
+    flip: true
+
 
 # Where to Send them to
 # -------------------------------------------------

@@ -110,17 +110,11 @@ compose = (meta, results, cb) ->
         data: results[name]
         title: setup.title
         description: setup.description
-        sort: setup.sort
-        reverse: setup.reverse
   else
     debug chalk.grey "#{meta.job}: composing"
     for name, setup of meta.conf.compose
-      list[name] =
+      list[name] = object.extend {}, setup,
         data: []
-        title: setup.title
-        description: setup.description
-        sort: setup.sort
-        reverse: setup.reverse
       switch
         when setup.append
           setup.append = Object.keys meta.conf.query if typeof setup.append is 'boolean'
@@ -141,7 +135,28 @@ compose = (meta, results, cb) ->
     # unique lists
     if file.unique
       file.data = array.unique file.data
-  # add some meta information
+    # flip x/y axes
+    if file.flip and file.data.length
+      # convert to array table
+      tab = []
+      header = Object.keys file.data[0]
+      for row, rnum in file.data
+        tab[rnum] = []
+        for col, cnum in header
+          tab[rnum][cnum] = file.data[rnum][col]
+      tab.unshift header
+      # flip
+      flipped = []
+      for row, x in tab
+        for col, y in row
+          flipped[y] ?= []
+          flipped[y][x] = col
+      # convert to objects
+      file.data = []
+      for row, x in flipped[1..]
+        for col, y in row
+          file.data[x] ?= {}
+          file.data[x][flipped[0][y]] = col
   debug chalk.grey "#{meta.job}: convert to csv"
   for name, file of list
     file.rows = file.data.length

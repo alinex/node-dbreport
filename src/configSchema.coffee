@@ -81,6 +81,12 @@ job =
             description: "the duplicated rows will be removed"
             type: 'boolean'
             optional: true
+          flip:
+            title: "Flip x/y Axis"
+            description: "the x and y axes are changed"
+            type: 'or'
+            type: 'boolean'
+            optional: true
       ]
     sendEmpty:
       title: "Send Empty Data"
