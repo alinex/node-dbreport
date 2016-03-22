@@ -142,7 +142,9 @@ compose:
     append:
       - tables
       - indexes
+    # sort the list
     sort: relname
+    reverse: true
 
 # Where to Send them to
 # -------------------------------------------------

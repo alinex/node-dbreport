@@ -111,6 +111,7 @@ compose = (meta, results, cb) ->
         title: setup.title
         description: setup.description
         sort: setup.sort
+        reverse: setup.reverse
   else
     debug chalk.grey "#{meta.job}: composing"
     for name, setup of meta.conf.compose
@@ -119,6 +120,7 @@ compose = (meta, results, cb) ->
         title: setup.title
         description: setup.description
         sort: setup.sort
+        reverse: setup.reverse
       switch
         when setup.append
           setup.append = Object.keys meta.conf.query if typeof setup.append is 'boolean'
@@ -133,6 +135,9 @@ compose = (meta, results, cb) ->
     debug chalk.grey "#{meta.job}.#{name}: sort by #{file.sort}"
     sorter = [file.data].concat file.sort
     file.data = array.sortBy.apply this, sorter
+  # reverse lists
+  for name, file of list
+    file.data.reverse() if file.reverse
   # add some meta information
   debug chalk.grey "#{meta.job}: convert to csv"
   for name, file of list
