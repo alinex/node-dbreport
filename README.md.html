@@ -246,16 +246,37 @@ compose:
   all:
     title: List of Objects
     description: a complete list of all objects in the database
+    # combine methods
     append:
       - tables
       - indexes
+    fields: name, value
+    # sort the list
     sort: relname
+    reverse: true    
+    unique: true
+    # change x and y axes
+    flip: true
+
+# Define contents
+# -------------------------------------------------
+# also go on for empty results - else skip
+sendEmpty: true
+# which csv files to send (list) or true for all
+csv:
+  - all
+# add pdf reports
+pdf:
+  example:
+    title: Example
+    format: A4
+    orientation: portrait
+    local: de
+    content: &gt;
+      My handlebars template...
 
 # Where to Send them to
 # -------------------------------------------------
-# also go on for empty results
-sendEmpty: true
-
 email:
   base: default
   to: betrieb@mycompany.com
