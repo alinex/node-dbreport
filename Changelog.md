@@ -4,6 +4,18 @@ Version changes
 The following list gives a short overview about what is changed between
 individual versions:
 
+Version 1.4.0 (2016-03-23)
+-------------------------------------------------
+- Add pdf report attachements by configuration.
+- Add configuration for pdf.
+- Allow to select fields to filter.
+- Allow xy axes flip in composing table data.
+- Add unique option to compose.
+- Support reverse sorting of data lists.
+- Add possible future configuration options as example comments.
+- Add environment settings in help output.
+- Upgrade yargs syntax to more specific parsing and help page.
+
 Version 1.3.3 (2016-03-21)
 -------------------------------------------------
 - Upgrade validator, config, util, yaml and builder.
