@@ -163,6 +163,27 @@ job =
             description: "the short title of the report to be used as file"
             type: 'string'
             optional: true
+          format:
+            title: "Page Size"
+            description: "the size of the pages"
+            type: 'string'
+            list: ['A3', 'A4', 'A5', 'Legal', 'Letter', 'Tabloid']
+            default: 'A4'
+          orientation:
+            title: "Orientation"
+            description: "the orientation of the page"
+            type: 'string'
+            list: ['portrait', 'landscape']
+            default: 'portrait'
+          locale:
+            title: "Locale Setting"
+            description: "the locale setting for subject and body dates"
+            type: 'string'
+            minLength: 2
+            maxLength: 5
+            lowerCase: true
+            match: /^[a-z]{2}(-[a-z]{2})?$/
+            optional: true
           content:
             title: "Content"
             description: "the content of the generated pdf report"

@@ -18,6 +18,7 @@ async = require 'alinex-async'
 {array, object} = require 'alinex-util'
 mail = require 'alinex-mail'
 validator = require 'alinex-validator'
+Report = require 'alinex-report'
 
 
 # Initialized Data
@@ -131,17 +132,21 @@ compose = (meta, results, cb) ->
       sorter = [file.data].concat file.sort
       file.data = array.sortBy.apply this, sorter
     if file.reverse
+      debug chalk.grey "#{meta.job}.#{name}: reverse"
       file.data.reverse()
     # filter fields
     if file.fields
+      debug chalk.grey "#{meta.job}.#{name}: filter fields"
       for row in file.data
         for col in Object.keys row
           delete row[col] unless col in file.fields
     # unique lists
     if file.unique
+      debug chalk.grey "#{meta.job}.#{name}: unique records"
       file.data = array.unique file.data
     # flip x/y axes
     if file.flip and file.data.length
+      debug chalk.grey "#{meta.job}.#{name}: flip x/y axes"
       # convert to array table
       tab = []
       header = Object.keys file.data[0]
@@ -198,18 +203,45 @@ compose = (meta, results, cb) ->
         setup.attachments.push
           filename: data.file
           content: data.csv
-    if pdf = meta.conf.pdf
-      console.log pdf
-      console.log '-----< EXIT >-----'
-      process.exit 1
-    # test mode
-    if mode.mail
-      setup.to = mode.mail.split /,\s+/
-      setup.cc = []
-      setup.bcc = []
-    mail.send setup,
+    addPdf meta.job, meta.conf.pdf,
       name: meta.job
       conf: meta.conf
       date: new Date()
       result: list
-    , cb
+    , setup, (err) ->
+      return cb err if err
+      # test mode
+      if mode.mail
+        setup.to = mode.mail.split /,\s+/
+        setup.cc = []
+        setup.bcc = []
+      mail.send setup,
+        name: meta.job
+        conf: meta.conf
+        date: new Date()
+        result: list
+      , cb
+
+addPdf = (job, conf, context, email, cb) ->
+  return cb() unless conf
+  debug chalk.grey "#{job}: attache pdfs"
+  async.forEachOf conf, (pdf, name, cb) ->
+    if pdf.locale # change locale
+      oldLocale = moment.locale()
+      moment.locale pdf.locale
+    report = new Report
+      source: pdf.content context
+    if pdf.locale # change locale back
+      moment.locale oldLocale
+    report.toPdf
+      format: job.format
+      orientation: job.orientation
+    , (err, data) ->
+      return cb err if err
+      email.attachments ?= []
+      email.attachments.push
+        filename: "#{pdf.title ? name}.pdf"
+        content: data
+      cb()
+  , (err) ->
+    cb err

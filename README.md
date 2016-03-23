@@ -158,6 +158,15 @@ sendEmpty: true
 # which csv files to send (list) or true for all
 csv:
   - all
+# add pdf reports
+pdf:
+  example:
+    title: Example
+    format: A4
+    orientation: portrait
+    local: de
+    content: >
+      My handlebars template...
 
 # Where to Send them to
 # -------------------------------------------------
