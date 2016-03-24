@@ -200,6 +200,7 @@ compose = (meta, results, cb) ->
       names = if typeof meta.conf.csv is 'string' then meta.conf.csv else Object.keys list
       for name in names
         data = list[name]
+        continue unless data.csv
         setup.attachments.push
           filename: data.file
           content: data.csv
