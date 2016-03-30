@@ -221,6 +221,7 @@ compose = (meta, results, cb) ->
         conf: meta.conf
         date: new Date()
         result: list
+        attachments: setup.attachments
       , cb
 
 addPdf = (job, conf, context, email, cb) ->

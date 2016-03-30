@@ -366,6 +366,7 @@ The following context variables are possible:
     - rows - number of rows in result
     - file - filename
     - description - description of job (from config)
+- attachments - list of attachments
 
 Find more examples at [validator](http://alinex.github.io/node-validator/README.md.html#handlebars).
 
