@@ -48,6 +48,10 @@
         <a href="#install">Install</a>
       </div>
 
+      <div class="heading h3">
+        <a href="#bash-code-completion">Bash Code completion</a>
+      </div>
+
       <div class="heading h2">
         <a href="#usage">Usage</a>
       </div>
@@ -147,6 +151,44 @@ machines may be checked:</p>
 <pre><code class="sh">dbreport --help
 </code></pre>
 <p>Always have a look at the latest <a href="Changelog.md.html.html">changes</a>.</p>
+<div class="pilwrap" id="bash-code-completion">
+  <h3>
+    <a href="#bash-code-completion" name="bash-code-completion" class="pilcrow"></a>
+Bash Code completion
+  </h3>
+</div>
+<p>If you like, you can add code completion for bash by copying the output of:</p>
+<pre><code class="text">&gt; scripter bashrc-script
+
+###-begin-cli.coffee-completions-###
+#
+# yargs command completion script
+#
+# Installation: dbreport completion &gt;&gt; ~/.bashrc
+#    or dbreport completion &gt;&gt; ~/.bash_profile on OSX.
+#
+_yargs_completions()
+{
+    local cur_word args type_list
+
+    cur_word=&quot;${COMP_WORDS[COMP_CWORD]}&quot;
+    args=$(printf &quot;%s &quot; &quot;${COMP_WORDS[@]}&quot;)
+
+    # ask yargs to generate completions.
+    type_list=`dbreport --get-yargs-completions $args`
+
+    COMPREPLY=( $(compgen -W &quot;${type_list}&quot; -- ${cur_word}) )
+
+    # if no match was found, fall back to filename completion
+    if [ ${#COMPREPLY[@]} -eq 0 ]; then
+      COMPREPLY=( $(compgen -f -- &quot;${cur_word}&quot; ) )
+    fi
+
+    return 0
+}
+complete -F _yargs_completions dbreport
+###-end-cli.coffee-completions-###
+</code></pre>
 <div class="pilwrap" id="usage">
   <h2>
     <a href="#usage" name="usage" class="pilcrow"></a>
@@ -483,6 +525,7 @@ job.</p>
 </li>
 </ul>
 </li>
+<li>attachments - list of attachments</li>
 </ul>
 <p>Find more examples at <a href="http://alinex.github.io/node-validator/README.md.html#handlebars">validator</a>.</p>
 <div class="pilwrap" id="database">
