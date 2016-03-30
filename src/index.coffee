@@ -82,6 +82,7 @@ exports.run = (name, cb) ->
       compose
         job: name
         conf: conf
+        variables: variables
         isEmpty: isEmpty
       , results, cb
 
@@ -204,25 +205,22 @@ compose = (meta, results, cb) ->
         setup.attachments.push
           filename: data.file
           content: data.csv
-    addPdf meta.job, meta.conf.pdf,
+    # generate context sensitive part
+    context =
       name: meta.job
       conf: meta.conf
+      variables: meta.variables
       date: new Date()
       result: list
-    , setup, (err) ->
+      attachments: setup.attachments
+    addPdf meta.job, meta.conf.pdf, context, setup, (err) ->
       return cb err if err
       # test mode
       if mode.mail
         setup.to = mode.mail.split /,\s+/
         setup.cc = []
         setup.bcc = []
-      mail.send setup,
-        name: meta.job
-        conf: meta.conf
-        date: new Date()
-        result: list
-        attachments: setup.attachments
-      , cb
+      mail.send setup, context, cb
 
 addPdf = (job, conf, context, email, cb) ->
   return cb() unless conf
