@@ -22,6 +22,13 @@ schema = require './configSchema'
 process.title = 'DbReport'
 
 
+# Support quiet mode through switch
+# -------------------------------------------------
+quiet = false
+for a in ['--get-yargs-completions', 'bashrc', '-q', '--quiet']
+  quiet = true if a in process.argv
+
+
 # Error management
 # -------------------------------------------------
 exit = (code = 0, err) ->
@@ -65,6 +72,10 @@ yargs
     alias: 'C'
     description: 'turn of color output'
     type: 'boolean'
+  quiet:
+    alias: 'q'
+    describe: "don't output header and footer"
+    type: 'boolean'
   list:
     alias: 'l'
     description: 'only list the possible jobs'
@@ -88,6 +99,7 @@ yargs
 
   For more information, look into the man page.
   """
+.completion 'bashrc-script', false
 # validation
 .strict()
 .fail (err) ->
