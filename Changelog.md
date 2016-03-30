@@ -4,6 +4,13 @@ Version changes
 The following list gives a short overview about what is changed between
 individual versions:
 
+Version 1.4.1 (2016-03-30)
+-------------------------------------------------
+- Upgraded report and chalk packages.
+- Add code completion for bash.
+- Add list of attachments to context parameters.
+- Fixed sending of empty attached csv files.
+
 Version 1.4.0 (2016-03-23)
 -------------------------------------------------
 - Add pdf report attachements by configuration.
