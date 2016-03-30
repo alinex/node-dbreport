@@ -4,6 +4,11 @@ Version changes
 The following list gives a short overview about what is changed between
 individual versions:
 
+Version 1.4.2 (2016-03-30)
+-------------------------------------------------
+- Add variables to handlebars context.
+- Fix quiet switch to be used.
+
 Version 1.4.1 (2016-03-30)
 -------------------------------------------------
 - Upgraded report and chalk packages.
