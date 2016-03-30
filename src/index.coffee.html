@@ -290,6 +290,7 @@ Run a job
           <pre class="coffeescript">      compose
         <span class="hljs-attribute">job</span>: name
         <span class="hljs-attribute">conf</span>: conf
+        <span class="hljs-attribute">variables</span>: variables
         <span class="hljs-attribute">isEmpty</span>: isEmpty
       , results, cb</pre>
         </td>
@@ -619,14 +620,7 @@ email meta, list, cb</p>
         <span class="hljs-keyword">continue</span> <span class="hljs-keyword">unless</span> data.csv
         setup.attachments.push
           <span class="hljs-attribute">filename</span>: data.file
-          <span class="hljs-attribute">content</span>: data.csv
-    addPdf meta.job, meta.conf.pdf,
-      <span class="hljs-attribute">name</span>: meta.job
-      <span class="hljs-attribute">conf</span>: meta.conf
-      <span class="hljs-attribute">date</span>: <span class="hljs-keyword">new</span> Date()
-      <span class="hljs-attribute">result</span>: list
-    , setup, <span class="hljs-function"><span class="hljs-params">(err)</span> -&gt;</span>
-      <span class="hljs-keyword">return</span> cb err <span class="hljs-keyword">if</span> err</pre>
+          <span class="hljs-attribute">content</span>: data.csv</pre>
         </td>
       </tr>
     
@@ -634,6 +628,27 @@ email meta, list, cb</p>
         <td class="docs">
           <div class="pilwrap">
   <a class="pilcrow" href="#section-31" id="section-31"></a>
+</div>
+<p>generate context sensitive part</p>
+
+        </td>
+        <td class="code highlight">
+          <pre class="coffeescript">    context =
+      <span class="hljs-attribute">name</span>: meta.job
+      <span class="hljs-attribute">conf</span>: meta.conf
+      <span class="hljs-attribute">variables</span>: meta.variables
+      <span class="hljs-attribute">date</span>: <span class="hljs-keyword">new</span> Date()
+      <span class="hljs-attribute">result</span>: list
+      <span class="hljs-attribute">attachments</span>: setup.attachments
+    addPdf meta.job, meta.conf.pdf, context, setup, <span class="hljs-function"><span class="hljs-params">(err)</span> -&gt;</span>
+      <span class="hljs-keyword">return</span> cb err <span class="hljs-keyword">if</span> err</pre>
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="docs">
+          <div class="pilwrap">
+  <a class="pilcrow" href="#section-32" id="section-32"></a>
 </div>
 <p>test mode</p>
 
@@ -643,13 +658,7 @@ email meta, list, cb</p>
         setup.to = mode.mail.split <span class="hljs-regexp">/,\s+/</span>
         setup.cc = []
         setup.bcc = []
-      mail.send setup,
-        <span class="hljs-attribute">name</span>: meta.job
-        <span class="hljs-attribute">conf</span>: meta.conf
-        <span class="hljs-attribute">date</span>: <span class="hljs-keyword">new</span> Date()
-        <span class="hljs-attribute">result</span>: list
-        <span class="hljs-attribute">attachments</span>: setup.attachments
-      , cb
+      mail.send setup, context, cb
 <span class="hljs-function">
 <span class="hljs-title">addPdf</span> = <span class="hljs-params">(job, conf, context, email, cb)</span> -&gt;</span>
   <span class="hljs-keyword">return</span> cb() <span class="hljs-keyword">unless</span> conf
