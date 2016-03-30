@@ -45,14 +45,15 @@ process.on 'SIGHUP', -> exit 129, new Error "Got SIGHUP signal"
 process.on 'SIGQUIT', -> exit 131, new Error "Got SIGQUIT signal"
 process.on 'SIGABRT', -> exit 134, new Error "Got SIGABRT signal"
 process.on 'exit', ->
-  console.log "Goodbye\n"
+  console.log "Goodbye\n" unless quiet
   database.close()
 
 
 # Main routine
 # -------------------------------------------------
-console.log logo
-console.log "Initializing..."
+unless quiet
+  console.log logo
+  console.log "Initializing..."
 
 
 # Start argument parsing
