@@ -337,12 +337,12 @@ Start argument parsing
           <div class="pilwrap">
   <a class="pilcrow" href="#section-15" id="section-15"></a>
 </div>
-<p>validation</p>
+<p>validation
+.strict()</p>
 
         </td>
         <td class="code highlight">
-          <pre class="coffeescript">.strict()
-.fail (err) -&gt;
+          <pre class="coffeescript">.fail (err) -&gt;
   err = <span class="hljs-keyword">new</span> Error <span class="hljs-string">"CLI <span class="hljs-subst">#{err}</span>"</span>
   err.description = <span class="hljs-string">'Specify --help for available options'</span>
   exit <span class="hljs-number">1</span>, err</pre>
