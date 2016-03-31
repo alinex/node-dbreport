@@ -41,7 +41,7 @@
   },
   "dependencies": {
     "alinex-async": "^1.0.0",
-    "alinex-config": "^1.0.14",
+    "alinex-config": "^1.0.15",
     "alinex-core": "^0.1.4",
     "alinex-database": "^1.0.0",
     "alinex-mail": "^1.0.1",
