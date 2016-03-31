@@ -102,7 +102,7 @@ yargs
   """
 .completion 'bashrc-script', false
 # validation
-.strict()
+#.strict()
 .fail (err) ->
   err = new Error "CLI #{err}"
   err.description = 'Specify --help for available options'
