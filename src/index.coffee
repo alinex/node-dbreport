@@ -209,7 +209,7 @@ compose = (meta, results, cb) ->
     context =
       name: meta.job
       conf: meta.conf
-      variables: meta.variables
+      variables: object.filter meta.variables, (_, key) -> key[0] isnt '_'
       date: new Date()
       result: list
       attachments: setup.attachments
