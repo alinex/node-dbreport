@@ -216,11 +216,21 @@ compose = (meta, results, cb) ->
     addPdf meta.job, meta.conf.pdf, context, setup, (err) ->
       return cb err if err
       # test mode
+      setup = mail.resolve setup
       if mode.mail
         setup.to = mode.mail.split /,\s+/
         setup.cc = []
         setup.bcc = []
-      mail.send setup, context, cb
+      if mmeta = mode.variables?._mail
+        setup.cc = mmeta.cc
+        setup.bcc = mmeta.bcc
+        setup.subject = "Re: #{mmeta.subject}" if mmeta.subject
+        if mmeta.messageId
+          setup.inReplyTo = mmeta.messageId
+          setup.references = [mmeta.messageId]
+      mail.send setup, context, (err) ->
+        console.log chalk.grey "Email was send." unless err
+        cb err
 
 addPdf = (job, conf, context, email, cb) ->
   return cb() unless conf
