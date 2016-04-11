@@ -49,6 +49,7 @@ compose:
       - tables
       - indexes
 #    join:
+#      <name>: <left|right|inner|outer>
     sort: relname
 #    reverse: true
 #    deduplicate: true

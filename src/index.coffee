@@ -120,8 +120,12 @@ compose = (meta, results, cb) ->
       switch
         when setup.append
           setup.append = Object.keys meta.conf.query if typeof setup.append is 'boolean'
+          debug chalk.grey "#{meta.job}.#{name}: append"
           for alias in setup.append
             list[name].data = list[name].data.concat results[alias]
+        when setup.join
+          debug chalk.grey "#{meta.job}.#{name}: join"
+          doJoin results, list[name]
         else
           return cb new Error "No supported combine method defined for entry #{name}
           of #{meta.job}."
@@ -231,6 +235,71 @@ compose = (meta, results, cb) ->
       mail.send setup, context, (err) ->
         console.log chalk.grey "Email was send." unless err
         cb err
+
+doJoin = (results, list) ->
+  # get join conditions
+  join = {}
+  if typeof list.join is 'boolean'
+    for entry in Object.keys results
+      join[entry] = 'inner'
+    list.join = join
+  else if Array.isArray list.join
+    for entry in list.join
+      join[entry] = 'inner'
+    list.join = join
+  # start joining
+  for alias, join of list.join
+    # go on if empty
+    continue unless results[alias].length
+    # add if first record set
+    unless list.data?.length
+      list.data = results[alias]
+      continue
+    # append
+    if join is 'append'
+      list.data = list.data.concat results[alias]
+      continue
+    # find equal field names
+    cols = Object.keys list.data[0]
+    .filter (e) -> results[alias][0][e]
+    # switch for right join
+    if join is 'right'
+      r = list.data
+      l = results[alias]
+    else
+      l = list.data
+      r = results[alias]
+    # join
+    all = []
+    for lr in l
+      found = false
+      for rr in r
+        continue unless matchCols cols, lr, rr
+        all.push addCols lr, rr unless join is 'outer'
+        found = true
+      unless found or join is 'inner'
+        e = {}
+        e[n] = null for n of r[0]
+        all.push addCols lr, e
+    if join is 'outer'
+      for rr in r
+        found = false
+        for lr in l
+          continue unless matchCols cols, rr, lr
+          found = true
+        unless found or join is 'inner'
+          e = {}
+          e[n] = null for n of l[0]
+          all.push addCols rr, e
+    list.data = all
+
+matchCols = (cols, l, r) ->
+  for c in cols
+    return false unless l[c] is r[c]
+  return true
+addCols = (l, r) ->
+  l[n] = v ? l[n] ? null for n, v of r
+  l
 
 addPdf = (job, conf, context, email, cb) ->
   return cb() unless conf

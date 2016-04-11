@@ -180,6 +180,10 @@ compose:
     append:
       - tables
       - indexes
+    join:
+      tables: inner
+      indexes: inner
+    # select only some columns
     fields: name, value
     # sort the list
     sort: relname
@@ -255,10 +259,19 @@ Each composition contains:
 - title <string> - to be used as filename and as template variable
 - description <string> - to be used as template variable
 - append 'true' or <list of query aliases>
+- join - specific join settings (see below)
 - sort [<field>]... - list of sort fields (prepend with '-' for decreasing order)
+- reverse <boolean> - will reverse the whole list if true
+- fields <list> - will remove all columns not listed here
+- unique <boolean> - set to true to remove completely duplicate rows
+- flip <boolean> - will change x- and y-axis within the table
 
-Other composition methods may follow later.
-
+The join can be set to:
+- 'true' - to left join all tables
+- list of alias names - to left join the given tables
+- object - with alias name and join type (left, right, inner, outer, append)
+  which will be done in the given order
+  
 #### Email
 
 Here you have the option to prevent sending empty emails (without attached csv)

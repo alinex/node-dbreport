@@ -103,6 +103,25 @@ job =
               type: "boolean"
             ]
             optional: true
+          join:
+            title: "Table Data to Join"
+            description: "the list of table data (alias names) to join"
+            type: 'or'
+            or: [
+              type: 'object'
+              entries: [
+                type: 'string'
+                list: ['left', 'right', 'inner', 'outer', 'append']
+              ]
+            ,
+              type: 'array'
+              toArray: true
+              entries:
+                type: 'string'
+            ,
+              type: "boolean"
+            ]
+            optional: true
           sort:
             title: "Sort Order"
             description: "the sort order for the results (if needed)"
