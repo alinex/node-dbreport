@@ -149,7 +149,8 @@ mail.setup (err) ->
           data.push
             job: job
             title: conf.title
-            to: conf.email.to
+            to: conf.email.to?.map (e) -> e.replace /[ .@].*/, ''
+            .join ', '
         report = new Report()
         report.h1 "List of possible jobs:"
         report.table data, ['JOB', 'TITLE', 'TO']
