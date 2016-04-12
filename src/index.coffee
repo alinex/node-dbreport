@@ -145,6 +145,10 @@ compose = (meta, results, cb) ->
       for row in file.data
         for col in Object.keys row
           delete row[col] unless col in file.fields
+      # reorder first record columns
+      head = {}
+      head[col] = file.data[0][col] for col in file.fields
+      file.data[0] = head
     # unique lists
     if file.unique
       debug chalk.grey "#{meta.job}.#{name}: unique records"

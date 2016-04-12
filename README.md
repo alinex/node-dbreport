@@ -262,7 +262,8 @@ Each composition contains:
 - join - specific join settings (see below)
 - sort [<field>]... - list of sort fields (prepend with '-' for decreasing order)
 - reverse <boolean> - will reverse the whole list if true
-- fields <list> - will remove all columns not listed here
+- fields <list> - will remove all columns not listed here and sort columns after
+  the given list
 - unique <boolean> - set to true to remove completely duplicate rows
 - flip <boolean> - will change x- and y-axis within the table
 
@@ -271,7 +272,7 @@ The join can be set to:
 - list of alias names - to left join the given tables
 - object - with alias name and join type (left, right, inner, outer, append)
   which will be done in the given order
-  
+
 #### Email
 
 Here you have the option to prevent sending empty emails (without attached csv)
