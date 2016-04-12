@@ -473,7 +473,8 @@ dbreport.init
           data.push
             <span class="hljs-attribute">job</span>: job
             <span class="hljs-attribute">title</span>: conf.title
-            <span class="hljs-attribute">to</span>: conf.email.to
+            <span class="hljs-attribute">to</span>: conf.email.to?.map (e) -&gt; e.replace <span class="hljs-regexp">/[ .@].*/</span>, <span class="hljs-string">''</span>
+            .join <span class="hljs-string">', '</span>
         report = <span class="hljs-keyword">new</span> Report()
         report.h1 <span class="hljs-string">"List of possible jobs:"</span>
         report.table data, [<span class="hljs-string">'JOB'</span>, <span class="hljs-string">'TITLE'</span>, <span class="hljs-string">'TO'</span>]

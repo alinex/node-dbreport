@@ -198,6 +198,25 @@ Complete Schema Definition
               <span class="hljs-attribute">type</span>: <span class="hljs-string">"boolean"</span>
             ]
             <span class="hljs-attribute">optional</span>: <span class="hljs-literal">true</span>
+          <span class="hljs-attribute">join</span>:
+            <span class="hljs-attribute">title</span>: <span class="hljs-string">"Table Data to Join"</span>
+            <span class="hljs-attribute">description</span>: <span class="hljs-string">"the list of table data (alias names) to join"</span>
+            <span class="hljs-attribute">type</span>: <span class="hljs-string">'or'</span>
+            <span class="hljs-attribute">or</span>: [
+              <span class="hljs-attribute">type</span>: <span class="hljs-string">'object'</span>
+              <span class="hljs-attribute">entries</span>: [
+                <span class="hljs-attribute">type</span>: <span class="hljs-string">'string'</span>
+                <span class="hljs-attribute">list</span>: [<span class="hljs-string">'left'</span>, <span class="hljs-string">'right'</span>, <span class="hljs-string">'inner'</span>, <span class="hljs-string">'outer'</span>, <span class="hljs-string">'append'</span>]
+              ]
+            ,
+              <span class="hljs-attribute">type</span>: <span class="hljs-string">'array'</span>
+              <span class="hljs-attribute">toArray</span>: <span class="hljs-literal">true</span>
+              <span class="hljs-attribute">entries</span>:
+                <span class="hljs-attribute">type</span>: <span class="hljs-string">'string'</span>
+            ,
+              <span class="hljs-attribute">type</span>: <span class="hljs-string">"boolean"</span>
+            ]
+            <span class="hljs-attribute">optional</span>: <span class="hljs-literal">true</span>
           <span class="hljs-attribute">sort</span>:
             <span class="hljs-attribute">title</span>: <span class="hljs-string">"Sort Order"</span>
             <span class="hljs-attribute">description</span>: <span class="hljs-string">"the sort order for the results (if needed)"</span>

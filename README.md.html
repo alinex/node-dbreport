@@ -292,6 +292,10 @@ compose:
     append:
       - tables
       - indexes
+    join:
+      tables: inner
+      indexes: inner
+    # select only some columns
     fields: name, value
     # sort the list
     sort: relname
@@ -371,9 +375,21 @@ key of each entry is used as an alias.</p>
 <li>title <string> - to be used as filename and as template variable</li>
 <li>description <string> - to be used as template variable</li>
 <li>append 'true' or <list of query aliases></li>
+<li>join - specific join settings (see below)</li>
 <li>sort [<field>]... - list of sort fields (prepend with '-' for decreasing order)</li>
+<li>reverse <boolean> - will reverse the whole list if true</li>
+<li>fields <list> - will remove all columns not listed here and sort columns after
+the given list</li>
+<li>unique <boolean> - set to true to remove completely duplicate rows</li>
+<li>flip <boolean> - will change x- and y-axis within the table</li>
 </ul>
-<p>Other composition methods may follow later.</p>
+<p>The join can be set to:</p>
+<ul>
+<li>'true' - to left join all tables</li>
+<li>list of alias names - to left join the given tables</li>
+<li>object - with alias name and join type (left, right, inner, outer, append)
+which will be done in the given order</li>
+</ul>
 <div class="pilwrap" id="email">
   <h4>
     <a href="#email" name="email" class="pilcrow"></a>
