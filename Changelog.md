@@ -4,6 +4,17 @@ Version changes
 The following list gives a short overview about what is changed between
 individual versions:
 
+Version 1.5.0 (2016-04-12)
+-------------------------------------------------
+- Upgraded yargs package.
+- Add column sort after selected fieldslist.
+- Upgraded config and validator for fix in datetime lib.
+- Shorten email addresses in list output.
+- Add join possibility.
+- Support _mail settings in json parameter to send mail as reply.
+- Upgraded config, mail, util, report, validator and yargs packages.
+- Prevent variables starting eith _ to be given to handlebars context.
+
 Version 1.4.4 (2016-03-31)
 -------------------------------------------------
 - Upgraded config package.
