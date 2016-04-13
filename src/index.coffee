@@ -8,17 +8,15 @@
 debug = require('debug')('dbreport')
 chalk = require 'chalk'
 util = require 'util'
-json2csv = require 'json2csv'
-moment = require 'moment'
-iconv = require 'iconv-lite'
 # include alinex modules
 config = require 'alinex-config'
 database = require 'alinex-database'
 async = require 'alinex-async'
-{array, object} = require 'alinex-util'
+{object} = require 'alinex-util'
 mail = require 'alinex-mail'
 validator = require 'alinex-validator'
-Report = require 'alinex-report'
+# internal methods
+compose = require './compose'
 
 
 # Initialized Data
@@ -78,13 +76,32 @@ exports.run = (name, cb) ->
       if isEmpty
         debug "#{name}: no data found"
         return cb() unless conf.sendEmpty
-      # build results
+      # build data tables out of results
       compose
         job: name
         conf: conf
         variables: variables
         isEmpty: isEmpty
-      , results, cb
+      , results, (err, list, attachments, context) ->
+        return cb err if err
+        # create email
+        email = mail.resolve object.clone conf.email
+        email.attachments = attachments
+        if mode.mail
+          email.to = mode.mail.split /,\s+/
+          email.cc = []
+          email.bcc = []
+        if mmeta = mode.variables?._mail?.header
+          email.cc = mmeta.cc
+          email.bcc = mmeta.bcc
+          email.subject = "Re: #{mmeta.subject}" if mmeta.subject
+          if mmeta.messageId
+            email.inReplyTo = mmeta.messageId
+            email.references = [mmeta.messageId]
+        console.log 'att', email.attachments
+        mail.send email, context, (err) ->
+          console.log chalk.grey "Email was send." unless err
+          cb err
 
 
 # List possible jobs
@@ -97,234 +114,3 @@ exports.list = ->
 # -------------------------------------------------
 exports.get = (name) ->
   config.get "/dbreport/job/#{name}"
-
-
-# Helper
-# -------------------------------------------------
-
-# ### Make output objects
-compose = (meta, results, cb) ->
-  # make data files
-  list = {}
-  unless meta.conf.compose
-    for name, setup of meta.conf.query
-      list[name] =
-        data: results[name]
-        title: setup.title
-        description: setup.description
-  else
-    debug chalk.grey "#{meta.job}: composing"
-    for name, setup of meta.conf.compose
-      list[name] = object.extend {}, setup,
-        data: []
-      switch
-        when setup.append
-          setup.append = Object.keys meta.conf.query if typeof setup.append is 'boolean'
-          debug chalk.grey "#{meta.job}.#{name}: append"
-          for alias in setup.append
-            list[name].data = list[name].data.concat results[alias]
-        when setup.join
-          debug chalk.grey "#{meta.job}.#{name}: join"
-          doJoin results, list[name]
-        else
-          return cb new Error "No supported combine method defined for entry #{name}
-          of #{meta.job}."
-  # optimize lists
-  for name, file of list
-    # sort lists
-    if file.sort
-      debug chalk.grey "#{meta.job}.#{name}: sort by #{file.sort}"
-      sorter = [file.data].concat file.sort
-      file.data = array.sortBy.apply this, sorter
-    if file.reverse
-      debug chalk.grey "#{meta.job}.#{name}: reverse"
-      file.data.reverse()
-    # filter fields
-    if file.fields
-      debug chalk.grey "#{meta.job}.#{name}: filter fields"
-      for row in file.data
-        for col in Object.keys row
-          delete row[col] unless col in file.fields
-      # reorder first record columns
-      head = {}
-      head[col] = file.data[0][col] for col in file.fields
-      file.data[0] = head
-    # unique lists
-    if file.unique
-      debug chalk.grey "#{meta.job}.#{name}: unique records"
-      file.data = array.unique file.data
-    # flip x/y axes
-    if file.flip and file.data.length
-      debug chalk.grey "#{meta.job}.#{name}: flip x/y axes"
-      # convert to array table
-      tab = []
-      header = Object.keys file.data[0]
-      for row, rnum in file.data
-        tab[rnum] = []
-        for col, cnum in header
-          tab[rnum][cnum] = file.data[rnum][col]
-      tab.unshift header
-      # flip
-      flipped = []
-      for row, x in tab
-        for col, y in row
-          flipped[y] ?= []
-          flipped[y][x] = col
-      # convert to objects
-      file.data = []
-      for row, x in flipped[1..]
-        for col, y in row
-          file.data[x] ?= {}
-          file.data[x][flipped[0][y]] = col
-  debug chalk.grey "#{meta.job}: convert to csv"
-  for name, file of list
-    file.rows = file.data.length
-    file.file = "#{file.title ? name}.csv"
-  # generate csv
-  async.each Object.keys(list), (name, cb) ->
-    return cb() unless list[name].data.length
-    # optimize structure
-    first = list[name].data[0]
-    for row in list[name].data
-      for field, value of row
-        # add missing fields
-        first[field] ?= null
-        # convert dates
-        row[field] = moment(value).format() if value instanceof Date
-    json2csv
-      data: list[name].data
-      del: ';'
-    , (err, string) ->
-      return cb err if err
-      list[name].csv = iconv.encode string, 'windows1252'
-      cb()
-  , (err) ->
-    return cb err if err
-    # send email
-    #email meta, list, cb
-    setup = object.clone meta.conf.email
-    # add attachements
-    if meta.conf.csv
-      setup.attachments = []
-      names = if typeof meta.conf.csv is 'string' then meta.conf.csv else Object.keys list
-      for name in names
-        data = list[name]
-        continue unless data.csv
-        setup.attachments.push
-          filename: data.file
-          content: data.csv
-    # generate context sensitive part
-    context =
-      name: meta.job
-      conf: meta.conf
-      variables: object.filter meta.variables, (_, key) -> key[0] isnt '_'
-      date: new Date()
-      result: list
-      attachments: setup.attachments
-    addPdf meta.job, meta.conf.pdf, context, setup, (err) ->
-      return cb err if err
-      # test mode
-      setup = mail.resolve setup
-      if mode.mail
-        setup.to = mode.mail.split /,\s+/
-        setup.cc = []
-        setup.bcc = []
-      if mmeta = mode.variables?._mail?.header
-        setup.cc = mmeta.cc
-        setup.bcc = mmeta.bcc
-        setup.subject = "Re: #{mmeta.subject}" if mmeta.subject
-        if mmeta.messageId
-          setup.inReplyTo = mmeta.messageId
-          setup.references = [mmeta.messageId]
-      mail.send setup, context, (err) ->
-        console.log chalk.grey "Email was send." unless err
-        cb err
-
-doJoin = (results, list) ->
-  # get join conditions
-  join = {}
-  if typeof list.join is 'boolean'
-    for entry in Object.keys results
-      join[entry] = 'inner'
-    list.join = join
-  else if Array.isArray list.join
-    for entry in list.join
-      join[entry] = 'inner'
-    list.join = join
-  # start joining
-  for alias, join of list.join
-    # go on if empty
-    continue unless results[alias].length
-    # add if first record set
-    unless list.data?.length
-      list.data = results[alias]
-      continue
-    # append
-    if join is 'append'
-      list.data = list.data.concat results[alias]
-      continue
-    # find equal field names
-    cols = Object.keys list.data[0]
-    .filter (e) -> results[alias][0][e]
-    # switch for right join
-    if join is 'right'
-      r = list.data
-      l = results[alias]
-    else
-      l = list.data
-      r = results[alias]
-    # join
-    all = []
-    for lr in l
-      found = false
-      for rr in r
-        continue unless matchCols cols, lr, rr
-        all.push addCols lr, rr unless join is 'outer'
-        found = true
-      unless found or join is 'inner'
-        e = {}
-        e[n] = null for n of r[0]
-        all.push addCols lr, e
-    if join is 'outer'
-      for rr in r
-        found = false
-        for lr in l
-          continue unless matchCols cols, rr, lr
-          found = true
-        unless found or join is 'inner'
-          e = {}
-          e[n] = null for n of l[0]
-          all.push addCols rr, e
-    list.data = all
-
-matchCols = (cols, l, r) ->
-  for c in cols
-    return false unless l[c] is r[c]
-  return true
-addCols = (l, r) ->
-  l[n] = v ? l[n] ? null for n, v of r
-  l
-
-addPdf = (job, conf, context, email, cb) ->
-  return cb() unless conf
-  debug chalk.grey "#{job}: attache pdfs"
-  async.forEachOf conf, (pdf, name, cb) ->
-    if pdf.locale # change locale
-      oldLocale = moment.locale()
-      moment.locale pdf.locale
-    report = new Report
-      source: pdf.content context
-    if pdf.locale # change locale back
-      moment.locale oldLocale
-    report.toPdf
-      format: job.format
-      orientation: job.orientation
-    , (err, data) ->
-      return cb err if err
-      email.attachments ?= []
-      email.attachments.push
-        filename: "#{pdf.title ? name}.pdf"
-        content: data
-      cb()
-  , (err) ->
-    cb err

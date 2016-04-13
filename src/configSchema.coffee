@@ -143,6 +143,11 @@ job =
             entries:
               type: 'string'
             optional: true
+          format:
+            title: "Format Values"
+            description: "the format for each column"
+            type: 'object'
+            optional: true
           unique:
             title: "Remove Duplicates"
             description: "the duplicated rows will be removed"

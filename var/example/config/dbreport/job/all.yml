@@ -48,12 +48,18 @@ compose:
     append:
       - tables
       - indexes
+#    join: true
 #    join:
-#      <name>: <left|right|inner|outer>
+#      - tables
+#      - indexes
+#    join:
+#      <name>: <left|right|inner|outer|append>
     sort: relname
 #    reverse: true
 #    deduplicate: true
 #    fields: ['name', 'id']
+#    format:
+#      <field>: <validator rule>
 #    flip: true
 #    flip: 'name'
 
