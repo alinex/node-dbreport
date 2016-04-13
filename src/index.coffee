@@ -98,7 +98,6 @@ exports.run = (name, cb) ->
           if mmeta.messageId
             email.inReplyTo = mmeta.messageId
             email.references = [mmeta.messageId]
-        console.log 'att', email.attachments
         mail.send email, context, (err) ->
           console.log chalk.grey "Email was send." unless err
           cb err

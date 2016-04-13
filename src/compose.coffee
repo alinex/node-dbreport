@@ -189,10 +189,23 @@ fields = (meta, name, file, cb) ->
 format = (meta, name, file, cb) ->
   return cb() unless file.format
   debug chalk.grey "#{meta.job}.#{name}: format columns"
-
-
-
-  cb()
+  console.log 'before:', file.data
+  async.each file.data, (row, cb) ->
+    async.each Object.keys(row), (col, cb) ->
+      return cb() unless file.format[col]
+      console.log 'vvvvvvvvvvvv'
+      validator.check
+        name: "format-cell"
+        value: row[col]
+        schema: file.format[col]
+      , (err, result) ->
+        row[col] = result
+        cb()
+    , cb
+  , (err) ->
+    return cb err if err
+    console.log 'after:', file.data
+    cb()
 
 # unique lists
 unique = (meta, name, file, cb) ->
