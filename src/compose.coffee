@@ -52,7 +52,9 @@ module.exports = (meta, results, cb) ->
   # work on each file
   async.each Object.keys(list), (name, cb) ->
     file = list[name]
-    return cb() unless file.data.length
+    unless file.data.length
+      file.rows = 0
+      return cb()
     # optimize data
     async.eachSeries [
       sort
@@ -65,7 +67,7 @@ module.exports = (meta, results, cb) ->
       method.call this, meta, name, file, cb
     , (err) ->
       # update file info
-      file.rows = file.data.length
+      file.rows = file.data.length ? 0
       cb err
   , (err) ->
     return cb err if err
@@ -83,7 +85,7 @@ module.exports = (meta, results, cb) ->
       (cb) -> data2pdf meta, out, list, context, cb
     ], (err) ->
       return cb err if err
-      context.out = out
+      context.attachments = out
       cb null, list, out, context
 
 
@@ -248,14 +250,13 @@ data2csv = (meta, out, list, cb) ->
     return cb() if Array.isArray meta.conf.csv and name not in meta.conf.csv
     debug chalk.grey "#{meta.job}.#{name}: convert to csv"
     file = list[name]
+    return cb() unless file.data.length
     # optimize structure
     first = file.data[0]
     for row in file.data
-      for field, value of row
+      for field of row
         # add missing fields
         first[field] ?= null
-        # convert dates
-        row[field] = moment(value).format() if value instanceof Date
     json2csv
       data: file.data
       del: ';'
@@ -267,6 +268,7 @@ data2csv = (meta, out, list, cb) ->
         description: file.description
         content: iconv.encode string, 'windows1252'
         rows: file.rows
+      file.file = "#{file.title ? name}.csv"
       cb()
   , cb
 
