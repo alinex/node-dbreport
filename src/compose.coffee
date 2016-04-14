@@ -83,6 +83,7 @@ module.exports = (meta, results, cb) ->
       (cb) -> data2pdf meta, out, list, context, cb
     ], (err) ->
       return cb err if err
+      context.out = out
       cb null, list, out, context
 
 
@@ -189,11 +190,9 @@ fields = (meta, name, file, cb) ->
 format = (meta, name, file, cb) ->
   return cb() unless file.format
   debug chalk.grey "#{meta.job}.#{name}: format columns"
-  console.log 'before:', file.data
   async.each file.data, (row, cb) ->
     async.each Object.keys(row), (col, cb) ->
       return cb() unless file.format[col]
-      console.log 'vvvvvvvvvvvv'
       validator.check
         name: "format-cell"
         value: row[col]
@@ -204,7 +203,6 @@ format = (meta, name, file, cb) ->
     , cb
   , (err) ->
     return cb err if err
-    console.log 'after:', file.data
     cb()
 
 # unique lists
@@ -266,7 +264,9 @@ data2csv = (meta, out, list, cb) ->
       out.push
         type: 'csv'
         filename: "#{file.title ? name}.csv"
+        description: file.description
         content: iconv.encode string, 'windows1252'
+        rows: file.rows
       cb()
   , cb
 
@@ -291,6 +291,7 @@ data2pdf = (meta, out, list, context, cb) ->
       out.push
         type: 'pdf'
         filename: "#{pdf.title ? name}.pdf"
+        description: pdf.description
         content: data
       cb()
   , cb

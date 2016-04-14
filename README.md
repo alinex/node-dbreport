@@ -411,13 +411,21 @@ The following context variables are possible:
 
 - name - the alias name for this job
 - conf... - configuration of job (object)
+- variables - list of variables
 - date - the date then the job was done (now)
-- result
+- result - data after Composing
   - <job> - one entry for each job
-    - rows - number of rows in result
-    - file - filename
+    - title - title of the job (from config)
     - description - description of job (from config)
+    - data - raw data
+    - rows - number of rows in result (without heading)
 - attachments - list of attachments
+  - <entry>
+    - type - file type (extension)
+    - filename - file name
+    - description - description of file (from config)
+    - content - real data
+    - rows - number of rows contained (if applicable)
 
 Find more examples at [validator](http://alinex.github.io/node-validator/README.md.html#handlebars).
 
