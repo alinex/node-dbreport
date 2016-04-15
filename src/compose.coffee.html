@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>compose.coffee</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <link rel="stylesheet" media="all" href="../doc-style.css" />
+  <script src="../doc-filelist.js"></script>
+  <script>
+    var relativeDir = "../";
+    var thisFile = "home/alex/github/node-dbreport/src/compose.coffee";
+    var defaultSidebar = true;
+  </script>
+  <script src="../doc-script.js"></script>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0" /></head>
+<body>
+  <nav>
+<div class="logo"><a href="http://alinex.github.io"
+  onmouseover="logo.src='https://alinex.github.io/images/Alinex-200.png'"
+  onmouseout="logo.src='https://alinex.github.io/images/Alinex-black-200.png'">
+  <img name="logo" src="https://alinex.github.io/images/Alinex-black-200.png"
+    width="150" title="Alinex Universe Homepage" />
+  </a>
+  <img src="http://alinex.github.io/images/Alinex-200.png"
+    style="display:none" alt="preloading" />
+</div>
+<div class="links">
+  <a href="http://alinex.github.io/blog"
+    class="btn btn-primary"><span class="glyphicon-pencil"></span> Blog</a>
+  <a href="http://alinex.github.io/develop"
+    class="btn btn-primary"><span class="glyphicon-book"></span> Develop</a>
+  <a href="http://alinex.github.io/code.html"
+    class="btn btn-warning"><span class="glyphicon-cog"></span> Code</a>
+</div>
+</nav><div id="sidebar_wrapper">
+    <div id="sidebar_switch">
+      <span class="tree">Files</span>
+      <span class="headings">Headings</span>
+    </div>
+    <div id="tree"></div>
+    <div id="headings">
+
+      <div class="heading h1">
+        <a href="#compose-data">Compose data</a>
+      </div>
+
+      <div class="heading h2">
+        <a href="#node-modules">Node Modules</a>
+      </div>
+
+      <div class="heading h2">
+        <a href="#main-method-composing-data">Main Method Composing Data</a>
+      </div>
+
+      <div class="heading h2">
+        <a href="#join-helpers">Join helpers</a>
+      </div>
+
+      <div class="heading h2">
+        <a href="#composing-methods">Composing Methods</a>
+      </div>
+
+      <div class="heading h2">
+        <a href="#data-transformation-to-files">Data Transformation to Files</a>
+      </div>
+
+    </div>
+  </div>
+  <div id="sidebar-toggle"></div>
+  <div id="container" tabindex="0"><a id="fork" href="https://github.com/alinex/node-dbreport" title="Fork me on GitHub"></a>
+    <div class="background highlight"></div>
+<table cellpadding="0" cellspacing="0">
+  <tbody>
+    
+    
+      <tr>
+        <td class="docs">
+          <div class="pilwrap" id="compose-data">
+  <h1>
+    <a href="#compose-data" name="compose-data" class="pilcrow"></a>
+Compose data
+  </h1>
+</div>
+
+        </td>
+        <td class="code highlight">
+          
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="docs">
+          <div class="pilwrap" id="node-modules">
+  <h2>
+    <a href="#node-modules" name="node-modules" class="pilcrow"></a>
+Node Modules
+  </h2>
+</div>
+
+        </td>
+        <td class="code highlight">
+          
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="docs">
+          <div class="pilwrap">
+  <a class="pilcrow" href="#section-3" id="section-3"></a>
+</div>
+<p>include base modules</p>
+
+        </td>
+        <td class="code highlight">
+          <pre class="coffeescript">debug = <span class="hljs-built_in">require</span>(<span class="hljs-string">'debug'</span>)(<span class="hljs-string">'dbreport:compose'</span>)
+chalk = <span class="hljs-built_in">require</span> <span class="hljs-string">'chalk'</span>
+json2csv = <span class="hljs-built_in">require</span> <span class="hljs-string">'json2csv'</span>
+moment = <span class="hljs-built_in">require</span> <span class="hljs-string">'moment'</span>
+iconv = <span class="hljs-built_in">require</span> <span class="hljs-string">'iconv-lite'</span></pre>
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="docs">
+          <div class="pilwrap">
+  <a class="pilcrow" href="#section-4" id="section-4"></a>
+</div>
+<p>include alinex modules</p>
+
+        </td>
+        <td class="code highlight">
+          <pre class="coffeescript">async = <span class="hljs-built_in">require</span> <span class="hljs-string">'alinex-async'</span>
+{array, object} = <span class="hljs-built_in">require</span> <span class="hljs-string">'alinex-util'</span>
+validator = <span class="hljs-built_in">require</span> <span class="hljs-string">'alinex-validator'</span>
+Report = <span class="hljs-built_in">require</span> <span class="hljs-string">'alinex-report'</span></pre>
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="docs">
+          <div class="pilwrap" id="main-method-composing-data">
+  <h2>
+    <a href="#main-method-composing-data" name="main-method-composing-data" class="pilcrow"></a>
+Main Method Composing Data
+  </h2>
+</div>
+
+        </td>
+        <td class="code highlight">
+          <pre class="coffeescript">
+<span class="hljs-built_in">module</span>.exports = <span class="hljs-function"><span class="hljs-params">(meta, results, cb)</span> -&gt;</span></pre>
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="docs">
+          <div class="pilwrap">
+  <a class="pilcrow" href="#section-6" id="section-6"></a>
+</div>
+<p>make data files</p>
+
+        </td>
+        <td class="code highlight">
+          <pre class="coffeescript">  debug chalk.grey <span class="hljs-string">"<span class="hljs-subst">#{meta.job}</span>: read setup"</span>
+  list = {}
+  <span class="hljs-keyword">unless</span> meta.conf.compose
+    <span class="hljs-keyword">for</span> name, setup <span class="hljs-keyword">of</span> meta.conf.query
+      list[name] =
+        <span class="hljs-attribute">data</span>: results[name]
+        <span class="hljs-attribute">title</span>: setup.title
+        <span class="hljs-attribute">description</span>: setup.description
+  <span class="hljs-keyword">else</span>
+    debug chalk.grey <span class="hljs-string">"<span class="hljs-subst">#{meta.job}</span>: composing"</span>
+    <span class="hljs-keyword">for</span> name, setup <span class="hljs-keyword">of</span> meta.conf.compose
+      list[name] = object.extend {}, setup,
+        <span class="hljs-attribute">data</span>: []
+      <span class="hljs-keyword">switch</span>
+        <span class="hljs-keyword">when</span> setup.append
+          setup.append = Object.keys meta.conf.query <span class="hljs-keyword">if</span> <span class="hljs-keyword">typeof</span> setup.append <span class="hljs-keyword">is</span> <span class="hljs-string">'boolean'</span>
+          debug chalk.grey <span class="hljs-string">"<span class="hljs-subst">#{meta.job}</span>.<span class="hljs-subst">#{name}</span>: append"</span>
+          <span class="hljs-keyword">for</span> alias <span class="hljs-keyword">in</span> setup.append
+            list[name].data = list[name].data.concat results[alias]
+        <span class="hljs-keyword">when</span> setup.join
+          debug chalk.grey <span class="hljs-string">"<span class="hljs-subst">#{meta.job}</span>.<span class="hljs-subst">#{name}</span>: join"</span>
+          doJoin results, list[name]
+        <span class="hljs-keyword">when</span> results[name]?
+          list[name].data = results[name]
+        <span class="hljs-keyword">else</span>
+          <span class="hljs-keyword">return</span> cb <span class="hljs-keyword">new</span> Error <span class="hljs-string">"No supported combine method defined for entry <span class="hljs-subst">#{name}</span>
+          of <span class="hljs-subst">#{meta.job}</span>."</span></pre>
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="docs">
+          <div class="pilwrap">
+  <a class="pilcrow" href="#section-7" id="section-7"></a>
+</div>
+<p>work on each file</p>
+
+        </td>
+        <td class="code highlight">
+          <pre class="coffeescript">  async.each Object.keys(list), <span class="hljs-function"><span class="hljs-params">(name, cb)</span> -&gt;</span>
+    file = list[name]
+    <span class="hljs-keyword">unless</span> file.data.length
+      file.rows = <span class="hljs-number">0</span>
+      <span class="hljs-keyword">return</span> cb()</pre>
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="docs">
+          <div class="pilwrap">
+  <a class="pilcrow" href="#section-8" id="section-8"></a>
+</div>
+<p>optimize data</p>
+
+        </td>
+        <td class="code highlight">
+          <pre class="coffeescript">    async.eachSeries [
+      sort
+      reverse
+      fields
+      format
+      unique
+      flip
+    ], <span class="hljs-function"><span class="hljs-params">(method, cb)</span> -&gt;</span>
+      method.call <span class="hljs-keyword">this</span>, meta, name, file, cb
+    , <span class="hljs-function"><span class="hljs-params">(err)</span> -&gt;</span></pre>
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="docs">
+          <div class="pilwrap">
+  <a class="pilcrow" href="#section-9" id="section-9"></a>
+</div>
+<p>update file info</p>
+
+        </td>
+        <td class="code highlight">
+          <pre class="coffeescript">      file.rows = file.data.length ? <span class="hljs-number">0</span>
+      cb err
+  , <span class="hljs-function"><span class="hljs-params">(err)</span> -&gt;</span>
+    <span class="hljs-keyword">return</span> cb err <span class="hljs-keyword">if</span> err</pre>
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="docs">
+          <div class="pilwrap">
+  <a class="pilcrow" href="#section-10" id="section-10"></a>
+</div>
+<p>create report context</p>
+
+        </td>
+        <td class="code highlight">
+          <pre class="coffeescript">    context =
+      <span class="hljs-attribute">name</span>: meta.job
+      <span class="hljs-attribute">conf</span>: meta.conf
+      <span class="hljs-attribute">variables</span>: object.filter meta.variables, <span class="hljs-function"><span class="hljs-params">(_, key)</span> -&gt;</span> key[<span class="hljs-number">0</span>] <span class="hljs-keyword">isnt</span> <span class="hljs-string">'_'</span>
+      <span class="hljs-attribute">date</span>: <span class="hljs-keyword">new</span> Date()
+      <span class="hljs-attribute">result</span>: list</pre>
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="docs">
+          <div class="pilwrap">
+  <a class="pilcrow" href="#section-11" id="section-11"></a>
+</div>
+<p>generate output data files</p>
+
+        </td>
+        <td class="code highlight">
+          <pre class="coffeescript">    out = []
+    async.parallel [
+      (cb) -&gt; data2csv meta, out, list, cb
+      (cb) -&gt; data2pdf meta, out, list, context, cb
+    ], <span class="hljs-function"><span class="hljs-params">(err)</span> -&gt;</span>
+      <span class="hljs-keyword">return</span> cb err <span class="hljs-keyword">if</span> err
+      context.attachments = out
+      cb <span class="hljs-literal">null</span>, list, out, context</pre>
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="docs">
+          <div class="pilwrap" id="join-helpers">
+  <h2>
+    <a href="#join-helpers" name="join-helpers" class="pilcrow"></a>
+Join helpers
+  </h2>
+</div>
+
+        </td>
+        <td class="code highlight">
+          <pre class="coffeescript"><span class="hljs-function">
+<span class="hljs-title">doJoin</span> = <span class="hljs-params">(results, list)</span> -&gt;</span></pre>
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="docs">
+          <div class="pilwrap">
+  <a class="pilcrow" href="#section-13" id="section-13"></a>
+</div>
+<p>get join conditions</p>
+
+        </td>
+        <td class="code highlight">
+          <pre class="coffeescript">  join = {}
+  <span class="hljs-keyword">if</span> <span class="hljs-keyword">typeof</span> list.join <span class="hljs-keyword">is</span> <span class="hljs-string">'boolean'</span>
+    <span class="hljs-keyword">for</span> entry <span class="hljs-keyword">in</span> Object.keys results
+      join[entry] = <span class="hljs-string">'inner'</span>
+    list.join = join
+  <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> Array.isArray list.join
+    <span class="hljs-keyword">for</span> entry <span class="hljs-keyword">in</span> list.join
+      join[entry] = <span class="hljs-string">'inner'</span>
+    list.join = join</pre>
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="docs">
+          <div class="pilwrap">
+  <a class="pilcrow" href="#section-14" id="section-14"></a>
+</div>
+<p>start joining</p>
+
+        </td>
+        <td class="code highlight">
+          <pre class="coffeescript">  <span class="hljs-keyword">for</span> alias, join <span class="hljs-keyword">of</span> list.join</pre>
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="docs">
+          <div class="pilwrap">
+  <a class="pilcrow" href="#section-15" id="section-15"></a>
+</div>
+<p>go on if empty</p>
+
+        </td>
+        <td class="code highlight">
+          <pre class="coffeescript">    <span class="hljs-keyword">continue</span> <span class="hljs-keyword">unless</span> results[alias].length</pre>
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="docs">
+          <div class="pilwrap">
+  <a class="pilcrow" href="#section-16" id="section-16"></a>
+</div>
+<p>add if first record set</p>
+
+        </td>
+        <td class="code highlight">
+          <pre class="coffeescript">    <span class="hljs-keyword">unless</span> list.data?.length
+      list.data = results[alias]
+      <span class="hljs-keyword">continue</span></pre>
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="docs">
+          <div class="pilwrap">
+  <a class="pilcrow" href="#section-17" id="section-17"></a>
+</div>
+<p>append</p>
+
+        </td>
+        <td class="code highlight">
+          <pre class="coffeescript">    <span class="hljs-keyword">if</span> join <span class="hljs-keyword">is</span> <span class="hljs-string">'append'</span>
+      list.data = list.data.concat results[alias]
+      <span class="hljs-keyword">continue</span></pre>
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="docs">
+          <div class="pilwrap">
+  <a class="pilcrow" href="#section-18" id="section-18"></a>
+</div>
+<p>find equal field names</p>
+
+        </td>
+        <td class="code highlight">
+          <pre class="coffeescript">    cols = Object.keys list.data[<span class="hljs-number">0</span>]
+    .filter (e) -&gt; results[alias][<span class="hljs-number">0</span>][e]</pre>
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="docs">
+          <div class="pilwrap">
+  <a class="pilcrow" href="#section-19" id="section-19"></a>
+</div>
+<p>switch for right join</p>
+
+        </td>
+        <td class="code highlight">
+          <pre class="coffeescript">    <span class="hljs-keyword">if</span> join <span class="hljs-keyword">is</span> <span class="hljs-string">'right'</span>
+      r = list.data
+      l = results[alias]
+    <span class="hljs-keyword">else</span>
+      l = list.data
+      r = results[alias]</pre>
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="docs">
+          <div class="pilwrap">
+  <a class="pilcrow" href="#section-20" id="section-20"></a>
+</div>
+<p>join</p>
+
+        </td>
+        <td class="code highlight">
+          <pre class="coffeescript">    all = []
+    <span class="hljs-keyword">for</span> lr <span class="hljs-keyword">in</span> l
+      found = <span class="hljs-literal">false</span>
+      <span class="hljs-keyword">for</span> rr <span class="hljs-keyword">in</span> r
+        <span class="hljs-keyword">continue</span> <span class="hljs-keyword">unless</span> matchCols cols, lr, rr
+        all.push addCols lr, rr <span class="hljs-keyword">unless</span> join <span class="hljs-keyword">is</span> <span class="hljs-string">'outer'</span>
+        found = <span class="hljs-literal">true</span>
+      <span class="hljs-keyword">unless</span> found <span class="hljs-keyword">or</span> join <span class="hljs-keyword">is</span> <span class="hljs-string">'inner'</span>
+        e = {}
+        e[n] = <span class="hljs-literal">null</span> <span class="hljs-keyword">for</span> n <span class="hljs-keyword">of</span> r[<span class="hljs-number">0</span>]
+        all.push addCols lr, e
+    <span class="hljs-keyword">if</span> join <span class="hljs-keyword">is</span> <span class="hljs-string">'outer'</span>
+      <span class="hljs-keyword">for</span> rr <span class="hljs-keyword">in</span> r
+        found = <span class="hljs-literal">false</span>
+        <span class="hljs-keyword">for</span> lr <span class="hljs-keyword">in</span> l
+          <span class="hljs-keyword">continue</span> <span class="hljs-keyword">unless</span> matchCols cols, rr, lr
+          found = <span class="hljs-literal">true</span>
+        <span class="hljs-keyword">unless</span> found <span class="hljs-keyword">or</span> join <span class="hljs-keyword">is</span> <span class="hljs-string">'inner'</span>
+          e = {}
+          e[n] = <span class="hljs-literal">null</span> <span class="hljs-keyword">for</span> n <span class="hljs-keyword">of</span> l[<span class="hljs-number">0</span>]
+          all.push addCols rr, e
+    list.data = all
+<span class="hljs-function">
+<span class="hljs-title">matchCols</span> = <span class="hljs-params">(cols, l, r)</span> -&gt;</span>
+  <span class="hljs-keyword">for</span> c <span class="hljs-keyword">in</span> cols
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span> <span class="hljs-keyword">unless</span> l[c] <span class="hljs-keyword">is</span> r[c]
+  <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>
+<span class="hljs-function"><span class="hljs-title">addCols</span> = <span class="hljs-params">(l, r)</span> -&gt;</span>
+  l[n] = v ? l[n] ? <span class="hljs-literal">null</span> <span class="hljs-keyword">for</span> n, v <span class="hljs-keyword">of</span> r
+  l</pre>
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="docs">
+          <div class="pilwrap" id="composing-methods">
+  <h2>
+    <a href="#composing-methods" name="composing-methods" class="pilcrow"></a>
+Composing Methods
+  </h2>
+</div>
+
+        </td>
+        <td class="code highlight">
+          
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="docs">
+          <div class="pilwrap">
+  <a class="pilcrow" href="#section-22" id="section-22"></a>
+</div>
+<p>sort lists</p>
+
+        </td>
+        <td class="code highlight">
+          <pre class="coffeescript"><span class="hljs-function"><span class="hljs-title">sort</span> = <span class="hljs-params">(meta, name, file, cb)</span> -&gt;</span>
+  <span class="hljs-keyword">return</span> cb() <span class="hljs-keyword">unless</span> file.sort
+  debug chalk.grey <span class="hljs-string">"<span class="hljs-subst">#{meta.job}</span>.<span class="hljs-subst">#{name}</span>: sort by <span class="hljs-subst">#{file.sort}</span>"</span>
+  sorter = [file.data].concat file.sort
+  file.data = array.sortBy.apply <span class="hljs-keyword">this</span>, sorter
+  cb()
+<span class="hljs-function">
+<span class="hljs-title">reverse</span> = <span class="hljs-params">(meta, name, file, cb)</span> -&gt;</span>
+  <span class="hljs-keyword">return</span> cb() <span class="hljs-keyword">unless</span> file.reverse
+  debug chalk.grey <span class="hljs-string">"<span class="hljs-subst">#{meta.job}</span>.<span class="hljs-subst">#{name}</span>: reverse"</span>
+  file.data.reverse()
+  cb()</pre>
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="docs">
+          <div class="pilwrap">
+  <a class="pilcrow" href="#section-23" id="section-23"></a>
+</div>
+<p>filter fields</p>
+
+        </td>
+        <td class="code highlight">
+          <pre class="coffeescript"><span class="hljs-function"><span class="hljs-title">fields</span> = <span class="hljs-params">(meta, name, file, cb)</span> -&gt;</span>
+  <span class="hljs-keyword">return</span> cb() <span class="hljs-keyword">unless</span> file.fields
+  debug chalk.grey <span class="hljs-string">"<span class="hljs-subst">#{meta.job}</span>.<span class="hljs-subst">#{name}</span>: filter fields"</span>
+  <span class="hljs-keyword">for</span> row <span class="hljs-keyword">in</span> file.data
+    <span class="hljs-keyword">for</span> col <span class="hljs-keyword">in</span> Object.keys row
+      <span class="hljs-keyword">delete</span> row[col] <span class="hljs-keyword">unless</span> col <span class="hljs-keyword">in</span> file.fields</pre>
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="docs">
+          <div class="pilwrap">
+  <a class="pilcrow" href="#section-24" id="section-24"></a>
+</div>
+<p>reorder first record columns</p>
+
+        </td>
+        <td class="code highlight">
+          <pre class="coffeescript">  head = {}
+  head[col] = file.data[<span class="hljs-number">0</span>][col] <span class="hljs-keyword">for</span> col <span class="hljs-keyword">in</span> file.fields
+  file.data[<span class="hljs-number">0</span>] = head
+  cb()</pre>
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="docs">
+          <div class="pilwrap">
+  <a class="pilcrow" href="#section-25" id="section-25"></a>
+</div>
+<p>format</p>
+
+        </td>
+        <td class="code highlight">
+          <pre class="coffeescript"><span class="hljs-function"><span class="hljs-title">format</span> = <span class="hljs-params">(meta, name, file, cb)</span> -&gt;</span>
+  <span class="hljs-keyword">return</span> cb() <span class="hljs-keyword">unless</span> file.format
+  debug chalk.grey <span class="hljs-string">"<span class="hljs-subst">#{meta.job}</span>.<span class="hljs-subst">#{name}</span>: format columns"</span>
+  async.each file.data, <span class="hljs-function"><span class="hljs-params">(row, cb)</span> -&gt;</span>
+    async.each Object.keys(row), <span class="hljs-function"><span class="hljs-params">(col, cb)</span> -&gt;</span>
+      <span class="hljs-keyword">return</span> cb() <span class="hljs-keyword">unless</span> file.format[col]
+      validator.check
+        <span class="hljs-attribute">name</span>: <span class="hljs-string">"format-cell"</span>
+        <span class="hljs-attribute">value</span>: row[col]
+        <span class="hljs-attribute">schema</span>: file.format[col]
+      , <span class="hljs-function"><span class="hljs-params">(err, result)</span> -&gt;</span>
+        row[col] = result
+        cb()
+    , cb
+  , <span class="hljs-function"><span class="hljs-params">(err)</span> -&gt;</span>
+    <span class="hljs-keyword">return</span> cb err <span class="hljs-keyword">if</span> err
+    cb()</pre>
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="docs">
+          <div class="pilwrap">
+  <a class="pilcrow" href="#section-26" id="section-26"></a>
+</div>
+<p>unique lists</p>
+
+        </td>
+        <td class="code highlight">
+          <pre class="coffeescript"><span class="hljs-function"><span class="hljs-title">unique</span> = <span class="hljs-params">(meta, name, file, cb)</span> -&gt;</span>
+  <span class="hljs-keyword">return</span> cb() <span class="hljs-keyword">unless</span> file.unique
+  debug chalk.grey <span class="hljs-string">"<span class="hljs-subst">#{meta.job}</span>.<span class="hljs-subst">#{name}</span>: unique records"</span>
+  file.data = array.unique file.data
+  cb()</pre>
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="docs">
+          <div class="pilwrap">
+  <a class="pilcrow" href="#section-27" id="section-27"></a>
+</div>
+<p>flip x/y axes</p>
+
+        </td>
+        <td class="code highlight">
+          <pre class="coffeescript"><span class="hljs-function"><span class="hljs-title">flip</span> = <span class="hljs-params">(meta, name, file, cb)</span> -&gt;</span>
+  <span class="hljs-keyword">return</span> cb() <span class="hljs-keyword">unless</span> file.flip
+  debug chalk.grey <span class="hljs-string">"<span class="hljs-subst">#{meta.job}</span>.<span class="hljs-subst">#{name}</span>: flip x/y axes"</span></pre>
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="docs">
+          <div class="pilwrap">
+  <a class="pilcrow" href="#section-28" id="section-28"></a>
+</div>
+<p>convert to array table</p>
+
+        </td>
+        <td class="code highlight">
+          <pre class="coffeescript">  tab = []
+  header = Object.keys file.data[<span class="hljs-number">0</span>]
+  <span class="hljs-keyword">for</span> row, rnum <span class="hljs-keyword">in</span> file.data
+    tab[rnum] = []
+    <span class="hljs-keyword">for</span> col, cnum <span class="hljs-keyword">in</span> header
+      tab[rnum][cnum] = file.data[rnum][col]
+  tab.unshift header</pre>
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="docs">
+          <div class="pilwrap">
+  <a class="pilcrow" href="#section-29" id="section-29"></a>
+</div>
+<p>flip</p>
+
+        </td>
+        <td class="code highlight">
+          <pre class="coffeescript">  flipped = []
+  <span class="hljs-keyword">for</span> row, x <span class="hljs-keyword">in</span> tab
+    <span class="hljs-keyword">for</span> col, y <span class="hljs-keyword">in</span> row
+      flipped[y] ?= []
+      flipped[y][x] = col</pre>
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="docs">
+          <div class="pilwrap">
+  <a class="pilcrow" href="#section-30" id="section-30"></a>
+</div>
+<p>convert to objects</p>
+
+        </td>
+        <td class="code highlight">
+          <pre class="coffeescript">  file.data = []
+  <span class="hljs-keyword">for</span> row, x <span class="hljs-keyword">in</span> flipped[<span class="hljs-number">1.</span>.]
+    <span class="hljs-keyword">for</span> col, y <span class="hljs-keyword">in</span> row
+      file.data[x] ?= {}
+      file.data[x][flipped[<span class="hljs-number">0</span>][y]] = col</pre>
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="docs">
+          <div class="pilwrap" id="data-transformation-to-files">
+  <h2>
+    <a href="#data-transformation-to-files" name="data-transformation-to-files" class="pilcrow"></a>
+Data Transformation to Files
+  </h2>
+</div>
+
+        </td>
+        <td class="code highlight">
+          <pre class="coffeescript"><span class="hljs-function">
+<span class="hljs-title">data2csv</span> = <span class="hljs-params">(meta, out, list, cb)</span> -&gt;</span></pre>
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="docs">
+          <div class="pilwrap">
+  <a class="pilcrow" href="#section-32" id="section-32"></a>
+</div>
+<p>return if set to false</p>
+
+        </td>
+        <td class="code highlight">
+          <pre class="coffeescript">  <span class="hljs-keyword">return</span> cb() <span class="hljs-keyword">if</span> meta.conf.csv? <span class="hljs-keyword">and</span> <span class="hljs-keyword">not</span> meta.conf.csv
+  async.each Object.keys(list), <span class="hljs-function"><span class="hljs-params">(name, cb)</span> -&gt;</span>
+    <span class="hljs-keyword">return</span> cb() <span class="hljs-keyword">if</span> Array.isArray meta.conf.csv <span class="hljs-keyword">and</span> name <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> meta.conf.csv
+    debug chalk.grey <span class="hljs-string">"<span class="hljs-subst">#{meta.job}</span>.<span class="hljs-subst">#{name}</span>: convert to csv"</span>
+    file = list[name]
+    <span class="hljs-keyword">return</span> cb() <span class="hljs-keyword">unless</span> file.data.length</pre>
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="docs">
+          <div class="pilwrap">
+  <a class="pilcrow" href="#section-33" id="section-33"></a>
+</div>
+<p>optimize structure</p>
+
+        </td>
+        <td class="code highlight">
+          <pre class="coffeescript">    first = file.data[<span class="hljs-number">0</span>]
+    <span class="hljs-keyword">for</span> row <span class="hljs-keyword">in</span> file.data
+      <span class="hljs-keyword">for</span> field <span class="hljs-keyword">of</span> row</pre>
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="docs">
+          <div class="pilwrap">
+  <a class="pilcrow" href="#section-34" id="section-34"></a>
+</div>
+<p>add missing fields</p>
+
+        </td>
+        <td class="code highlight">
+          <pre class="coffeescript">        first[field] ?= <span class="hljs-literal">null</span>
+    json2csv
+      <span class="hljs-attribute">data</span>: file.data
+      <span class="hljs-attribute">del</span>: <span class="hljs-string">';'</span>
+    , <span class="hljs-function"><span class="hljs-params">(err, string)</span> -&gt;</span>
+      <span class="hljs-keyword">return</span> cb err <span class="hljs-keyword">if</span> err
+      out.push
+        <span class="hljs-attribute">type</span>: <span class="hljs-string">'csv'</span>
+        <span class="hljs-attribute">filename</span>: <span class="hljs-string">"<span class="hljs-subst">#{file.title ? name}</span>.csv"</span>
+        <span class="hljs-attribute">description</span>: file.description
+        <span class="hljs-attribute">content</span>: iconv.encode string, <span class="hljs-string">'windows1252'</span>
+        <span class="hljs-attribute">rows</span>: file.rows
+      file.file = <span class="hljs-string">"<span class="hljs-subst">#{file.title ? name}</span>.csv"</span>
+      cb()
+  , cb
+<span class="hljs-function">
+<span class="hljs-title">data2pdf</span> = <span class="hljs-params">(meta, out, list, context, cb)</span> -&gt;</span></pre>
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="docs">
+          <div class="pilwrap">
+  <a class="pilcrow" href="#section-35" id="section-35"></a>
+</div>
+<p>return if set to false</p>
+
+        </td>
+        <td class="code highlight">
+          <pre class="coffeescript">  <span class="hljs-keyword">return</span> cb() <span class="hljs-keyword">unless</span> meta.conf.pdf
+  async.forEachOf meta.conf.pdf, <span class="hljs-function"><span class="hljs-params">(pdf, name, cb)</span> -&gt;</span>
+    <span class="hljs-keyword">return</span> cb() <span class="hljs-keyword">if</span> Array.isArray meta.conf.pdf <span class="hljs-keyword">and</span> name <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> meta.conf.pdf
+    debug chalk.grey <span class="hljs-string">"<span class="hljs-subst">#{meta.job}</span>.<span class="hljs-subst">#{name}</span>: convert to pdf"</span>
+    <span class="hljs-keyword">if</span> pdf.locale <span class="hljs-comment"># change locale</span>
+      oldLocale = moment.locale()
+      moment.locale pdf.locale
+    report = <span class="hljs-keyword">new</span> Report
+      <span class="hljs-attribute">source</span>: pdf.content context
+    <span class="hljs-keyword">if</span> pdf.locale <span class="hljs-comment"># change locale back</span>
+      moment.locale oldLocale
+    report.toPdf
+      <span class="hljs-attribute">format</span>: meta.job.format
+      <span class="hljs-attribute">orientation</span>: meta.job.orientation
+    , <span class="hljs-function"><span class="hljs-params">(err, data)</span> -&gt;</span>
+      <span class="hljs-keyword">return</span> cb err <span class="hljs-keyword">if</span> err
+      out.push
+        <span class="hljs-attribute">type</span>: <span class="hljs-string">'pdf'</span>
+        <span class="hljs-attribute">filename</span>: <span class="hljs-string">"<span class="hljs-subst">#{pdf.title ? name}</span>.pdf"</span>
+        <span class="hljs-attribute">description</span>: pdf.description
+        <span class="hljs-attribute">content</span>: data
+      cb()
+  , cb</pre>
+        </td>
+      </tr>
+    
+  </tbody>
+</table>
+
+  </div>
+</body>
+</html>

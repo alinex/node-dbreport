@@ -529,19 +529,32 @@ job.</p>
 <ul>
 <li>name - the alias name for this job</li>
 <li>conf... - configuration of job (object)</li>
+<li>variables - list of variables</li>
 <li>date - the date then the job was done (now)</li>
-<li>result
+<li>result - data after Composing
 <ul>
 <li><job> - one entry for each job
 <ul>
-<li>rows - number of rows in result</li>
-<li>file - filename</li>
+<li>title - title of the job (from config)</li>
 <li>description - description of job (from config)</li>
+<li>data - raw data</li>
+<li>rows - number of rows in result (without heading)</li>
 </ul>
 </li>
 </ul>
 </li>
-<li>attachments - list of attachments</li>
+<li>attachments - list of attachments
+<ul>
+<li>
+<entry>
+- type - file type (extension)
+- filename - file name
+- description - description of file (from config)
+- content - real data
+- rows - number of rows contained (if applicable)
+</li>
+</ul>
+</li>
 </ul>
 <p>Find more examples at <a href="http://alinex.github.io/node-validator/README.md.html#handlebars">validator</a>.</p>
 <div class="pilwrap" id="database">
