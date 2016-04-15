@@ -40,7 +40,7 @@ module.exports = (meta, results, cb) ->
           setup.append = Object.keys meta.conf.query if typeof setup.append is 'boolean'
           debug chalk.grey "#{meta.job}.#{name}: append"
           for alias in setup.append
-            list[name].data = list[name].data.concat results[alias]
+            list[name].data.push object.clone entry for entry in results[alias]
         when setup.join
           debug chalk.grey "#{meta.job}.#{name}: join"
           doJoin results, list[name]
@@ -71,6 +71,9 @@ module.exports = (meta, results, cb) ->
       cb err
   , (err) ->
     return cb err if err
+    ######
+    console.log list
+    process.exit 1
     # create report context
     context =
       name: meta.job
@@ -246,7 +249,9 @@ flip = (meta, name, file, cb) ->
 data2csv = (meta, out, list, cb) ->
   # return if set to false
   return cb() if meta.conf.csv? and not meta.conf.csv
-  async.each Object.keys(list), (name, cb) ->
+  csvlist = if meta.conf.csv and typeof meta.conf.csv isnt 'boolean' then meta.conf.csv
+  else Object.keys list
+  async.each csvlist, (name, cb) ->
     return cb() if Array.isArray meta.conf.csv and name not in meta.conf.csv
     debug chalk.grey "#{meta.job}.#{name}: convert to csv"
     file = list[name]
