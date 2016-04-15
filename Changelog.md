@@ -4,6 +4,14 @@ Version changes
 The following list gives a short overview about what is changed between
 individual versions:
 
+Version 1.6.0 (2016-04-15)
+-------------------------------------------------
+- Upgraded validator and config.
+- Remove date conversion because possible now through format option.
+- Added infos of attachments to context.
+- Add format option for cells using validator schema.
+- Restructure: modularize and make steps async.
+
 Version 1.5.0 (2016-04-12)
 -------------------------------------------------
 - Upgraded yargs package.
