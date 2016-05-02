@@ -40,15 +40,34 @@ module.exports = (meta, results, cb) ->
           setup.append = Object.keys meta.conf.query if typeof setup.append is 'boolean'
           debug chalk.grey "#{meta.job}.#{name}: append"
           for alias in setup.append
-            list[name].data.push object.clone entry for entry in results[alias]
+#            console.log results[alias]
+            #raw = object.clone results[alias]
+            raw = []
+            for e in results[alias]
+              n = {}
+              n[k] = v for k, v of e
+              raw.push n
+#            console.log raw
+#            console.log raw is results[alias]
+#            console.log raw[0] is results[alias][0]
+#            cl = object.clone results[alias]
+            cl = []
+            for e in results[alias]
+              cl.push object.extend {}, e
+#            console.log cl
+#            console.log cl is results[alias]
+#            console.log cl[0] is results[alias][0]
+#            process.exit 1
+            list[name].data = list[name].data.concat cl
         when setup.join
           debug chalk.grey "#{meta.job}.#{name}: join"
           doJoin results, list[name]
         when results[name]?
           list[name].data = results[name]
         else
-          return cb new Error "No supported combine method defined for entry #{name}
+          return cb new Error "No supported compose method (append/join) defined for entry #{name}
           of #{meta.job}."
+#  list.table.data[0].anzahl = 999999
   # work on each file
   async.each Object.keys(list), (name, cb) ->
     file = list[name]
@@ -71,8 +90,8 @@ module.exports = (meta, results, cb) ->
       cb err
   , (err) ->
     return cb err if err
-    ######
-    console.log list
+    console.log list.date
+    console.log list.year
     process.exit 1
     # create report context
     context =

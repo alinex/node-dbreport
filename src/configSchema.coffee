@@ -61,8 +61,6 @@ job =
             title: "Command"
             description: "the concrete sql to run to retrieve the measurement result"
             type: 'handlebars'
-#            trim: true
-#            replace: [/\s+/, ' ']
       ]
     sendEmpty:
       title: "Send Empty Data"
