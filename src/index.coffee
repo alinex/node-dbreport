@@ -7,12 +7,11 @@
 # include base modules
 debug = require('debug')('dbreport')
 chalk = require 'chalk'
-util = require 'util'
+async = require 'async'
 # include alinex modules
 config = require 'alinex-config'
 database = require 'alinex-database'
-async = require 'alinex-async'
-{object} = require 'alinex-util'
+util = require 'alinex-util'
 mail = require 'alinex-mail'
 validator = require 'alinex-validator'
 # internal methods
@@ -47,7 +46,7 @@ exports.run = (name, cb) ->
       type: 'object'
       allowedKeys: true
       mandatoryKeys: true
-      keys: object.extend
+      keys: util.extend
         _mail:
           type: 'object'
           optional: true
@@ -60,13 +59,19 @@ exports.run = (name, cb) ->
     else
       console.log "-> #{name}"
     debug "start #{name} job"
-    async.mapOf conf.query, (query, n, cb) ->
+    keys = Object.keys conf.query
+    async.map keys, (n, cb) ->
+      query = conf.query[n]
       debug chalk.grey "#{n}: run query #{chalk.grey query.command(variables).replace /\s+/g, ' '}"
       database.list query.database, query.command(variables), (err, data) ->
         debug "#{n}: #{data?.length} rows fetched"
         cb err, data
     , (err, results) ->
       return cb err if err
+      # combine the results into an object again
+      map = {}
+      map[keys[num]] = results[num] for num in [0..keys.length-1]
+      results = map
       # check for sending
       isEmpty = true
       for query, data of results
@@ -85,7 +90,7 @@ exports.run = (name, cb) ->
       , results, (err, list, attachments, context) ->
         return cb err if err
         # create email
-        email = mail.resolve object.clone conf.email
+        email = mail.resolve util.clone conf.email
         email.attachments = attachments
         if mode.mail
           email.to = mode.mail.split /,\s+/

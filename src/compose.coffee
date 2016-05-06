@@ -7,12 +7,12 @@
 # include base modules
 debug = require('debug')('dbreport:compose')
 chalk = require 'chalk'
+async = require 'async'
 json2csv = require 'json2csv'
 moment = require 'moment'
 iconv = require 'iconv-lite'
 # include alinex modules
-async = require 'alinex-async'
-{array, object} = require 'alinex-util'
+util = require 'alinex-util'
 validator = require 'alinex-validator'
 Report = require 'alinex-report'
 
@@ -33,7 +33,7 @@ module.exports = (meta, results, cb) ->
   else
     debug chalk.grey "#{meta.job}: composing"
     for name, setup of meta.conf.compose
-      list[name] = object.extend {}, setup,
+      list[name] = util.extend util.clone(setup),
         data: []
       switch
         when setup.append
@@ -53,7 +53,7 @@ module.exports = (meta, results, cb) ->
 #            cl = object.clone results[alias]
             cl = []
             for e in results[alias]
-              cl.push object.extend {}, e
+              cl.push util.clone e
 #            console.log cl
 #            console.log cl is results[alias]
 #            console.log cl[0] is results[alias][0]
@@ -97,7 +97,7 @@ module.exports = (meta, results, cb) ->
     context =
       name: meta.job
       conf: meta.conf
-      variables: object.filter meta.variables, (_, key) -> key[0] isnt '_'
+      variables: util.object.filter meta.variables, (_, key) -> key[0] isnt '_'
       date: new Date()
       result: list
     # generate output data files
@@ -188,7 +188,7 @@ sort = (meta, name, file, cb) ->
   return cb() unless file.sort
   debug chalk.grey "#{meta.job}.#{name}: sort by #{file.sort}"
   sorter = [file.data].concat file.sort
-  file.data = array.sortBy.apply this, sorter
+  file.data = util.array.sortBy.apply this, sorter
   cb()
 
 reverse = (meta, name, file, cb) ->
@@ -233,7 +233,7 @@ format = (meta, name, file, cb) ->
 unique = (meta, name, file, cb) ->
   return cb() unless file.unique
   debug chalk.grey "#{meta.job}.#{name}: unique records"
-  file.data = array.unique file.data
+  file.data = util.array.unique file.data
   cb()
 
 # flip x/y axes

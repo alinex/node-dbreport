@@ -7,11 +7,11 @@
 # include base modules
 yargs = require 'yargs'
 chalk = require 'chalk'
+async = require 'async'
 fspath = require 'path'
 # include alinex modules
 config = require 'alinex-config'
 database = require 'alinex-database'
-async = require 'alinex-async'
 Report = require 'alinex-report'
 mail = require 'alinex-mail'
 # include classes and helpers
