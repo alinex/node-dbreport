@@ -7,7 +7,6 @@
 # include base modules
 debug = require('debug')('dbreport')
 chalk = require 'chalk'
-util = require 'util'
 json2csv = require 'json2csv'
 moment = require 'moment'
 iconv = require 'iconv-lite'
@@ -15,7 +14,7 @@ iconv = require 'iconv-lite'
 config = require 'alinex-config'
 database = require 'alinex-database'
 async = require 'alinex-async'
-{array, object} = require 'alinex-util'
+util = require 'alinex-util'
 mail = require 'alinex-mail'
 validator = require 'alinex-validator'
 Report = require 'alinex-report'
@@ -49,7 +48,7 @@ exports.run = (name, cb) ->
       type: 'object'
       allowedKeys: true
       mandatoryKeys: true
-      keys: object.extend
+      keys: util.extend
         _mail:
           type: 'object'
           optional: true
@@ -115,7 +114,7 @@ compose = (meta, results, cb) ->
   else
     debug chalk.grey "#{meta.job}: composing"
     for name, setup of meta.conf.compose
-      list[name] = object.extend {}, setup,
+      list[name] = util.extend util.clone(setup),
         data: []
       switch
         when setup.append
@@ -135,7 +134,7 @@ compose = (meta, results, cb) ->
     if file.sort
       debug chalk.grey "#{meta.job}.#{name}: sort by #{file.sort}"
       sorter = [file.data].concat file.sort
-      file.data = array.sortBy.apply this, sorter
+      file.data = util.array.sortBy.apply this, sorter
     if file.reverse
       debug chalk.grey "#{meta.job}.#{name}: reverse"
       file.data.reverse()
@@ -154,7 +153,7 @@ compose = (meta, results, cb) ->
     # unique lists
     if file.unique
       debug chalk.grey "#{meta.job}.#{name}: unique records"
-      file.data = array.unique file.data
+      file.data = util.array.unique file.data
     # flip x/y axes
     if file.flip and file.data.length
       debug chalk.grey "#{meta.job}.#{name}: flip x/y axes"
@@ -204,7 +203,7 @@ compose = (meta, results, cb) ->
     return cb err if err
     # send email
     #email meta, list, cb
-    setup = object.clone meta.conf.email
+    setup = util.clone meta.conf.email
     # add attachements
     if meta.conf.csv
       setup.attachments = []
@@ -219,7 +218,7 @@ compose = (meta, results, cb) ->
     context =
       name: meta.job
       conf: meta.conf
-      variables: object.filter meta.variables, (_, key) -> key[0] isnt '_'
+      variables: util.object.filter meta.variables, (_, key) -> key[0] isnt '_'
       date: new Date()
       result: list
       attachments: setup.attachments
