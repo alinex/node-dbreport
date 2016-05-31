@@ -7,7 +7,7 @@
   <script src="../doc-filelist.js"></script>
   <script>
     var relativeDir = "../";
-    var thisFile = "home/alex/github/node-dbreport/src/index.coffee";
+    var thisFile = "src/index.coffee";
     var defaultSidebar = true;
   </script>
   <script src="../doc-script.js"></script>
@@ -118,7 +118,7 @@ Node Modules
         <td class="code highlight">
           <pre class="coffeescript">debug = <span class="hljs-built_in">require</span>(<span class="hljs-string">'debug'</span>)(<span class="hljs-string">'dbreport'</span>)
 chalk = <span class="hljs-built_in">require</span> <span class="hljs-string">'chalk'</span>
-util = <span class="hljs-built_in">require</span> <span class="hljs-string">'util'</span></pre>
+async = <span class="hljs-built_in">require</span> <span class="hljs-string">'async'</span></pre>
         </td>
       </tr>
     
@@ -133,8 +133,7 @@ util = <span class="hljs-built_in">require</span> <span class="hljs-string">'uti
         <td class="code highlight">
           <pre class="coffeescript">config = <span class="hljs-built_in">require</span> <span class="hljs-string">'alinex-config'</span>
 database = <span class="hljs-built_in">require</span> <span class="hljs-string">'alinex-database'</span>
-async = <span class="hljs-built_in">require</span> <span class="hljs-string">'alinex-async'</span>
-{object} = <span class="hljs-built_in">require</span> <span class="hljs-string">'alinex-util'</span>
+util = <span class="hljs-built_in">require</span> <span class="hljs-string">'alinex-util'</span>
 mail = <span class="hljs-built_in">require</span> <span class="hljs-string">'alinex-mail'</span>
 validator = <span class="hljs-built_in">require</span> <span class="hljs-string">'alinex-validator'</span></pre>
         </td>
@@ -184,8 +183,8 @@ be changed at any time.</p>
         </td>
         <td class="code highlight">
           <pre class="coffeescript">mode =
-  <span class="hljs-attribute">mail</span>: <span class="hljs-literal">null</span> <span class="hljs-comment"># alternative email to use</span>
-  <span class="hljs-attribute">variables</span>: {} <span class="hljs-comment"># list of additional command variables</span>
+  mail: <span class="hljs-literal">null</span> <span class="hljs-comment"># alternative email to use</span>
+  variables: {} <span class="hljs-comment"># list of additional command variables</span>
 
 exports.init = <span class="hljs-function"><span class="hljs-params">(setup)</span> -&gt;</span>
   mode = setup</pre>
@@ -219,16 +218,16 @@ Run a job
         </td>
         <td class="code highlight">
           <pre class="coffeescript">  validator.check
-    <span class="hljs-attribute">name</span>: <span class="hljs-string">'cli-variables'</span>
-    <span class="hljs-attribute">value</span>: mode.variables
-    <span class="hljs-attribute">schema</span>:
-      <span class="hljs-attribute">type</span>: <span class="hljs-string">'object'</span>
-      <span class="hljs-attribute">allowedKeys</span>: <span class="hljs-literal">true</span>
-      <span class="hljs-attribute">mandatoryKeys</span>: <span class="hljs-literal">true</span>
-      <span class="hljs-attribute">keys</span>: object.extend
-        <span class="hljs-attribute">_mail</span>:
-          <span class="hljs-attribute">type</span>: <span class="hljs-string">'object'</span>
-          <span class="hljs-attribute">optional</span>: <span class="hljs-literal">true</span>
+    name: <span class="hljs-string">'cli-variables'</span>
+    value: mode.variables
+    schema:
+      type: <span class="hljs-string">'object'</span>
+      allowedKeys: <span class="hljs-literal">true</span>
+      mandatoryKeys: <span class="hljs-literal">true</span>
+      keys: util.extend
+        _mail:
+          type: <span class="hljs-string">'object'</span>
+          optional: <span class="hljs-literal">true</span>
       , conf.variables
   , <span class="hljs-function"><span class="hljs-params">(err, variables)</span> -&gt;</span>
     <span class="hljs-keyword">return</span> cb err <span class="hljs-keyword">if</span> err</pre>
@@ -249,7 +248,9 @@ Run a job
     <span class="hljs-keyword">else</span>
       <span class="hljs-built_in">console</span>.log <span class="hljs-string">"-&gt; <span class="hljs-subst">#{name}</span>"</span>
     debug <span class="hljs-string">"start <span class="hljs-subst">#{name}</span> job"</span>
-    async.mapOf conf.query, <span class="hljs-function"><span class="hljs-params">(query, n, cb)</span> -&gt;</span>
+    keys = Object.keys conf.query
+    async.map keys, <span class="hljs-function"><span class="hljs-params">(n, cb)</span> -&gt;</span>
+      query = conf.query[n]
       debug chalk.grey <span class="hljs-string">"<span class="hljs-subst">#{n}</span>: run query <span class="hljs-subst">#{chalk.grey query.command(variables).replace <span class="hljs-regexp">/\s+/g</span>, <span class="hljs-string">' '</span>}</span>"</span>
       database.list query.database, query.command(variables), <span class="hljs-function"><span class="hljs-params">(err, data)</span> -&gt;</span>
         debug <span class="hljs-string">"<span class="hljs-subst">#{n}</span>: <span class="hljs-subst">#{data?.length}</span> rows fetched"</span>
@@ -263,6 +264,21 @@ Run a job
         <td class="docs">
           <div class="pilwrap">
   <a class="pilcrow" href="#section-11" id="section-11"></a>
+</div>
+<p>combine the results into an object again</p>
+
+        </td>
+        <td class="code highlight">
+          <pre class="coffeescript">      map = {}
+      map[keys[num]] = results[num] <span class="hljs-keyword">for</span> num <span class="hljs-keyword">in</span> [<span class="hljs-number">0.</span>.keys.length<span class="hljs-number">-1</span>]
+      results = map</pre>
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="docs">
+          <div class="pilwrap">
+  <a class="pilcrow" href="#section-12" id="section-12"></a>
 </div>
 <p>check for sending</p>
 
@@ -282,17 +298,17 @@ Run a job
       <tr>
         <td class="docs">
           <div class="pilwrap">
-  <a class="pilcrow" href="#section-12" id="section-12"></a>
+  <a class="pilcrow" href="#section-13" id="section-13"></a>
 </div>
 <p>build data tables out of results</p>
 
         </td>
         <td class="code highlight">
           <pre class="coffeescript">      compose
-        <span class="hljs-attribute">job</span>: name
-        <span class="hljs-attribute">conf</span>: conf
-        <span class="hljs-attribute">variables</span>: variables
-        <span class="hljs-attribute">isEmpty</span>: isEmpty
+        job: name
+        conf: conf
+        variables: variables
+        isEmpty: isEmpty
       , results, <span class="hljs-function"><span class="hljs-params">(err, list, attachments, context)</span> -&gt;</span>
         <span class="hljs-keyword">return</span> cb err <span class="hljs-keyword">if</span> err</pre>
         </td>
@@ -301,13 +317,13 @@ Run a job
       <tr>
         <td class="docs">
           <div class="pilwrap">
-  <a class="pilcrow" href="#section-13" id="section-13"></a>
+  <a class="pilcrow" href="#section-14" id="section-14"></a>
 </div>
 <p>create email</p>
 
         </td>
         <td class="code highlight">
-          <pre class="coffeescript">        email = mail.resolve object.clone conf.email
+          <pre class="coffeescript">        email = mail.resolve util.clone conf.email
         email.attachments = attachments
         <span class="hljs-keyword">if</span> mode.mail
           email.to = mode.mail.split <span class="hljs-regexp">/,\s+/</span>

@@ -7,7 +7,7 @@
   <script src="../doc-filelist.js"></script>
   <script>
     var relativeDir = "../";
-    var thisFile = "home/alex/github/node-dbreport/src/compose.coffee";
+    var thisFile = "src/compose.coffee";
     var defaultSidebar = true;
   </script>
   <script src="../doc-script.js"></script>
@@ -114,6 +114,7 @@ Node Modules
         <td class="code highlight">
           <pre class="coffeescript">debug = <span class="hljs-built_in">require</span>(<span class="hljs-string">'debug'</span>)(<span class="hljs-string">'dbreport:compose'</span>)
 chalk = <span class="hljs-built_in">require</span> <span class="hljs-string">'chalk'</span>
+async = <span class="hljs-built_in">require</span> <span class="hljs-string">'async'</span>
 json2csv = <span class="hljs-built_in">require</span> <span class="hljs-string">'json2csv'</span>
 moment = <span class="hljs-built_in">require</span> <span class="hljs-string">'moment'</span>
 iconv = <span class="hljs-built_in">require</span> <span class="hljs-string">'iconv-lite'</span></pre>
@@ -129,8 +130,7 @@ iconv = <span class="hljs-built_in">require</span> <span class="hljs-string">'ic
 
         </td>
         <td class="code highlight">
-          <pre class="coffeescript">async = <span class="hljs-built_in">require</span> <span class="hljs-string">'alinex-async'</span>
-{array, object} = <span class="hljs-built_in">require</span> <span class="hljs-string">'alinex-util'</span>
+          <pre class="coffeescript">util = <span class="hljs-built_in">require</span> <span class="hljs-string">'alinex-util'</span>
 validator = <span class="hljs-built_in">require</span> <span class="hljs-string">'alinex-validator'</span>
 Report = <span class="hljs-built_in">require</span> <span class="hljs-string">'alinex-report'</span></pre>
         </td>
@@ -166,28 +166,19 @@ Main Method Composing Data
   <span class="hljs-keyword">unless</span> meta.conf.compose
     <span class="hljs-keyword">for</span> name, setup <span class="hljs-keyword">of</span> meta.conf.query
       list[name] =
-        <span class="hljs-attribute">data</span>: results[name]
-        <span class="hljs-attribute">title</span>: setup.title
-        <span class="hljs-attribute">description</span>: setup.description
+        data: results[name]
+        title: setup.title
+        description: setup.description
   <span class="hljs-keyword">else</span>
     debug chalk.grey <span class="hljs-string">"<span class="hljs-subst">#{meta.job}</span>: composing"</span>
     <span class="hljs-keyword">for</span> name, setup <span class="hljs-keyword">of</span> meta.conf.compose
-      list[name] = object.extend {}, setup,
-        <span class="hljs-attribute">data</span>: []
+      list[name] = util.extend util.clone(setup),
+        data: []
       <span class="hljs-keyword">switch</span>
         <span class="hljs-keyword">when</span> setup.append
           setup.append = Object.keys meta.conf.query <span class="hljs-keyword">if</span> <span class="hljs-keyword">typeof</span> setup.append <span class="hljs-keyword">is</span> <span class="hljs-string">'boolean'</span>
           debug chalk.grey <span class="hljs-string">"<span class="hljs-subst">#{meta.job}</span>.<span class="hljs-subst">#{name}</span>: append"</span>
-          <span class="hljs-keyword">for</span> alias <span class="hljs-keyword">in</span> setup.append
-            list[name].data = list[name].data.concat results[alias]
-        <span class="hljs-keyword">when</span> setup.join
-          debug chalk.grey <span class="hljs-string">"<span class="hljs-subst">#{meta.job}</span>.<span class="hljs-subst">#{name}</span>: join"</span>
-          doJoin results, list[name]
-        <span class="hljs-keyword">when</span> results[name]?
-          list[name].data = results[name]
-        <span class="hljs-keyword">else</span>
-          <span class="hljs-keyword">return</span> cb <span class="hljs-keyword">new</span> Error <span class="hljs-string">"No supported combine method defined for entry <span class="hljs-subst">#{name}</span>
-          of <span class="hljs-subst">#{meta.job}</span>."</span></pre>
+          <span class="hljs-keyword">for</span> alias <span class="hljs-keyword">in</span> setup.append</pre>
         </td>
       </tr>
     
@@ -196,7 +187,71 @@ Main Method Composing Data
           <div class="pilwrap">
   <a class="pilcrow" href="#section-7" id="section-7"></a>
 </div>
-<p>work on each file</p>
+<pre><code>       console.log results[alias]
+</code></pre>
+<p>raw = object.clone results[alias]</p>
+
+        </td>
+        <td class="code highlight">
+          <pre class="coffeescript">            raw = []
+            <span class="hljs-keyword">for</span> e <span class="hljs-keyword">in</span> results[alias]
+              n = {}
+              n[k] = v <span class="hljs-keyword">for</span> k, v <span class="hljs-keyword">of</span> e
+              raw.push n</pre>
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="docs">
+          <div class="pilwrap">
+  <a class="pilcrow" href="#section-8" id="section-8"></a>
+</div>
+<pre><code>       console.log raw
+       console.log raw is results[alias]
+       console.log raw[0] is results[alias][0]
+       cl = object.clone results[alias]
+</code></pre>
+
+        </td>
+        <td class="code highlight">
+          <pre class="coffeescript">            cl = []
+            <span class="hljs-keyword">for</span> e <span class="hljs-keyword">in</span> results[alias]
+              cl.push util.clone e</pre>
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="docs">
+          <div class="pilwrap">
+  <a class="pilcrow" href="#section-9" id="section-9"></a>
+</div>
+<pre><code>       console.log cl
+       console.log cl is results[alias]
+       console.log cl[0] is results[alias][0]
+       process.exit 1
+</code></pre>
+
+        </td>
+        <td class="code highlight">
+          <pre class="coffeescript">            list[name].data = list[name].data.concat cl
+        <span class="hljs-keyword">when</span> setup.join
+          debug chalk.grey <span class="hljs-string">"<span class="hljs-subst">#{meta.job}</span>.<span class="hljs-subst">#{name}</span>: join"</span>
+          doJoin results, list[name]
+        <span class="hljs-keyword">when</span> results[name]?
+          list[name].data = results[name]
+        <span class="hljs-keyword">else</span>
+          <span class="hljs-keyword">return</span> cb <span class="hljs-keyword">new</span> Error <span class="hljs-string">"No supported compose method (append/join) defined for entry <span class="hljs-subst">#{name}</span>
+          of <span class="hljs-subst">#{meta.job}</span>."</span></pre>
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="docs">
+          <div class="pilwrap">
+  <a class="pilcrow" href="#section-10" id="section-10"></a>
+</div>
+<p>list.table.data[0].anzahl = 999999
+work on each file</p>
 
         </td>
         <td class="code highlight">
@@ -211,7 +266,7 @@ Main Method Composing Data
       <tr>
         <td class="docs">
           <div class="pilwrap">
-  <a class="pilcrow" href="#section-8" id="section-8"></a>
+  <a class="pilcrow" href="#section-11" id="section-11"></a>
 </div>
 <p>optimize data</p>
 
@@ -233,7 +288,7 @@ Main Method Composing Data
       <tr>
         <td class="docs">
           <div class="pilwrap">
-  <a class="pilcrow" href="#section-9" id="section-9"></a>
+  <a class="pilcrow" href="#section-12" id="section-12"></a>
 </div>
 <p>update file info</p>
 
@@ -242,32 +297,35 @@ Main Method Composing Data
           <pre class="coffeescript">      file.rows = file.data.length ? <span class="hljs-number">0</span>
       cb err
   , <span class="hljs-function"><span class="hljs-params">(err)</span> -&gt;</span>
-    <span class="hljs-keyword">return</span> cb err <span class="hljs-keyword">if</span> err</pre>
+    <span class="hljs-keyword">return</span> cb err <span class="hljs-keyword">if</span> err
+    <span class="hljs-built_in">console</span>.log list.date
+    <span class="hljs-built_in">console</span>.log list.year
+    process.exit <span class="hljs-number">1</span></pre>
         </td>
       </tr>
     
       <tr>
         <td class="docs">
           <div class="pilwrap">
-  <a class="pilcrow" href="#section-10" id="section-10"></a>
+  <a class="pilcrow" href="#section-13" id="section-13"></a>
 </div>
 <p>create report context</p>
 
         </td>
         <td class="code highlight">
           <pre class="coffeescript">    context =
-      <span class="hljs-attribute">name</span>: meta.job
-      <span class="hljs-attribute">conf</span>: meta.conf
-      <span class="hljs-attribute">variables</span>: object.filter meta.variables, <span class="hljs-function"><span class="hljs-params">(_, key)</span> -&gt;</span> key[<span class="hljs-number">0</span>] <span class="hljs-keyword">isnt</span> <span class="hljs-string">'_'</span>
-      <span class="hljs-attribute">date</span>: <span class="hljs-keyword">new</span> Date()
-      <span class="hljs-attribute">result</span>: list</pre>
+      name: meta.job
+      conf: meta.conf
+      variables: util.object.filter meta.variables, <span class="hljs-function"><span class="hljs-params">(_, key)</span> -&gt;</span> key[<span class="hljs-number">0</span>] <span class="hljs-keyword">isnt</span> <span class="hljs-string">'_'</span>
+      date: <span class="hljs-keyword">new</span> Date()
+      result: list</pre>
         </td>
       </tr>
     
       <tr>
         <td class="docs">
           <div class="pilwrap">
-  <a class="pilcrow" href="#section-11" id="section-11"></a>
+  <a class="pilcrow" href="#section-14" id="section-14"></a>
 </div>
 <p>generate output data files</p>
 
@@ -303,7 +361,7 @@ Join helpers
       <tr>
         <td class="docs">
           <div class="pilwrap">
-  <a class="pilcrow" href="#section-13" id="section-13"></a>
+  <a class="pilcrow" href="#section-16" id="section-16"></a>
 </div>
 <p>get join conditions</p>
 
@@ -324,7 +382,7 @@ Join helpers
       <tr>
         <td class="docs">
           <div class="pilwrap">
-  <a class="pilcrow" href="#section-14" id="section-14"></a>
+  <a class="pilcrow" href="#section-17" id="section-17"></a>
 </div>
 <p>start joining</p>
 
@@ -337,7 +395,7 @@ Join helpers
       <tr>
         <td class="docs">
           <div class="pilwrap">
-  <a class="pilcrow" href="#section-15" id="section-15"></a>
+  <a class="pilcrow" href="#section-18" id="section-18"></a>
 </div>
 <p>go on if empty</p>
 
@@ -350,7 +408,7 @@ Join helpers
       <tr>
         <td class="docs">
           <div class="pilwrap">
-  <a class="pilcrow" href="#section-16" id="section-16"></a>
+  <a class="pilcrow" href="#section-19" id="section-19"></a>
 </div>
 <p>add if first record set</p>
 
@@ -365,7 +423,7 @@ Join helpers
       <tr>
         <td class="docs">
           <div class="pilwrap">
-  <a class="pilcrow" href="#section-17" id="section-17"></a>
+  <a class="pilcrow" href="#section-20" id="section-20"></a>
 </div>
 <p>append</p>
 
@@ -380,7 +438,7 @@ Join helpers
       <tr>
         <td class="docs">
           <div class="pilwrap">
-  <a class="pilcrow" href="#section-18" id="section-18"></a>
+  <a class="pilcrow" href="#section-21" id="section-21"></a>
 </div>
 <p>find equal field names</p>
 
@@ -394,7 +452,7 @@ Join helpers
       <tr>
         <td class="docs">
           <div class="pilwrap">
-  <a class="pilcrow" href="#section-19" id="section-19"></a>
+  <a class="pilcrow" href="#section-22" id="section-22"></a>
 </div>
 <p>switch for right join</p>
 
@@ -412,7 +470,7 @@ Join helpers
       <tr>
         <td class="docs">
           <div class="pilwrap">
-  <a class="pilcrow" href="#section-20" id="section-20"></a>
+  <a class="pilcrow" href="#section-23" id="section-23"></a>
 </div>
 <p>join</p>
 
@@ -469,7 +527,7 @@ Composing Methods
       <tr>
         <td class="docs">
           <div class="pilwrap">
-  <a class="pilcrow" href="#section-22" id="section-22"></a>
+  <a class="pilcrow" href="#section-25" id="section-25"></a>
 </div>
 <p>sort lists</p>
 
@@ -479,7 +537,7 @@ Composing Methods
   <span class="hljs-keyword">return</span> cb() <span class="hljs-keyword">unless</span> file.sort
   debug chalk.grey <span class="hljs-string">"<span class="hljs-subst">#{meta.job}</span>.<span class="hljs-subst">#{name}</span>: sort by <span class="hljs-subst">#{file.sort}</span>"</span>
   sorter = [file.data].concat file.sort
-  file.data = array.sortBy.apply <span class="hljs-keyword">this</span>, sorter
+  file.data = util.array.sortBy.apply <span class="hljs-keyword">this</span>, sorter
   cb()
 <span class="hljs-function">
 <span class="hljs-title">reverse</span> = <span class="hljs-params">(meta, name, file, cb)</span> -&gt;</span>
@@ -493,7 +551,7 @@ Composing Methods
       <tr>
         <td class="docs">
           <div class="pilwrap">
-  <a class="pilcrow" href="#section-23" id="section-23"></a>
+  <a class="pilcrow" href="#section-26" id="section-26"></a>
 </div>
 <p>filter fields</p>
 
@@ -511,7 +569,7 @@ Composing Methods
       <tr>
         <td class="docs">
           <div class="pilwrap">
-  <a class="pilcrow" href="#section-24" id="section-24"></a>
+  <a class="pilcrow" href="#section-27" id="section-27"></a>
 </div>
 <p>reorder first record columns</p>
 
@@ -527,7 +585,7 @@ Composing Methods
       <tr>
         <td class="docs">
           <div class="pilwrap">
-  <a class="pilcrow" href="#section-25" id="section-25"></a>
+  <a class="pilcrow" href="#section-28" id="section-28"></a>
 </div>
 <p>format</p>
 
@@ -540,9 +598,9 @@ Composing Methods
     async.each Object.keys(row), <span class="hljs-function"><span class="hljs-params">(col, cb)</span> -&gt;</span>
       <span class="hljs-keyword">return</span> cb() <span class="hljs-keyword">unless</span> file.format[col]
       validator.check
-        <span class="hljs-attribute">name</span>: <span class="hljs-string">"format-cell"</span>
-        <span class="hljs-attribute">value</span>: row[col]
-        <span class="hljs-attribute">schema</span>: file.format[col]
+        name: <span class="hljs-string">"format-cell"</span>
+        value: row[col]
+        schema: file.format[col]
       , <span class="hljs-function"><span class="hljs-params">(err, result)</span> -&gt;</span>
         row[col] = result
         cb()
@@ -556,7 +614,7 @@ Composing Methods
       <tr>
         <td class="docs">
           <div class="pilwrap">
-  <a class="pilcrow" href="#section-26" id="section-26"></a>
+  <a class="pilcrow" href="#section-29" id="section-29"></a>
 </div>
 <p>unique lists</p>
 
@@ -565,7 +623,7 @@ Composing Methods
           <pre class="coffeescript"><span class="hljs-function"><span class="hljs-title">unique</span> = <span class="hljs-params">(meta, name, file, cb)</span> -&gt;</span>
   <span class="hljs-keyword">return</span> cb() <span class="hljs-keyword">unless</span> file.unique
   debug chalk.grey <span class="hljs-string">"<span class="hljs-subst">#{meta.job}</span>.<span class="hljs-subst">#{name}</span>: unique records"</span>
-  file.data = array.unique file.data
+  file.data = util.array.unique file.data
   cb()</pre>
         </td>
       </tr>
@@ -573,7 +631,7 @@ Composing Methods
       <tr>
         <td class="docs">
           <div class="pilwrap">
-  <a class="pilcrow" href="#section-27" id="section-27"></a>
+  <a class="pilcrow" href="#section-30" id="section-30"></a>
 </div>
 <p>flip x/y axes</p>
 
@@ -588,7 +646,7 @@ Composing Methods
       <tr>
         <td class="docs">
           <div class="pilwrap">
-  <a class="pilcrow" href="#section-28" id="section-28"></a>
+  <a class="pilcrow" href="#section-31" id="section-31"></a>
 </div>
 <p>convert to array table</p>
 
@@ -607,7 +665,7 @@ Composing Methods
       <tr>
         <td class="docs">
           <div class="pilwrap">
-  <a class="pilcrow" href="#section-29" id="section-29"></a>
+  <a class="pilcrow" href="#section-32" id="section-32"></a>
 </div>
 <p>flip</p>
 
@@ -624,7 +682,7 @@ Composing Methods
       <tr>
         <td class="docs">
           <div class="pilwrap">
-  <a class="pilcrow" href="#section-30" id="section-30"></a>
+  <a class="pilcrow" href="#section-33" id="section-33"></a>
 </div>
 <p>convert to objects</p>
 
@@ -657,14 +715,16 @@ Data Transformation to Files
       <tr>
         <td class="docs">
           <div class="pilwrap">
-  <a class="pilcrow" href="#section-32" id="section-32"></a>
+  <a class="pilcrow" href="#section-35" id="section-35"></a>
 </div>
 <p>return if set to false</p>
 
         </td>
         <td class="code highlight">
           <pre class="coffeescript">  <span class="hljs-keyword">return</span> cb() <span class="hljs-keyword">if</span> meta.conf.csv? <span class="hljs-keyword">and</span> <span class="hljs-keyword">not</span> meta.conf.csv
-  async.each Object.keys(list), <span class="hljs-function"><span class="hljs-params">(name, cb)</span> -&gt;</span>
+  csvlist = <span class="hljs-keyword">if</span> meta.conf.csv <span class="hljs-keyword">and</span> <span class="hljs-keyword">typeof</span> meta.conf.csv <span class="hljs-keyword">isnt</span> <span class="hljs-string">'boolean'</span> <span class="hljs-keyword">then</span> meta.conf.csv
+  <span class="hljs-keyword">else</span> Object.keys list
+  async.each csvlist, <span class="hljs-function"><span class="hljs-params">(name, cb)</span> -&gt;</span>
     <span class="hljs-keyword">return</span> cb() <span class="hljs-keyword">if</span> Array.isArray meta.conf.csv <span class="hljs-keyword">and</span> name <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> meta.conf.csv
     debug chalk.grey <span class="hljs-string">"<span class="hljs-subst">#{meta.job}</span>.<span class="hljs-subst">#{name}</span>: convert to csv"</span>
     file = list[name]
@@ -675,7 +735,7 @@ Data Transformation to Files
       <tr>
         <td class="docs">
           <div class="pilwrap">
-  <a class="pilcrow" href="#section-33" id="section-33"></a>
+  <a class="pilcrow" href="#section-36" id="section-36"></a>
 </div>
 <p>optimize structure</p>
 
@@ -690,7 +750,7 @@ Data Transformation to Files
       <tr>
         <td class="docs">
           <div class="pilwrap">
-  <a class="pilcrow" href="#section-34" id="section-34"></a>
+  <a class="pilcrow" href="#section-37" id="section-37"></a>
 </div>
 <p>add missing fields</p>
 
@@ -698,16 +758,16 @@ Data Transformation to Files
         <td class="code highlight">
           <pre class="coffeescript">        first[field] ?= <span class="hljs-literal">null</span>
     json2csv
-      <span class="hljs-attribute">data</span>: file.data
-      <span class="hljs-attribute">del</span>: <span class="hljs-string">';'</span>
+      data: file.data
+      del: <span class="hljs-string">';'</span>
     , <span class="hljs-function"><span class="hljs-params">(err, string)</span> -&gt;</span>
       <span class="hljs-keyword">return</span> cb err <span class="hljs-keyword">if</span> err
       out.push
-        <span class="hljs-attribute">type</span>: <span class="hljs-string">'csv'</span>
-        <span class="hljs-attribute">filename</span>: <span class="hljs-string">"<span class="hljs-subst">#{file.title ? name}</span>.csv"</span>
-        <span class="hljs-attribute">description</span>: file.description
-        <span class="hljs-attribute">content</span>: iconv.encode string, <span class="hljs-string">'windows1252'</span>
-        <span class="hljs-attribute">rows</span>: file.rows
+        type: <span class="hljs-string">'csv'</span>
+        filename: <span class="hljs-string">"<span class="hljs-subst">#{file.title ? name}</span>.csv"</span>
+        description: file.description
+        content: iconv.encode string, <span class="hljs-string">'windows1252'</span>
+        rows: file.rows
       file.file = <span class="hljs-string">"<span class="hljs-subst">#{file.title ? name}</span>.csv"</span>
       cb()
   , cb
@@ -719,7 +779,7 @@ Data Transformation to Files
       <tr>
         <td class="docs">
           <div class="pilwrap">
-  <a class="pilcrow" href="#section-35" id="section-35"></a>
+  <a class="pilcrow" href="#section-38" id="section-38"></a>
 </div>
 <p>return if set to false</p>
 
@@ -733,19 +793,19 @@ Data Transformation to Files
       oldLocale = moment.locale()
       moment.locale pdf.locale
     report = <span class="hljs-keyword">new</span> Report
-      <span class="hljs-attribute">source</span>: pdf.content context
+      source: pdf.content context
     <span class="hljs-keyword">if</span> pdf.locale <span class="hljs-comment"># change locale back</span>
       moment.locale oldLocale
     report.toPdf
-      <span class="hljs-attribute">format</span>: meta.job.format
-      <span class="hljs-attribute">orientation</span>: meta.job.orientation
+      format: meta.job.format
+      orientation: meta.job.orientation
     , <span class="hljs-function"><span class="hljs-params">(err, data)</span> -&gt;</span>
       <span class="hljs-keyword">return</span> cb err <span class="hljs-keyword">if</span> err
       out.push
-        <span class="hljs-attribute">type</span>: <span class="hljs-string">'pdf'</span>
-        <span class="hljs-attribute">filename</span>: <span class="hljs-string">"<span class="hljs-subst">#{pdf.title ? name}</span>.pdf"</span>
-        <span class="hljs-attribute">description</span>: pdf.description
-        <span class="hljs-attribute">content</span>: data
+        type: <span class="hljs-string">'pdf'</span>
+        filename: <span class="hljs-string">"<span class="hljs-subst">#{pdf.title ? name}</span>.pdf"</span>
+        description: pdf.description
+        content: data
       cb()
   , cb</pre>
         </td>

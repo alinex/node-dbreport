@@ -7,7 +7,7 @@
   <script src="../doc-filelist.js"></script>
   <script>
     var relativeDir = "../";
-    var thisFile = "home/alex/github/node-dbreport/src/configSchema.coffee";
+    var thisFile = "src/configSchema.coffee";
     var defaultSidebar = true;
   </script>
   <script src="../doc-script.js"></script>
@@ -90,225 +90,211 @@ Complete Schema Definition
         </td>
         <td class="code highlight">
           <pre class="coffeescript">job =
-  <span class="hljs-attribute">title</span>: <span class="hljs-string">"Report Job"</span>
-  <span class="hljs-attribute">description</span>: <span class="hljs-string">"the definition of a single report job"</span>
-  <span class="hljs-attribute">type</span>: <span class="hljs-string">'object'</span>
-  <span class="hljs-attribute">allowedKeys</span>: <span class="hljs-literal">true</span>
-  <span class="hljs-attribute">keys</span>:
-    <span class="hljs-attribute">title</span>:
-      <span class="hljs-attribute">title</span>: <span class="hljs-string">"Title"</span>
-      <span class="hljs-attribute">description</span>: <span class="hljs-string">"the short title of the job to be used in display"</span>
-      <span class="hljs-attribute">type</span>: <span class="hljs-string">'string'</span>
-    <span class="hljs-attribute">description</span>:
-      <span class="hljs-attribute">title</span>: <span class="hljs-string">"Description"</span>
-      <span class="hljs-attribute">description</span>: <span class="hljs-string">"a short abstract of what this job will retrieve"</span>
-      <span class="hljs-attribute">type</span>: <span class="hljs-string">'string'</span>
-    <span class="hljs-attribute">variables</span>:
-      <span class="hljs-attribute">type</span>: <span class="hljs-string">'object'</span>
-      <span class="hljs-attribute">entries</span>: [
-        <span class="hljs-attribute">type</span>: <span class="hljs-string">'object'</span>
-        <span class="hljs-attribute">mandatoryKeys</span>: [<span class="hljs-string">'type'</span>]
-        <span class="hljs-attribute">keys</span>:
-          <span class="hljs-attribute">type</span>:
-            <span class="hljs-attribute">type</span>: <span class="hljs-string">'string'</span>
+  title: <span class="hljs-string">"Report Job"</span>
+  description: <span class="hljs-string">"the definition of a single report job"</span>
+  type: <span class="hljs-string">'object'</span>
+  allowedKeys: <span class="hljs-literal">true</span>
+  keys:
+    title:
+      title: <span class="hljs-string">"Title"</span>
+      description: <span class="hljs-string">"the short title of the job to be used in display"</span>
+      type: <span class="hljs-string">'string'</span>
+    description:
+      title: <span class="hljs-string">"Description"</span>
+      description: <span class="hljs-string">"a short abstract of what this job will retrieve"</span>
+      type: <span class="hljs-string">'string'</span>
+    variables:
+      type: <span class="hljs-string">'object'</span>
+      entries: [
+        type: <span class="hljs-string">'object'</span>
+        mandatoryKeys: [<span class="hljs-string">'type'</span>]
+        keys:
+          type:
+            type: <span class="hljs-string">'string'</span>
       ]
-      <span class="hljs-attribute">optional</span>: <span class="hljs-literal">true</span>
-    <span class="hljs-attribute">query</span>:
-      <span class="hljs-attribute">title</span>: <span class="hljs-string">"Query List"</span>
-      <span class="hljs-attribute">description</span>: <span class="hljs-string">"the queries to run to retrieve the measurement result"</span>
-      <span class="hljs-attribute">type</span>: <span class="hljs-string">'object'</span>
-      <span class="hljs-attribute">entries</span>: [
-        <span class="hljs-attribute">title</span>: <span class="hljs-string">"Query"</span>
-        <span class="hljs-attribute">description</span>: <span class="hljs-string">"the query to run to retrieve the measurement result"</span>
-        <span class="hljs-attribute">type</span>: <span class="hljs-string">'object'</span>
-        <span class="hljs-attribute">mandatoryKeys</span>: <span class="hljs-literal">true</span>
-        <span class="hljs-attribute">allowedKeys</span>: <span class="hljs-literal">true</span>
-        <span class="hljs-attribute">keys</span>:
-          <span class="hljs-attribute">title</span>:
-            <span class="hljs-attribute">title</span>: <span class="hljs-string">"Title"</span>
-            <span class="hljs-attribute">description</span>: <span class="hljs-string">"the short title of the query to be used as file"</span>
-            <span class="hljs-attribute">type</span>: <span class="hljs-string">'string'</span>
-            <span class="hljs-attribute">optional</span>: <span class="hljs-literal">true</span>
-          <span class="hljs-attribute">description</span>:
-            <span class="hljs-attribute">title</span>: <span class="hljs-string">"Description"</span>
-            <span class="hljs-attribute">description</span>: <span class="hljs-string">"a short abstract of what this query will do"</span>
-            <span class="hljs-attribute">type</span>: <span class="hljs-string">'string'</span>
-            <span class="hljs-attribute">optional</span>: <span class="hljs-literal">true</span>
-          <span class="hljs-attribute">database</span>:
-            <span class="hljs-attribute">title</span>: <span class="hljs-string">"Database"</span>
-            <span class="hljs-attribute">description</span>: <span class="hljs-string">"the alias name of the database to store to"</span>
-            <span class="hljs-attribute">type</span>: <span class="hljs-string">'string'</span>
-            <span class="hljs-attribute">list</span>: <span class="hljs-string">'&lt;&lt;&lt;context:///database&gt;&gt;&gt;'</span>
-            <span class="hljs-attribute">optional</span>: <span class="hljs-literal">true</span>
-          <span class="hljs-attribute">command</span>:
-            <span class="hljs-attribute">title</span>: <span class="hljs-string">"Command"</span>
-            <span class="hljs-attribute">description</span>: <span class="hljs-string">"the concrete sql to run to retrieve the measurement result"</span>
-            <span class="hljs-attribute">type</span>: <span class="hljs-string">'handlebars'</span></pre>
-        </td>
-      </tr>
-    
-      <tr>
-        <td class="docs">
-          <div class="pilwrap">
-  <a class="pilcrow" href="#section-3" id="section-3"></a>
-</div>
-<pre><code>       trim: true
-       replace: [/\s+/, ' ']
-</code></pre>
-
-        </td>
-        <td class="code highlight">
-          <pre class="coffeescript">      ]
-    <span class="hljs-attribute">sendEmpty</span>:
-      <span class="hljs-attribute">title</span>: <span class="hljs-string">"Send Empty Data"</span>
-      <span class="hljs-attribute">description</span>: <span class="hljs-string">"a flag indicating to also send an email if no data could be found"</span>
-      <span class="hljs-attribute">type</span>: <span class="hljs-string">'boolean'</span>
-      <span class="hljs-attribute">default</span>: <span class="hljs-literal">true</span>
-    <span class="hljs-attribute">compose</span>:
-      <span class="hljs-attribute">title</span>: <span class="hljs-string">"Compose Data"</span>
-      <span class="hljs-attribute">description</span>: <span class="hljs-string">"the logic to compose results from data"</span>
-      <span class="hljs-attribute">type</span>: <span class="hljs-string">'object'</span>
-      <span class="hljs-attribute">entries</span>: [
-        <span class="hljs-attribute">title</span>: <span class="hljs-string">"List"</span>
-        <span class="hljs-attribute">description</span>: <span class="hljs-string">"the alias name of the list to create"</span>
-        <span class="hljs-attribute">type</span>: <span class="hljs-string">'object'</span>
-        <span class="hljs-attribute">mandatoryKeys</span>: <span class="hljs-literal">true</span>
-        <span class="hljs-attribute">allowedKeys</span>: <span class="hljs-literal">true</span>
-        <span class="hljs-attribute">keys</span>:
-          <span class="hljs-attribute">title</span>:
-            <span class="hljs-attribute">title</span>: <span class="hljs-string">"Title"</span>
-            <span class="hljs-attribute">description</span>: <span class="hljs-string">"the short title of the list to be used as file"</span>
-            <span class="hljs-attribute">type</span>: <span class="hljs-string">'string'</span>
-            <span class="hljs-attribute">optional</span>: <span class="hljs-literal">true</span>
-          <span class="hljs-attribute">description</span>:
-            <span class="hljs-attribute">title</span>: <span class="hljs-string">"Description"</span>
-            <span class="hljs-attribute">description</span>: <span class="hljs-string">"a short abstract of what this list will contain"</span>
-            <span class="hljs-attribute">type</span>: <span class="hljs-string">'string'</span>
-            <span class="hljs-attribute">optional</span>: <span class="hljs-literal">true</span>
-          <span class="hljs-attribute">append</span>:
-            <span class="hljs-attribute">title</span>: <span class="hljs-string">"Table Data to Append"</span>
-            <span class="hljs-attribute">description</span>: <span class="hljs-string">"the list of table data (alias names) to append"</span>
-            <span class="hljs-attribute">type</span>: <span class="hljs-string">'or'</span>
-            <span class="hljs-attribute">or</span>: [
-              <span class="hljs-attribute">type</span>: <span class="hljs-string">'array'</span>
-              <span class="hljs-attribute">toArray</span>: <span class="hljs-literal">true</span>
-              <span class="hljs-attribute">entries</span>:
-                <span class="hljs-attribute">type</span>: <span class="hljs-string">'string'</span>
+      optional: <span class="hljs-literal">true</span>
+    query:
+      title: <span class="hljs-string">"Query List"</span>
+      description: <span class="hljs-string">"the queries to run to retrieve the measurement result"</span>
+      type: <span class="hljs-string">'object'</span>
+      entries: [
+        title: <span class="hljs-string">"Query"</span>
+        description: <span class="hljs-string">"the query to run to retrieve the measurement result"</span>
+        type: <span class="hljs-string">'object'</span>
+        mandatoryKeys: <span class="hljs-literal">true</span>
+        allowedKeys: <span class="hljs-literal">true</span>
+        keys:
+          title:
+            title: <span class="hljs-string">"Title"</span>
+            description: <span class="hljs-string">"the short title of the query to be used as file"</span>
+            type: <span class="hljs-string">'string'</span>
+            optional: <span class="hljs-literal">true</span>
+          description:
+            title: <span class="hljs-string">"Description"</span>
+            description: <span class="hljs-string">"a short abstract of what this query will do"</span>
+            type: <span class="hljs-string">'string'</span>
+            optional: <span class="hljs-literal">true</span>
+          database:
+            title: <span class="hljs-string">"Database"</span>
+            description: <span class="hljs-string">"the alias name of the database to store to"</span>
+            type: <span class="hljs-string">'string'</span>
+            list: <span class="hljs-string">'&lt;&lt;&lt;context:///database&gt;&gt;&gt;'</span>
+            optional: <span class="hljs-literal">true</span>
+          command:
+            title: <span class="hljs-string">"Command"</span>
+            description: <span class="hljs-string">"the concrete sql to run to retrieve the measurement result"</span>
+            type: <span class="hljs-string">'handlebars'</span>
+      ]
+    sendEmpty:
+      title: <span class="hljs-string">"Send Empty Data"</span>
+      description: <span class="hljs-string">"a flag indicating to also send an email if no data could be found"</span>
+      type: <span class="hljs-string">'boolean'</span>
+      default: <span class="hljs-literal">true</span>
+    compose:
+      title: <span class="hljs-string">"Compose Data"</span>
+      description: <span class="hljs-string">"the logic to compose results from data"</span>
+      type: <span class="hljs-string">'object'</span>
+      entries: [
+        title: <span class="hljs-string">"List"</span>
+        description: <span class="hljs-string">"the alias name of the list to create"</span>
+        type: <span class="hljs-string">'object'</span>
+        mandatoryKeys: <span class="hljs-literal">true</span>
+        allowedKeys: <span class="hljs-literal">true</span>
+        keys:
+          title:
+            title: <span class="hljs-string">"Title"</span>
+            description: <span class="hljs-string">"the short title of the list to be used as file"</span>
+            type: <span class="hljs-string">'string'</span>
+            optional: <span class="hljs-literal">true</span>
+          description:
+            title: <span class="hljs-string">"Description"</span>
+            description: <span class="hljs-string">"a short abstract of what this list will contain"</span>
+            type: <span class="hljs-string">'string'</span>
+            optional: <span class="hljs-literal">true</span>
+          append:
+            title: <span class="hljs-string">"Table Data to Append"</span>
+            description: <span class="hljs-string">"the list of table data (alias names) to append"</span>
+            type: <span class="hljs-string">'or'</span>
+            or: [
+              type: <span class="hljs-string">'array'</span>
+              toArray: <span class="hljs-literal">true</span>
+              entries:
+                type: <span class="hljs-string">'string'</span>
             ,
-              <span class="hljs-attribute">type</span>: <span class="hljs-string">"boolean"</span>
+              type: <span class="hljs-string">"boolean"</span>
             ]
-            <span class="hljs-attribute">optional</span>: <span class="hljs-literal">true</span>
-          <span class="hljs-attribute">join</span>:
-            <span class="hljs-attribute">title</span>: <span class="hljs-string">"Table Data to Join"</span>
-            <span class="hljs-attribute">description</span>: <span class="hljs-string">"the list of table data (alias names) to join"</span>
-            <span class="hljs-attribute">type</span>: <span class="hljs-string">'or'</span>
-            <span class="hljs-attribute">or</span>: [
-              <span class="hljs-attribute">type</span>: <span class="hljs-string">'object'</span>
-              <span class="hljs-attribute">entries</span>: [
-                <span class="hljs-attribute">type</span>: <span class="hljs-string">'string'</span>
-                <span class="hljs-attribute">list</span>: [<span class="hljs-string">'left'</span>, <span class="hljs-string">'right'</span>, <span class="hljs-string">'inner'</span>, <span class="hljs-string">'outer'</span>, <span class="hljs-string">'append'</span>]
+            optional: <span class="hljs-literal">true</span>
+          join:
+            title: <span class="hljs-string">"Table Data to Join"</span>
+            description: <span class="hljs-string">"the list of table data (alias names) to join"</span>
+            type: <span class="hljs-string">'or'</span>
+            or: [
+              type: <span class="hljs-string">'object'</span>
+              entries: [
+                type: <span class="hljs-string">'string'</span>
+                list: [<span class="hljs-string">'left'</span>, <span class="hljs-string">'right'</span>, <span class="hljs-string">'inner'</span>, <span class="hljs-string">'outer'</span>, <span class="hljs-string">'append'</span>]
               ]
             ,
-              <span class="hljs-attribute">type</span>: <span class="hljs-string">'array'</span>
-              <span class="hljs-attribute">toArray</span>: <span class="hljs-literal">true</span>
-              <span class="hljs-attribute">entries</span>:
-                <span class="hljs-attribute">type</span>: <span class="hljs-string">'string'</span>
+              type: <span class="hljs-string">'array'</span>
+              toArray: <span class="hljs-literal">true</span>
+              entries:
+                type: <span class="hljs-string">'string'</span>
             ,
-              <span class="hljs-attribute">type</span>: <span class="hljs-string">"boolean"</span>
+              type: <span class="hljs-string">"boolean"</span>
             ]
-            <span class="hljs-attribute">optional</span>: <span class="hljs-literal">true</span>
-          <span class="hljs-attribute">sort</span>:
-            <span class="hljs-attribute">title</span>: <span class="hljs-string">"Sort Order"</span>
-            <span class="hljs-attribute">description</span>: <span class="hljs-string">"the sort order for the results (if needed)"</span>
-            <span class="hljs-attribute">type</span>: <span class="hljs-string">'array'</span>
-            <span class="hljs-attribute">toArray</span>: <span class="hljs-literal">true</span>
-            <span class="hljs-attribute">entries</span>:
-              <span class="hljs-attribute">type</span>: <span class="hljs-string">'string'</span>
-            <span class="hljs-attribute">optional</span>: <span class="hljs-literal">true</span>
-          <span class="hljs-attribute">reverse</span>:
-            <span class="hljs-attribute">title</span>: <span class="hljs-string">"Reverse Order"</span>
-            <span class="hljs-attribute">description</span>: <span class="hljs-string">"the list will be reversed"</span>
-            <span class="hljs-attribute">type</span>: <span class="hljs-string">'boolean'</span>
-            <span class="hljs-attribute">optional</span>: <span class="hljs-literal">true</span>
-          <span class="hljs-attribute">fields</span>:
-            <span class="hljs-attribute">title</span>: <span class="hljs-string">"Display Fields"</span>
-            <span class="hljs-attribute">description</span>: <span class="hljs-string">"the list of fields to include"</span>
-            <span class="hljs-attribute">type</span>: <span class="hljs-string">'array'</span>
-            <span class="hljs-attribute">delimiter</span>: <span class="hljs-regexp">/\s*,\s*/</span>
-            <span class="hljs-attribute">entries</span>:
-              <span class="hljs-attribute">type</span>: <span class="hljs-string">'string'</span>
-            <span class="hljs-attribute">optional</span>: <span class="hljs-literal">true</span>
-          <span class="hljs-attribute">format</span>:
-            <span class="hljs-attribute">title</span>: <span class="hljs-string">"Format Values"</span>
-            <span class="hljs-attribute">description</span>: <span class="hljs-string">"the format for each column"</span>
-            <span class="hljs-attribute">type</span>: <span class="hljs-string">'object'</span>
-            <span class="hljs-attribute">optional</span>: <span class="hljs-literal">true</span>
-          <span class="hljs-attribute">unique</span>:
-            <span class="hljs-attribute">title</span>: <span class="hljs-string">"Remove Duplicates"</span>
-            <span class="hljs-attribute">description</span>: <span class="hljs-string">"the duplicated rows will be removed"</span>
-            <span class="hljs-attribute">type</span>: <span class="hljs-string">'boolean'</span>
-            <span class="hljs-attribute">optional</span>: <span class="hljs-literal">true</span>
-          <span class="hljs-attribute">flip</span>:
-            <span class="hljs-attribute">title</span>: <span class="hljs-string">"Flip x/y Axis"</span>
-            <span class="hljs-attribute">description</span>: <span class="hljs-string">"the x and y axes are changed"</span>
-            <span class="hljs-attribute">type</span>: <span class="hljs-string">'boolean'</span>
-            <span class="hljs-attribute">optional</span>: <span class="hljs-literal">true</span>
+            optional: <span class="hljs-literal">true</span>
+          sort:
+            title: <span class="hljs-string">"Sort Order"</span>
+            description: <span class="hljs-string">"the sort order for the results (if needed)"</span>
+            type: <span class="hljs-string">'array'</span>
+            toArray: <span class="hljs-literal">true</span>
+            entries:
+              type: <span class="hljs-string">'string'</span>
+            optional: <span class="hljs-literal">true</span>
+          reverse:
+            title: <span class="hljs-string">"Reverse Order"</span>
+            description: <span class="hljs-string">"the list will be reversed"</span>
+            type: <span class="hljs-string">'boolean'</span>
+            optional: <span class="hljs-literal">true</span>
+          fields:
+            title: <span class="hljs-string">"Display Fields"</span>
+            description: <span class="hljs-string">"the list of fields to include"</span>
+            type: <span class="hljs-string">'array'</span>
+            delimiter: <span class="hljs-regexp">/\s*,\s*/</span>
+            entries:
+              type: <span class="hljs-string">'string'</span>
+            optional: <span class="hljs-literal">true</span>
+          format:
+            title: <span class="hljs-string">"Format Values"</span>
+            description: <span class="hljs-string">"the format for each column"</span>
+            type: <span class="hljs-string">'object'</span>
+            optional: <span class="hljs-literal">true</span>
+          unique:
+            title: <span class="hljs-string">"Remove Duplicates"</span>
+            description: <span class="hljs-string">"the duplicated rows will be removed"</span>
+            type: <span class="hljs-string">'boolean'</span>
+            optional: <span class="hljs-literal">true</span>
+          flip:
+            title: <span class="hljs-string">"Flip x/y Axis"</span>
+            description: <span class="hljs-string">"the x and y axes are changed"</span>
+            type: <span class="hljs-string">'boolean'</span>
+            optional: <span class="hljs-literal">true</span>
       ]
-    <span class="hljs-attribute">csv</span>:
-      <span class="hljs-attribute">title</span>: <span class="hljs-string">"Include CSV"</span>
-      <span class="hljs-attribute">description</span>: <span class="hljs-string">"a flag if or which csv data should be attached"</span>
-      <span class="hljs-attribute">type</span>: <span class="hljs-string">'or'</span>
-      <span class="hljs-attribute">or</span>: [
-        <span class="hljs-attribute">type</span>: <span class="hljs-string">'boolean'</span>
+    csv:
+      title: <span class="hljs-string">"Include CSV"</span>
+      description: <span class="hljs-string">"a flag if or which csv data should be attached"</span>
+      type: <span class="hljs-string">'or'</span>
+      or: [
+        type: <span class="hljs-string">'boolean'</span>
       ,
-        <span class="hljs-attribute">type</span>: <span class="hljs-string">'array'</span>
-        <span class="hljs-attribute">entries</span>:
-          <span class="hljs-attribute">type</span>: <span class="hljs-string">'string'</span>
+        type: <span class="hljs-string">'array'</span>
+        entries:
+          type: <span class="hljs-string">'string'</span>
       ]
-      <span class="hljs-attribute">default</span>: <span class="hljs-literal">true</span>
-    <span class="hljs-attribute">pdf</span>:
-      <span class="hljs-attribute">title</span>: <span class="hljs-string">"Create PDF"</span>
-      <span class="hljs-attribute">description</span>: <span class="hljs-string">"the list of PDF Reports to generate"</span>
-      <span class="hljs-attribute">type</span>: <span class="hljs-string">'object'</span>
-      <span class="hljs-attribute">entries</span>: [
-        <span class="hljs-attribute">title</span>: <span class="hljs-string">"List"</span>
-        <span class="hljs-attribute">description</span>: <span class="hljs-string">"the alias name of the list to create"</span>
-        <span class="hljs-attribute">type</span>: <span class="hljs-string">'object'</span>
-        <span class="hljs-attribute">mandatoryKeys</span>: <span class="hljs-literal">true</span>
-        <span class="hljs-attribute">allowedKeys</span>: <span class="hljs-literal">true</span>
-        <span class="hljs-attribute">keys</span>:
-          <span class="hljs-attribute">title</span>:
-            <span class="hljs-attribute">title</span>: <span class="hljs-string">"Title"</span>
-            <span class="hljs-attribute">description</span>: <span class="hljs-string">"the short title of the report to be used as file"</span>
-            <span class="hljs-attribute">type</span>: <span class="hljs-string">'string'</span>
-            <span class="hljs-attribute">optional</span>: <span class="hljs-literal">true</span>
-          <span class="hljs-attribute">format</span>:
-            <span class="hljs-attribute">title</span>: <span class="hljs-string">"Page Size"</span>
-            <span class="hljs-attribute">description</span>: <span class="hljs-string">"the size of the pages"</span>
-            <span class="hljs-attribute">type</span>: <span class="hljs-string">'string'</span>
-            <span class="hljs-attribute">list</span>: [<span class="hljs-string">'A3'</span>, <span class="hljs-string">'A4'</span>, <span class="hljs-string">'A5'</span>, <span class="hljs-string">'Legal'</span>, <span class="hljs-string">'Letter'</span>, <span class="hljs-string">'Tabloid'</span>]
-            <span class="hljs-attribute">default</span>: <span class="hljs-string">'A4'</span>
-          <span class="hljs-attribute">orientation</span>:
-            <span class="hljs-attribute">title</span>: <span class="hljs-string">"Orientation"</span>
-            <span class="hljs-attribute">description</span>: <span class="hljs-string">"the orientation of the page"</span>
-            <span class="hljs-attribute">type</span>: <span class="hljs-string">'string'</span>
-            <span class="hljs-attribute">list</span>: [<span class="hljs-string">'portrait'</span>, <span class="hljs-string">'landscape'</span>]
-            <span class="hljs-attribute">default</span>: <span class="hljs-string">'portrait'</span>
-          <span class="hljs-attribute">locale</span>:
-            <span class="hljs-attribute">title</span>: <span class="hljs-string">"Locale Setting"</span>
-            <span class="hljs-attribute">description</span>: <span class="hljs-string">"the locale setting for subject and body dates"</span>
-            <span class="hljs-attribute">type</span>: <span class="hljs-string">'string'</span>
-            <span class="hljs-attribute">minLength</span>: <span class="hljs-number">2</span>
-            <span class="hljs-attribute">maxLength</span>: <span class="hljs-number">5</span>
-            <span class="hljs-attribute">lowerCase</span>: <span class="hljs-literal">true</span>
-            <span class="hljs-attribute">match</span>: <span class="hljs-regexp">/^[a-z]{2}(-[a-z]{2})?$/</span>
-            <span class="hljs-attribute">optional</span>: <span class="hljs-literal">true</span>
-          <span class="hljs-attribute">content</span>:
-            <span class="hljs-attribute">title</span>: <span class="hljs-string">"Content"</span>
-            <span class="hljs-attribute">description</span>: <span class="hljs-string">"the content of the generated pdf report"</span>
-            <span class="hljs-attribute">type</span>: <span class="hljs-string">'handlebars'</span>
+      default: <span class="hljs-literal">true</span>
+    pdf:
+      title: <span class="hljs-string">"Create PDF"</span>
+      description: <span class="hljs-string">"the list of PDF Reports to generate"</span>
+      type: <span class="hljs-string">'object'</span>
+      entries: [
+        title: <span class="hljs-string">"List"</span>
+        description: <span class="hljs-string">"the alias name of the list to create"</span>
+        type: <span class="hljs-string">'object'</span>
+        mandatoryKeys: <span class="hljs-literal">true</span>
+        allowedKeys: <span class="hljs-literal">true</span>
+        keys:
+          title:
+            title: <span class="hljs-string">"Title"</span>
+            description: <span class="hljs-string">"the short title of the report to be used as file"</span>
+            type: <span class="hljs-string">'string'</span>
+            optional: <span class="hljs-literal">true</span>
+          format:
+            title: <span class="hljs-string">"Page Size"</span>
+            description: <span class="hljs-string">"the size of the pages"</span>
+            type: <span class="hljs-string">'string'</span>
+            list: [<span class="hljs-string">'A3'</span>, <span class="hljs-string">'A4'</span>, <span class="hljs-string">'A5'</span>, <span class="hljs-string">'Legal'</span>, <span class="hljs-string">'Letter'</span>, <span class="hljs-string">'Tabloid'</span>]
+            default: <span class="hljs-string">'A4'</span>
+          orientation:
+            title: <span class="hljs-string">"Orientation"</span>
+            description: <span class="hljs-string">"the orientation of the page"</span>
+            type: <span class="hljs-string">'string'</span>
+            list: [<span class="hljs-string">'portrait'</span>, <span class="hljs-string">'landscape'</span>]
+            default: <span class="hljs-string">'portrait'</span>
+          locale:
+            title: <span class="hljs-string">"Locale Setting"</span>
+            description: <span class="hljs-string">"the locale setting for subject and body dates"</span>
+            type: <span class="hljs-string">'string'</span>
+            minLength: <span class="hljs-number">2</span>
+            maxLength: <span class="hljs-number">5</span>
+            lowerCase: <span class="hljs-literal">true</span>
+            match: <span class="hljs-regexp">/^[a-z]{2}(-[a-z]{2})?$/</span>
+            optional: <span class="hljs-literal">true</span>
+          content:
+            title: <span class="hljs-string">"Content"</span>
+            description: <span class="hljs-string">"the content of the generated pdf report"</span>
+            type: <span class="hljs-string">'handlebars'</span>
       ]
-    <span class="hljs-attribute">email</span>: email</pre>
+    email: email</pre>
         </td>
       </tr>
     
@@ -325,22 +311,22 @@ Complete Schema Definition
         <td class="code highlight">
           <pre class="coffeescript">
 <span class="hljs-built_in">module</span>.exports =
-  <span class="hljs-attribute">title</span>: <span class="hljs-string">"Report Setup"</span>
-  <span class="hljs-attribute">description</span>: <span class="hljs-string">"the configuration for the database report system"</span>
-  <span class="hljs-attribute">type</span>: <span class="hljs-string">'object'</span>
-  <span class="hljs-attribute">allowedKeys</span>: <span class="hljs-literal">true</span>
-  <span class="hljs-attribute">keys</span>:
-    <span class="hljs-attribute">job</span>:
-      <span class="hljs-attribute">title</span>: <span class="hljs-string">"Report Setup"</span>
-      <span class="hljs-attribute">description</span>: <span class="hljs-string">"the configuration for the database report system"</span>
-      <span class="hljs-attribute">type</span>: <span class="hljs-string">'object'</span>
-      <span class="hljs-attribute">allowedKeys</span>: <span class="hljs-literal">true</span>
-      <span class="hljs-attribute">entries</span>: [job]
-    <span class="hljs-attribute">email</span>:
-      <span class="hljs-attribute">title</span>: <span class="hljs-string">"Email Templates"</span>
-      <span class="hljs-attribute">description</span>: <span class="hljs-string">"the possible templates used for sending emails"</span>
-      <span class="hljs-attribute">type</span>: <span class="hljs-string">'object'</span>
-      <span class="hljs-attribute">entries</span>: [email]</pre>
+  title: <span class="hljs-string">"Report Setup"</span>
+  description: <span class="hljs-string">"the configuration for the database report system"</span>
+  type: <span class="hljs-string">'object'</span>
+  allowedKeys: <span class="hljs-literal">true</span>
+  keys:
+    job:
+      title: <span class="hljs-string">"Report Setup"</span>
+      description: <span class="hljs-string">"the configuration for the database report system"</span>
+      type: <span class="hljs-string">'object'</span>
+      allowedKeys: <span class="hljs-literal">true</span>
+      entries: [job]
+    email:
+      title: <span class="hljs-string">"Email Templates"</span>
+      description: <span class="hljs-string">"the possible templates used for sending emails"</span>
+      type: <span class="hljs-string">'object'</span>
+      entries: [email]</pre>
         </td>
       </tr>
     

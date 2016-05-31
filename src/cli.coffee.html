@@ -7,7 +7,7 @@
   <script src="../doc-filelist.js"></script>
   <script>
     var relativeDir = "../";
-    var thisFile = "home/alex/github/node-dbreport/src/cli.coffee";
+    var thisFile = "src/cli.coffee";
     var defaultSidebar = true;
   </script>
   <script src="../doc-script.js"></script>
@@ -118,6 +118,7 @@ Node Modules
         <td class="code highlight">
           <pre class="coffeescript">yargs = <span class="hljs-built_in">require</span> <span class="hljs-string">'yargs'</span>
 chalk = <span class="hljs-built_in">require</span> <span class="hljs-string">'chalk'</span>
+async = <span class="hljs-built_in">require</span> <span class="hljs-string">'async'</span>
 fspath = <span class="hljs-built_in">require</span> <span class="hljs-string">'path'</span></pre>
         </td>
       </tr>
@@ -133,7 +134,6 @@ fspath = <span class="hljs-built_in">require</span> <span class="hljs-string">'p
         <td class="code highlight">
           <pre class="coffeescript">config = <span class="hljs-built_in">require</span> <span class="hljs-string">'alinex-config'</span>
 database = <span class="hljs-built_in">require</span> <span class="hljs-string">'alinex-database'</span>
-async = <span class="hljs-built_in">require</span> <span class="hljs-string">'alinex-async'</span>
 Report = <span class="hljs-built_in">require</span> <span class="hljs-string">'alinex-report'</span>
 mail = <span class="hljs-built_in">require</span> <span class="hljs-string">'alinex-mail'</span></pre>
         </td>
@@ -283,29 +283,29 @@ Start argument parsing
         </td>
         <td class="code highlight">
           <pre class="coffeescript">.options
-  <span class="hljs-attribute">help</span>:
-    <span class="hljs-attribute">alias</span>: <span class="hljs-string">'h'</span>,
-    <span class="hljs-attribute">description</span>: <span class="hljs-string">'display help message'</span>
-  <span class="hljs-attribute">nocolors</span>:
-    <span class="hljs-attribute">alias</span>: <span class="hljs-string">'C'</span>
-    <span class="hljs-attribute">description</span>: <span class="hljs-string">'turn of color output'</span>
-    <span class="hljs-attribute">type</span>: <span class="hljs-string">'boolean'</span>
-  <span class="hljs-attribute">quiet</span>:
-    <span class="hljs-attribute">alias</span>: <span class="hljs-string">'q'</span>
-    <span class="hljs-attribute">describe</span>: <span class="hljs-string">"don't output header and footer"</span>
-    <span class="hljs-attribute">type</span>: <span class="hljs-string">'boolean'</span>
-  <span class="hljs-attribute">list</span>:
-    <span class="hljs-attribute">alias</span>: <span class="hljs-string">'l'</span>
-    <span class="hljs-attribute">description</span>: <span class="hljs-string">'only list the possible jobs'</span>
-    <span class="hljs-attribute">type</span>: <span class="hljs-string">'boolean'</span>
-  <span class="hljs-attribute">mail</span>:
-    <span class="hljs-attribute">alias</span>: <span class="hljs-string">'m'</span>
-    <span class="hljs-attribute">description</span>: <span class="hljs-string">'alternative email address to send to'</span>
-    <span class="hljs-attribute">type</span>: <span class="hljs-string">'string'</span>
-  <span class="hljs-attribute">json</span>:
-    <span class="hljs-attribute">alias</span>: <span class="hljs-string">'j'</span>
-    <span class="hljs-attribute">description</span>: <span class="hljs-string">'json formatted data object'</span>
-    <span class="hljs-attribute">type</span>: <span class="hljs-string">'string'</span>
+  help:
+    alias: <span class="hljs-string">'h'</span>,
+    description: <span class="hljs-string">'display help message'</span>
+  nocolors:
+    alias: <span class="hljs-string">'C'</span>
+    description: <span class="hljs-string">'turn of color output'</span>
+    type: <span class="hljs-string">'boolean'</span>
+  quiet:
+    alias: <span class="hljs-string">'q'</span>
+    describe: <span class="hljs-string">"don't output header and footer"</span>
+    type: <span class="hljs-string">'boolean'</span>
+  list:
+    alias: <span class="hljs-string">'l'</span>
+    description: <span class="hljs-string">'only list the possible jobs'</span>
+    type: <span class="hljs-string">'boolean'</span>
+  mail:
+    alias: <span class="hljs-string">'m'</span>
+    description: <span class="hljs-string">'alternative email address to send to'</span>
+    type: <span class="hljs-string">'string'</span>
+  json:
+    alias: <span class="hljs-string">'j'</span>
+    description: <span class="hljs-string">'json formatted data object'</span>
+    type: <span class="hljs-string">'string'</span>
 .group [<span class="hljs-string">'m'</span>, <span class="hljs-string">'j'</span>], <span class="hljs-string">'Report Options:'</span></pre>
         </td>
       </tr>
@@ -408,8 +408,8 @@ Main routine
   <span class="hljs-keyword">catch</span> error
     exit <span class="hljs-number">255</span>, error
 dbreport.init
-  <span class="hljs-attribute">mail</span>: args.mail
-  <span class="hljs-attribute">variables</span>: variables ? {}</pre>
+  mail: args.mail
+  variables: variables ? {}</pre>
         </td>
       </tr>
     
@@ -471,9 +471,9 @@ dbreport.init
         <span class="hljs-keyword">for</span> job <span class="hljs-keyword">in</span> dbreport.list()
           conf = dbreport.get job
           data.push
-            <span class="hljs-attribute">job</span>: job
-            <span class="hljs-attribute">title</span>: conf.title
-            <span class="hljs-attribute">to</span>: conf.email.to?.map (e) -&gt; e.replace <span class="hljs-regexp">/[ .@].*/</span>, <span class="hljs-string">''</span>
+            job: job
+            title: conf.title
+            to: conf.email.to?.map (e) -&gt; e.replace <span class="hljs-regexp">/[ .@].*/</span>, <span class="hljs-string">''</span>
             .join <span class="hljs-string">', '</span>
         report = <span class="hljs-keyword">new</span> Report()
         report.h1 <span class="hljs-string">"List of possible jobs:"</span>

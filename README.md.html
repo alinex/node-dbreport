@@ -7,7 +7,7 @@
   <script src="doc-filelist.js"></script>
   <script>
     var relativeDir = "";
-    var thisFile = "home/alex/github/node-dbreport/README.md";
+    var thisFile = "README.md";
     var defaultSidebar = true;
   </script>
   <script src="doc-script.js"></script>
@@ -150,7 +150,7 @@ machines may be checked:</p>
 <p>After global installation you may directly call <code>dbreport</code> from anywhere.</p>
 <pre><code class="sh">dbreport --help
 </code></pre>
-<p>Always have a look at the latest <a href="Changelog.md.html.html">changes</a>.</p>
+<p>Always have a look at the latest <a href="Changelog.md.html">changes</a>.</p>
 <div class="pilwrap" id="bash-code-completion">
   <h3>
     <a href="#bash-code-completion" name="bash-code-completion" class="pilcrow"></a>
@@ -248,84 +248,84 @@ jobs
 </div>
 <p>The main part is the configuration of each single, possible job. At best this
 should be done each in it's own file like <code>/dbreport/job/xxxx</code>:</p>
-<pre><code class="yaml"># Test Job
-# =================================================
+<pre><code class="yaml"><span class="hljs-comment"># Test Job</span>
+<span class="hljs-comment"># =================================================</span>
 
-# Job Meta
-# -------------------------------------------------
-title: Vorhandene Tabellen
-description: |+
+<span class="hljs-comment"># Job Meta</span>
+<span class="hljs-comment"># -------------------------------------------------</span>
+<span class="hljs-attr">title:</span> Vorhandene Tabellen
+<span class="hljs-attr">description:</span> |+
   Dieser Bericht zeigt alle Tabellen die zum Zeitpunkt der Ausführung in der manage
   life Datenbank existieren. Die genaue Liste liegt als tables.csv dieser Email bei.
-variables:
-  schema:
-    type: 'string'
+<span class="hljs-attr">variables:</span>
+<span class="hljs-attr">  schema:</span>
+<span class="hljs-attr">    type:</span> <span class="hljs-string">'string'</span>
 
-# Queries to Run
-# -------------------------------------------------
-query:
-  tables:
-    title: List of Tables
-    description: a complete list of all relations in the database
-    database: test_postgresql
-    command: &gt;
+<span class="hljs-comment"># Queries to Run</span>
+<span class="hljs-comment"># -------------------------------------------------</span>
+<span class="hljs-attr">query:</span>
+<span class="hljs-attr">  tables:</span>
+<span class="hljs-attr">    title:</span> List of Tables
+<span class="hljs-attr">    description:</span> a complete list of all relations in the database
+<span class="hljs-attr">    database:</span> test_postgresql
+<span class="hljs-attr">    command:</span> <span class="hljs-string">&gt;
       SELECT relname
       FROM pg_class
       WHERE relname !~ '^(pg_|sql_)' AND relkind = 'r'
-      AND relname not like '{{schema}}.%';
-  indexes:
-    title: List of Indexes
-    description: a complete list of all indexes in the database
-    database: test_postgresql
-    command: &gt;
+      AND relname not like '<span class="hljs-template-variable">{{schema}}</span>.%';
+</span><span class="hljs-attr">  indexes:</span>
+<span class="hljs-attr">    title:</span> List of Indexes
+<span class="hljs-attr">    description:</span> a complete list of all indexes in the database
+<span class="hljs-attr">    database:</span> test_postgresql
+<span class="hljs-attr">    command:</span> <span class="hljs-string">&gt;
       SELECT relname
       FROM pg_class
       WHERE relname !~ '^(pg_|sql_)' AND relkind = 'i';
 
 # Compose
 # -------------------------------------------------
-compose:
-  all:
-    title: List of Objects
-    description: a complete list of all objects in the database
-    # combine methods
-    append:
-      - tables
-      - indexes
-    join:
-      tables: inner
-      indexes: inner
-    # select only some columns
-    fields: name, value
-    # sort the list
-    sort: relname
-    reverse: true    
-    unique: true
-    # change x and y axes
-    flip: true
+</span><span class="hljs-attr">compose:</span>
+<span class="hljs-attr">  all:</span>
+<span class="hljs-attr">    title:</span> List of Objects
+<span class="hljs-attr">    description:</span> a complete list of all objects in the database
+    <span class="hljs-comment"># combine methods</span>
+<span class="hljs-attr">    append:</span>
+<span class="hljs-bullet">      -</span> tables
+<span class="hljs-bullet">      -</span> indexes
+<span class="hljs-attr">    join:</span>
+<span class="hljs-attr">      tables:</span> inner
+<span class="hljs-attr">      indexes:</span> inner
+    <span class="hljs-comment"># select only some columns</span>
+<span class="hljs-attr">    fields:</span> name, value
+    <span class="hljs-comment"># sort the list</span>
+<span class="hljs-attr">    sort:</span> relname
+<span class="hljs-attr">    reverse:</span> <span class="hljs-literal">true</span>    
+<span class="hljs-attr">    unique:</span> <span class="hljs-literal">true</span>
+    <span class="hljs-comment"># change x and y axes</span>
+<span class="hljs-attr">    flip:</span> <span class="hljs-literal">true</span>
 
-# Define contents
-# -------------------------------------------------
-# also go on for empty results - else skip
-sendEmpty: true
-# which csv files to send (list) or true for all
-csv:
-  - all
-# add pdf reports
-pdf:
-  example:
-    title: Example
-    format: A4
-    orientation: portrait
-    local: de
-    content: &gt;
+<span class="hljs-comment"># Define contents</span>
+<span class="hljs-comment"># -------------------------------------------------</span>
+<span class="hljs-comment"># also go on for empty results - else skip</span>
+<span class="hljs-attr">sendEmpty:</span> <span class="hljs-literal">true</span>
+<span class="hljs-comment"># which csv files to send (list) or true for all</span>
+<span class="hljs-attr">csv:</span>
+<span class="hljs-bullet">  -</span> all
+<span class="hljs-comment"># add pdf reports</span>
+<span class="hljs-attr">pdf:</span>
+<span class="hljs-attr">  example:</span>
+<span class="hljs-attr">    title:</span> Example
+<span class="hljs-attr">    format:</span> A4
+<span class="hljs-attr">    orientation:</span> portrait
+<span class="hljs-attr">    local:</span> de
+<span class="hljs-attr">    content:</span> <span class="hljs-string">&gt;
       My handlebars template...
 
 # Where to Send them to
 # -------------------------------------------------
-email:
-  base: default
-  to: betrieb@mycompany.com
+</span><span class="hljs-attr">email:</span>
+<span class="hljs-attr">  base:</span> default
+<span class="hljs-attr">  to:</span> betrieb@mycompany.com
 </code></pre>
 <p>As you see above you have the four parts to fill up:</p>
 <ul>
@@ -411,40 +411,40 @@ Email Templates
 </div>
 <p>This templates are used for sending emails out. They will be defined under
 <code>/email</code>:</p>
-<pre><code class="yaml"># Email Templates
-# =================================================
+<pre><code class="yaml"><span class="hljs-comment"># Email Templates</span>
+<span class="hljs-comment"># =================================================</span>
 
 
-# Default Email Templates
-# -------------------------------------------------
+<span class="hljs-comment"># Default Email Templates</span>
+<span class="hljs-comment"># -------------------------------------------------</span>
 This will extend/overwrite the already existing setup within the code.
-default:
-  # specify how to connect to the server
-  transport: smtp://alexander.schilling%40mycompany.de:&lt;PASSWORD&gt;@mail.mycompany.de
-  # sender address
-  from: alexander.schilling@mycompany.de
-  replyTo: somebody@mycompany.de
+<span class="hljs-attr">default:</span>
+  <span class="hljs-comment"># specify how to connect to the server</span>
+<span class="hljs-attr">  transport:</span> smtp://alexander.schilling%<span class="hljs-number">40</span>mycompany.de:&lt;PASSWORD&gt;@mail.mycompany.de
+  <span class="hljs-comment"># sender address</span>
+<span class="hljs-attr">  from:</span> alexander.schilling@mycompany.de
+<span class="hljs-attr">  replyTo:</span> somebody@mycompany.de
 
-  # content
-  locale: en
-  subject: &gt;
-    Database Report: {{name}}
-  body: |+
+  <span class="hljs-comment"># content</span>
+<span class="hljs-attr">  locale:</span> en
+<span class="hljs-attr">  subject:</span> <span class="hljs-string">&gt;
+    Database Report: <span class="hljs-template-variable">{{name}}</span>
+</span><span class="hljs-attr">  body:</span> |+
     {{conf.title}}
     ==========================================================================
 
     {{conf.description}}
 
-    Started at {{dateFormat date &quot;LLL&quot;}}:
+    Started at {{dateFormat date <span class="hljs-string">"LLL"</span>}}:
 
-    | Zeilen | Datei    | Beschreibung |
+    | Zeilen | Datei    | Beschreibung <span class="hljs-string">|
     | ------:| -------- | ------------ |
-    {{#each result}}
-    | {{rows}} | {{file}} | {{description}} |
-    {{/each}}
+    <span class="hljs-template-variable">{{#each result}}</span>
+    | <span class="hljs-template-variable">{{rows}}</span> | <span class="hljs-template-variable">{{file}}</span> | <span class="hljs-template-variable">{{description}}</span> |
+    <span class="hljs-template-variable">{{/each}}</span>
 
     Find the files attached to your mail if data available!
-</code></pre>
+</span></code></pre>
 <p>To make it more modular you may also add a <code>base</code> setting to use the setting defined
 there as a base and the options here may overwrite or enhance the base setup.</p>
 <div class="pilwrap" id="transport">
@@ -459,36 +459,36 @@ a connection url like above with the syntax:</p>
 <pre><code>&lt;protocol&gt;://&lt;user&gt;:&lt;password&gt;@&lt;server&gt;:&lt;port&gt;
 </code></pre>
 <p>Or you may specify it as object like:</p>
-<pre><code class="yaml">transport:
-  pool: &lt;boolean&gt; # use pooled connections defaults to false
-  direct: &lt;boolean&gt; # set to true to try to connect directly to recipients MX
-  service: &lt;string&gt; # name of well-known service (will set host, port and secure options)
-  # services: 1und1, AOL, DebugMail.io, DynectEmail, FastMail, GandiMail, Gmail,
-  # Godaddy, GodaddyAsia, GodaddyEurope, hot.ee, Hotmail, iCloud, mail.ee, Mail.ru,
-  # Mailgun, Mailjet, Mandrill, Naver, Postmark, QQ, QQex, SendCloud, SendGrid,
-  # SES, Sparkpost, Yahoo, Yandex, Zoho
-  host: &lt;string&gt; # the hostname or IP address to connect to
-  port: &lt;integer&gt; # the port to connect to (defaults to 25 or 465)
-  secure: &lt;boolean&gt; # if true the connection will only use TLS else (the default)
-  # TLS may still be upgraded to if available via the STARTTLS command
-  ignoreTLS: &lt;boolean&gt; # if this is true and secure is false, TLS will not be used
-  requireTLS: &lt;boolean&gt; # if this is true and secure is false, it uses STARTTLS
-  # even if the server does not advertise support for it
-  tls: &lt;object&gt; # additional socket options like `{rejectUnauthorized: true}`
-  auth: # authentication objects
-    user: &lt;string&gt; # the username
-    pass: &lt;string&gt; # the password for the user
-  authMethod: &lt;string&gt; # preferred authentication method, eg. ‘PLAIN’
-  name: &lt;string&gt; # hostname of the client, used for identifying to the server
-  localAddress: &lt;string&gt; # the local interface to bind to for network connections
-  connectionTimeout: &lt;integer&gt; # milliseconds to wait for the connection to establish
-  greetingTimeout: &lt;integer&gt; # milliseconds to wait for the greeting after connection is established
-  socketTimeout: &lt;integer&gt; # milliseconds of inactivity to allow
-  debug: &lt;boolean&gt; # set to true to log the complete SMTP traffic
-  # if pool is set to true:
-  maxConnections: &lt;integer&gt; # the count of maximum simultaneous connections (defaults to 5)
-  maxMessages: &lt;integer&gt; # limits the message count to be sent using a single connection (defaults to 100)
-  rateLimit: &lt;integer&gt; # limits the message count to be sent in a second (defaults to false)    
+<pre><code class="yaml"><span class="hljs-attr">transport:</span>
+<span class="hljs-attr">  pool:</span> &lt;boolean&gt; <span class="hljs-comment"># use pooled connections defaults to false</span>
+<span class="hljs-attr">  direct:</span> &lt;boolean&gt; <span class="hljs-comment"># set to true to try to connect directly to recipients MX</span>
+<span class="hljs-attr">  service:</span> &lt;string&gt; <span class="hljs-comment"># name of well-known service (will set host, port and secure options)</span>
+  <span class="hljs-comment"># services: 1und1, AOL, DebugMail.io, DynectEmail, FastMail, GandiMail, Gmail,</span>
+  <span class="hljs-comment"># Godaddy, GodaddyAsia, GodaddyEurope, hot.ee, Hotmail, iCloud, mail.ee, Mail.ru,</span>
+  <span class="hljs-comment"># Mailgun, Mailjet, Mandrill, Naver, Postmark, QQ, QQex, SendCloud, SendGrid,</span>
+  <span class="hljs-comment"># SES, Sparkpost, Yahoo, Yandex, Zoho</span>
+<span class="hljs-attr">  host:</span> &lt;string&gt; <span class="hljs-comment"># the hostname or IP address to connect to</span>
+<span class="hljs-attr">  port:</span> &lt;integer&gt; <span class="hljs-comment"># the port to connect to (defaults to 25 or 465)</span>
+<span class="hljs-attr">  secure:</span> &lt;boolean&gt; <span class="hljs-comment"># if true the connection will only use TLS else (the default)</span>
+  <span class="hljs-comment"># TLS may still be upgraded to if available via the STARTTLS command</span>
+<span class="hljs-attr">  ignoreTLS:</span> &lt;boolean&gt; <span class="hljs-comment"># if this is true and secure is false, TLS will not be used</span>
+<span class="hljs-attr">  requireTLS:</span> &lt;boolean&gt; <span class="hljs-comment"># if this is true and secure is false, it uses STARTTLS</span>
+  <span class="hljs-comment"># even if the server does not advertise support for it</span>
+<span class="hljs-attr">  tls:</span> &lt;object&gt; <span class="hljs-comment"># additional socket options like `{rejectUnauthorized: true}`</span>
+<span class="hljs-attr">  auth:</span> <span class="hljs-comment"># authentication objects</span>
+<span class="hljs-attr">    user:</span> &lt;string&gt; <span class="hljs-comment"># the username</span>
+<span class="hljs-attr">    pass:</span> &lt;string&gt; <span class="hljs-comment"># the password for the user</span>
+<span class="hljs-attr">  authMethod:</span> &lt;string&gt; <span class="hljs-comment"># preferred authentication method, eg. ‘PLAIN’</span>
+<span class="hljs-attr">  name:</span> &lt;string&gt; <span class="hljs-comment"># hostname of the client, used for identifying to the server</span>
+<span class="hljs-attr">  localAddress:</span> &lt;string&gt; <span class="hljs-comment"># the local interface to bind to for network connections</span>
+<span class="hljs-attr">  connectionTimeout:</span> &lt;integer&gt; <span class="hljs-comment"># milliseconds to wait for the connection to establish</span>
+<span class="hljs-attr">  greetingTimeout:</span> &lt;integer&gt; <span class="hljs-comment"># milliseconds to wait for the greeting after connection is established</span>
+<span class="hljs-attr">  socketTimeout:</span> &lt;integer&gt; <span class="hljs-comment"># milliseconds of inactivity to allow</span>
+<span class="hljs-attr">  debug:</span> &lt;boolean&gt; <span class="hljs-comment"># set to true to log the complete SMTP traffic</span>
+  <span class="hljs-comment"># if pool is set to true:</span>
+<span class="hljs-attr">  maxConnections:</span> &lt;integer&gt; <span class="hljs-comment"># the count of maximum simultaneous connections (defaults to 5)</span>
+<span class="hljs-attr">  maxMessages:</span> &lt;integer&gt; <span class="hljs-comment"># limits the message count to be sent using a single connection (defaults to 100)</span>
+<span class="hljs-attr">  rateLimit:</span> &lt;integer&gt; <span class="hljs-comment"># limits the message count to be sent in a second (defaults to false)    </span>
 </code></pre>
 <div class="pilwrap" id="addressing">
   <h4>
@@ -497,8 +497,8 @@ Addressing
   </h4>
 </div>
 <p>First you can define the sender address using:</p>
-<pre><code class="yaml">from: &lt;string&gt; # the address used as sender(often the same as used in transport)
-replyTo: &lt;string&gt; # address which should be used for replys
+<pre><code class="yaml"><span class="hljs-attr">from:</span> &lt;string&gt; <span class="hljs-comment"># the address used as sender(often the same as used in transport)</span>
+<span class="hljs-attr">replyTo:</span> &lt;string&gt; <span class="hljs-comment"># address which should be used for replys</span>
 </code></pre>
 <p>And you give the addresses to send the mail to. In the following fields: <code>to</code>, <code>cc</code>
 and <code>bcc</code> you may give a single address or a list of addresses to use.
