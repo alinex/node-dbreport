@@ -97,27 +97,27 @@ yargs
   err.description = 'Specify --help for available options'
   alinex.exit 2, err
 # now parse the arguments
-args = yargs.argv
+argv = yargs.argv
 # refine yargs and rerun if option needs command
 unless args.list
   yargs.demand 1, "Needs a report name to run."
-  args = yargs.argv
+  argv = yargs.argv
 
 # implement some global switches
-chalk.enabled = false if args.nocolors
+chalk.enabled = false if argv.nocolors
 
 
 
 # Main routine
 # -------------------------------------------------
 # init
-if args.json
+if argv.json
   try
-    variables = JSON.parse args.json
+    variables = JSON.parse argv.json
   catch error
     alinex.exit 2, error
 dbreport.init
-  mail: args.mail
+  mail: argv.mail
   variables: variables ? {}
 # add schema for module's configuration
 config.setSchema '/dbreport', schema
@@ -131,7 +131,7 @@ mail.setup (err) ->
     config.init (err) ->
       alinex.exit err if err
       # show List
-      if args.list
+      if argv.list
         data = []
         for job in dbreport.list()
           conf = dbreport.get job
@@ -149,8 +149,8 @@ mail.setup (err) ->
         console.log()
         alinex.exit()
       # start job
-      alinex.exit 2, new Error "No job given to process" unless args._.length
+      alinex.exit 2, new Error "No job given to process" unless argv._.length
       console.log "Run the jobs..."
-      async.each args._, dbreport.run, (err) ->
+      async.each argv._, dbreport.run, (err) ->
         alinex.exit err if err
         alinex.exit()
