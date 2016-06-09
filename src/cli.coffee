@@ -14,12 +14,13 @@ config = require 'alinex-config'
 database = require 'alinex-database'
 Report = require 'alinex-report'
 mail = require 'alinex-mail'
+alinex = require 'alinex-core'
 # include classes and helpers
 dbreport = require './index'
-logo = require('alinex-core').logo 'Database Reports'
 schema = require './configSchema'
 
 process.title = 'DbReport'
+logo = alinex.logo 'Database Reports'
 
 
 # Support quiet mode through switch
@@ -31,21 +32,9 @@ for a in ['--get-yargs-completions', 'bashrc', '-q', '--quiet']
 
 # Error management
 # -------------------------------------------------
-exit = (code = 0, err) ->
-  # exit without error
-  process.exit code unless err
-  # exit with error
-  console.error chalk.red.bold "FAILED: #{err.message}"
-  console.error err.description if err.description
-  process.exit code
-
-process.on 'SIGINT', -> exit 130, new Error "Got SIGINT signal"
-process.on 'SIGTERM', -> exit 143, new Error "Got SIGTERM signal"
-process.on 'SIGHUP', -> exit 129, new Error "Got SIGHUP signal"
-process.on 'SIGQUIT', -> exit 131, new Error "Got SIGQUIT signal"
-process.on 'SIGABRT', -> exit 134, new Error "Got SIGABRT signal"
+alinex.initExit()
 process.on 'exit', ->
-  console.log "Goodbye\n" unless quiet
+  console.log "Goodbye\n"
   database.close()
 
 
@@ -106,7 +95,7 @@ yargs
 .fail (err) ->
   err = new Error "CLI #{err}"
   err.description = 'Specify --help for available options'
-  exit 1, err
+  alinex.exit 2, err
 # now parse the arguments
 args = yargs.argv
 # refine yargs and rerun if option needs command
@@ -126,7 +115,7 @@ if args.json
   try
     variables = JSON.parse args.json
   catch error
-    exit 255, error
+    alinex.exit 2, error
 dbreport.init
   mail: args.mail
   variables: variables ? {}
@@ -136,11 +125,11 @@ config.setSchema '/dbreport', schema
 config.register 'dbreport', fspath.dirname __dirname
 # initialize config
 mail.setup (err) ->
-  exit 1, err if err
+  alinex.exit err if err
   database.setup (err) ->
-    exit 1, err if err
+    alinex.exit err if err
     config.init (err) ->
-      exit 1, err if err
+      alinex.exit err if err
       # show List
       if args.list
         data = []
@@ -158,10 +147,10 @@ mail.setup (err) ->
         console.log()
         console.log report.toConsole()
         console.log()
-        exit()
+        alinex.exit()
       # start job
-      exit 1, new Error "No job given to process" unless args._.length
+      alinex.exit 2, new Error "No job given to process" unless args._.length
       console.log "Run the jobs..."
       async.each args._, dbreport.run, (err) ->
-        exit 1, err if err
-        exit()
+        alinex.exit err if err
+        alinex.exit()
