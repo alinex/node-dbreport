@@ -41,7 +41,7 @@
   },
   "dependencies": {
     "alinex-config": "^1.1.6",
-    "alinex-core": "^0.2.6",
+    "alinex-core": "^0.2.9",
     "alinex-database": "^1.0.1",
     "alinex-mail": "^1.2.4",
     "alinex-report": "^1.4.1",

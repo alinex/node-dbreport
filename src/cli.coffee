@@ -99,7 +99,7 @@ yargs
 # now parse the arguments
 argv = yargs.argv
 # refine yargs and rerun if option needs command
-unless args.list
+unless argv.list
   yargs.demand 1, "Needs a report name to run."
   argv = yargs.argv
 
