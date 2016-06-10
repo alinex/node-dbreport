@@ -12,6 +12,8 @@ json2csv = require 'json2csv'
 moment = require 'moment'
 iconv = require 'iconv-lite'
 # include alinex modules
+format = require 'alinex-format'
+table = require 'alinex-table'
 util = require 'alinex-util'
 validator = require 'alinex-validator'
 Report = require 'alinex-report'
@@ -79,7 +81,7 @@ module.exports = (meta, results, cb) ->
       sort
       reverse
       fields
-      format
+      fieldformat
       unique
       flip
     ], (method, cb) ->
@@ -208,7 +210,7 @@ fields = (meta, name, file, cb) ->
   cb()
 
 # format
-format = (meta, name, file, cb) ->
+fieldformat = (meta, name, file, cb) ->
   return cb() unless file.format
   debug chalk.grey "#{meta.job}.#{name}: format columns"
   async.each file.data, (row, cb) ->

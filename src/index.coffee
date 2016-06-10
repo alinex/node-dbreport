@@ -73,19 +73,14 @@ exports.run = (name, cb) ->
     else
       console.log "-> #{name}"
     debug "start #{name} job"
-    keys = Object.keys conf.query
-    async.map keys, (n, cb) ->
-      query = conf.query[n]
-      debug chalk.grey "#{n}: run query #{chalk.grey query.command(variables).replace /\s+/g, ' '}"
+    async.mapValues conf.query, (query, key, cb) ->
+      debug chalk.grey "#{key}: run query #{chalk.grey query.command(variables)
+      .replace /\s+/g, ' '}"
       database.list query.database, query.command(variables), (err, data) ->
-        debug "#{n}: #{data?.length} rows fetched"
+        debug "#{key}: #{data?.length} rows fetched"
         cb err, data
     , (err, results) ->
       return cb err if err
-      # combine the results into an object again
-      map = {}
-      map[keys[num]] = results[num] for num in [0..keys.length-1]
-      results = map
       # check for sending
       isEmpty = true
       for query, data of results
