@@ -90,9 +90,6 @@ module.exports = (meta, results, cb) ->
       cb err
   , (err) ->
     return cb err if err
-    console.log list.date
-    console.log list.year
-    process.exit 1
     # create report context
     context =
       name: meta.job

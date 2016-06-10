@@ -8,6 +8,7 @@
 debug = require('debug')('dbreport')
 chalk = require 'chalk'
 async = require 'async'
+fspath = require 'path'
 # include alinex modules
 config = require 'alinex-config'
 database = require 'alinex-database'
@@ -16,6 +17,7 @@ mail = require 'alinex-mail'
 validator = require 'alinex-validator'
 # internal methods
 compose = require './compose'
+schema = require './configSchema'
 
 
 # Initialized Data
@@ -30,12 +32,24 @@ mode =
   mail: null # alternative email to use
   variables: {} # list of additional command variables
 
+exports.setup = (cb) ->
+  async.each [mail, database], (mod, cb) ->
+    mod.setup cb
+  , (err) ->
+    return cb err if err
+    # add schema for module's configuration
+    config.setSchema '/dbreport', schema
+    # set module search path
+    config.register 'dbreport', fspath.dirname __dirname
+    cb()
+
 exports.init = (setup) ->
   mode = setup
 
 # Run a job
 # -------------------------------------------------
 exports.run = (name, cb) ->
+  console.log "Run the #{name} job."
   conf = config.get "/dbreport/job/#{name}"
   return cb new Error "Job #{name} is not configured" unless conf
   # validate variables

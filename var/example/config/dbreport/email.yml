@@ -21,7 +21,7 @@ default:
 
     {{conf.description}}
 
-    Ausgeführt am {{dateFormat date "LLLL"}}
+    Ausgeführt am {{date date "LLLL"}}
 
     ::: info
     Die Ergebnisse liegen der Email als Anhang bei!
