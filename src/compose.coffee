@@ -12,8 +12,8 @@ json2csv = require 'json2csv'
 moment = require 'moment'
 iconv = require 'iconv-lite'
 # include alinex modules
+Table = require 'alinex-table'
 format = require 'alinex-format'
-table = require 'alinex-table'
 util = require 'alinex-util'
 validator = require 'alinex-validator'
 Report = require 'alinex-report'
@@ -29,54 +29,38 @@ module.exports = (meta, results, cb) ->
   unless meta.conf.compose
     for name, setup of meta.conf.query
       list[name] =
-        data: results[name]
+        table: results[name]
         title: setup.title
         description: setup.description
   else
     debug chalk.grey "#{meta.job}: composing"
+
     for name, setup of meta.conf.compose
       list[name] = util.extend util.clone(setup),
-        data: []
+        table: []
       switch
         when setup.append
-          setup.append = Object.keys meta.conf.query if typeof setup.append is 'boolean'
           debug chalk.grey "#{meta.job}.#{name}: append"
+          list[name].table = table = new Table()
+          setup.append = Object.keys meta.conf.query if typeof setup.append is 'boolean'
           for alias in setup.append
-#            console.log results[alias]
-            #raw = object.clone results[alias]
-            raw = []
-            for e in results[alias]
-              n = {}
-              n[k] = v for k, v of e
-              raw.push n
-#            console.log raw
-#            console.log raw is results[alias]
-#            console.log raw[0] is results[alias][0]
-#            cl = object.clone results[alias]
-            cl = []
-            for e in results[alias]
-              cl.push util.clone e
-#            console.log cl
-#            console.log cl is results[alias]
-#            console.log cl[0] is results[alias][0]
-#            process.exit 1
-            list[name].data = list[name].data.concat cl
+            table.append results[alias]
         when setup.join
           debug chalk.grey "#{meta.job}.#{name}: join"
           doJoin results, list[name]
         when results[name]?
-          list[name].data = results[name]
+          list[name].table = results[name]
         else
           return cb new Error "No supported compose method (append/join) defined for entry #{name}
           of #{meta.job}."
-#  list.table.data[0].anzahl = 999999
+  console.log list
   # work on each file
   async.each Object.keys(list), (name, cb) ->
     file = list[name]
-    unless file.data.length
+    unless file.table.data.length
       file.rows = 0
       return cb()
-    # optimize data
+    # optimize table
     async.eachSeries [
       sort
       reverse
@@ -88,7 +72,7 @@ module.exports = (meta, results, cb) ->
       method.call this, meta, name, file, cb
     , (err) ->
       # update file info
-      file.rows = file.data.length ? 0
+      file.rows = file.table.data.length ? 0
       cb err
   , (err) ->
     return cb err if err

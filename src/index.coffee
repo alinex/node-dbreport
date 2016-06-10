@@ -15,6 +15,7 @@ database = require 'alinex-database'
 util = require 'alinex-util'
 mail = require 'alinex-mail'
 validator = require 'alinex-validator'
+Table = require 'alinex-table'
 # internal methods
 compose = require './compose'
 schema = require './configSchema'
@@ -81,12 +82,13 @@ exports.run = (name, cb) ->
         cb err, data
     , (err, results) ->
       return cb err if err
-      # check for sending
+      # convert into table objects
       isEmpty = true
-      for query, data of results
-        continue unless data.length
+      for name in Object.keys results
+        continue unless results[name].length
         isEmpty = false
-        break
+        results[name] = (new Table()).fromRecordList results[name]
+      # check for sending
       if isEmpty
         debug "#{name}: no data found"
         return cb() unless conf.sendEmpty
