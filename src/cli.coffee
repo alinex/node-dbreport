@@ -43,15 +43,29 @@ command = (name, conf) ->
   # return builder and handler
   builder: (yargs) ->
     yargs
-    .usage "\nUsage: $0 #{name} [options]\n\n#{conf.description ? ''}"
-#    # add options
-#    if lib.options
-#      yargs.option key, def for key, def of lib.options
-#      yargs.group Object.keys(lib.options), "#{util.string.ucFirst name} Command Options:"
-    # help
-    yargs.strict()
-    .help 'h'
-    .alias 'h', 'help'
+    .usage "\nUsage: $0 #{name} [options]\n\n#{conf.description.trim() ? ''}"
+    .strict()
+    .options
+      help:
+        alias: 'h',
+        description: 'display help message'
+      nocolors:
+        alias: 'C'
+        description: 'turn of color output'
+        type: 'boolean'
+      quiet:
+        alias: 'q'
+        describe: "don't output header and footer"
+        type: 'boolean'
+      mail:
+        alias: 'm'
+        description: 'alternative email address to send to'
+        type: 'string'
+      json:
+        alias: 'j'
+        description: 'json formatted data object'
+        type: 'string'
+    .group ['m', 'j'], 'Report Options:'
     .epilogue """
       This is the description of the '#{name}' job. You may also look into the
       general help or the man page.
@@ -67,7 +81,7 @@ command = (name, conf) ->
       variables: variables ? {}
     # run the command
     dbreport.run name, (err) ->
-      alinex.exit err if err
+      alinex.exit err
     return true
 
 

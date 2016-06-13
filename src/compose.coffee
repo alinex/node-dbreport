@@ -124,6 +124,7 @@ data2csv = (meta, out, list, cb) ->
     return cb() unless file.table.data.length
     debug chalk.grey "#{meta.job}.#{name}: convert to csv"
     format.stringify file.table, 'csv', (err, csv) ->
+      console.log csv
       return cb err if err
       out.push
         type: 'csv'
