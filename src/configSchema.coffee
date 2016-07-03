@@ -169,6 +169,36 @@ job =
           type: 'string'
       ]
       default: true
+    html:
+      title: "Create HTML"
+      description: "the list of HTML Reports to generate"
+      type: 'object'
+      entries: [
+        title: "List"
+        description: "the alias name of the list to create"
+        type: 'object'
+        mandatoryKeys: true
+        allowedKeys: true
+        keys:
+          title:
+            title: "Title"
+            description: "the short title of the report to be used as file"
+            type: 'string'
+            optional: true
+          locale:
+            title: "Locale Setting"
+            description: "the locale setting for subject and body dates"
+            type: 'string'
+            minLength: 2
+            maxLength: 5
+            lowerCase: true
+            match: /^[a-z]{2}(-[a-z]{2})?$/
+            optional: true
+          content:
+            title: "Content"
+            description: "the content of the generated pdf report"
+            type: 'handlebars'
+      ]
     pdf:
       title: "Create PDF"
       description: "the list of PDF Reports to generate"
