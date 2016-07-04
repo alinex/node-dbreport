@@ -158,8 +158,11 @@ dbreport.setup (err) ->
           .join ', '
       report = new Report()
       report.h1 "List of possible jobs:"
-      report.table data, ['JOB', 'TITLE', 'TO']
-      report.p 'Run them using their job name.'
+      if data.length
+        report.table data, ['JOB', 'TITLE', 'TO']
+        report.p 'Run them using their job name.'
+      else
+        report.p 'No jobs defined, add them in your config!'
       console.log()
       console.log report.toConsole()
       console.log()

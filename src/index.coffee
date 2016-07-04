@@ -122,7 +122,7 @@ exports.run = (name, cb) ->
 # List possible jobs
 # -------------------------------------------------
 exports.list = ->
-  Object.keys config.get "/dbreport/job"
+  Object.keys config.get("/dbreport/job") ? {}
 
 
 # Get the job configuration
