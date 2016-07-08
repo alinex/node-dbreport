@@ -94,7 +94,7 @@ dbreport.setup (err) ->
         type: 'boolean'
       quiet:
         alias: 'q'
-        describe: "don't output header and footer"
+        description: "don't output header and footer"
         type: 'boolean'
       list:
         alias: 'l'
